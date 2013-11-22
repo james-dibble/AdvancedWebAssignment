@@ -1,19 +1,14 @@
 <?php
 class Router
 {
+    const scriptTarget = 'Public/index.php';
+    
+    private static $_contextPath;
+    
     public static function Dispatch()
     {
-        $contextPath = explode('/', trim(trim($_SERVER['SCRIPT_NAME'], '/'), 'Public/index.php'));
-        $route = explode('/', trim($_SERVER['REQUEST_URI'], '/'));
-
-        foreach ($contextPath as $key => $val)
-        {
-            if ($val == $route[$key])
-            {
-                unset($route[$key]);
-            }
-        }
-        
+        $route = str_replace(Router::GetContextPath(), '', trim($_SERVER['REQUEST_URI'], '/'));
+                
         $requestContext = Router::DetermineRequestContext($route);
         
         echo sprintf('Controller: %s, Action %s', $requestContext->GetController(), $requestContext->GetAction());
@@ -35,6 +30,16 @@ class Router
                 $routeParameters[1], 
                 $routeParameters[2], 
                 array_slice($routeParameters, 2));
+    }
+    
+    private static function GetContextPath()
+    {
+        if(Router::$_contextPath == null)
+        {
+            Router::$_contextPath = str_replace(Router::scriptTarget, '', trim($_SERVER['SCRIPT_NAME'], '/'));
+        }
+        
+        return Router::$_contextPath;
     }
 }
 ?>
