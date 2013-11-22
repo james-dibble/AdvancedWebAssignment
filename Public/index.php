@@ -1,3 +1,4 @@
 <?php
-    Router::Dispatch();
+    include_once '..\Application\Bootstrap.php';
+    Library\Routing\Router::Dispatch();
 ?>

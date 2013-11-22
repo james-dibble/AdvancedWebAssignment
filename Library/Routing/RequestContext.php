@@ -1,4 +1,6 @@
 <?php
+namespace Library\Routing;
+
 class RequestContext
 {
     private $_controller;
