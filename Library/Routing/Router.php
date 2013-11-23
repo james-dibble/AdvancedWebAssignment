@@ -14,9 +14,10 @@ class Router
         $requestContext = Router::DetermineRequestContext($routeParameters);
         $controllerName = $requestContext->GetController();
         
-        $fullyQualifiedControllerName = 'Application\\Controllers\\' . $controllerName . 'Controller';
+       $controller = Router::CreateController($controllerName);
         
-        $controller = new $fullyQualifiedControllerName();
+        
+        
         $controller->ProcessRequest($requestContext);
     }
     
@@ -29,7 +30,17 @@ class Router
         
         if(count($routeParameters) === 1)
         {
-            return new RequestContext('home', $routeParameters[0], []);
+            if(method_exists(Router::CreateController('home'), $routeParameters[0]))
+            {
+                return new RequestContext('home', $routeParameters[0], []);
+            }
+            
+            return new RequestContext($routeParameters[0], 'index', []);
+        }
+        
+        if(!method_exists(Router::CreateController($routeParameters[0]), $routeParameters[1]))
+        {           
+            return new RequestContext($routeParameters[0], 'index', array_slice($routeParameters, 1));
         }
         
         return new RequestContext(
@@ -46,6 +57,15 @@ class Router
         }
         
         return Router::$_contextPath;
+    }
+    
+    private static function CreateController($controllerName)
+    {
+        $fullyQualifiedControllerName = 'Application\\Controllers\\' . $controllerName . 'Controller';
+        
+        $controller = new $fullyQualifiedControllerName();
+        
+        return $controller;
     }
 }
 ?>
