@@ -1,5 +1,5 @@
 <?php
-function AutoLoader($classname)
+function DomainAutoLoader($classname)
 {    
     $fullPath = '..\\' . $classname . '.php';
             
@@ -9,5 +9,5 @@ function AutoLoader($classname)
     }
 }
 
-spl_autoload_register('AutoLoader');
+spl_autoload_register('DomainAutoLoader');
 ?>

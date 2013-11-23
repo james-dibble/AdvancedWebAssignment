@@ -1,6 +1,9 @@
 <?php
-class CrimesController
+class CrimesController extends \Library\Controller\Controller
 {
-    
+    public function Index()
+    {
+        
+    }
 }
 ?>

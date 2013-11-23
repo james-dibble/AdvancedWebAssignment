@@ -9,16 +9,32 @@ class Router
     
     public static function Dispatch()
     {
-        $route = trim(str_replace(Router::GetContextPath(), '', $_SERVER['REQUEST_URI']), '/');
-        $routeParameters = array_filter(explode('/', $route), 'strlen');
-        $requestContext = Router::DetermineRequestContext($routeParameters);
-        $controllerName = $requestContext->GetController();
-        
-       $controller = Router::CreateController($controllerName);
-        
-        
-        
-        $controller->ProcessRequest($requestContext);
+        try
+        {
+            // Use the output buffer so we can clear the output stream
+            // if something goes wrong
+            ob_start();
+            $route = trim(str_replace(Router::GetContextPath(), '', $_SERVER['REQUEST_URI']), '/');
+            $routeParameters = array_filter(explode('/', $route), 'strlen');
+            $requestContext = Router::DetermineRequestContext($routeParameters);
+            $controllerName = $requestContext->GetController();
+
+            $controller = Router::CreateController($controllerName);
+
+            $controller->ProcessRequest($requestContext);
+        }
+        catch(\Exception $ex)
+        {
+            // Something went wrong so clear the buffer so only our error
+            // output is sent.
+            ob_end_clean();
+            $errorContext = new RequestContext('errors', 'index', $ex);
+            
+            $controllerName = $errorContext->GetController();
+            $controller = Router::CreateController($controllerName);
+
+            $controller->ProcessRequest($errorContext);
+        }
     }
     
     private static function DetermineRequestContext($routeParameters)
@@ -62,6 +78,11 @@ class Router
     private static function CreateController($controllerName)
     {
         $fullyQualifiedControllerName = 'Application\\Controllers\\' . $controllerName . 'Controller';
+        
+        if(!class_exists($fullyQualifiedControllerName))
+        {
+            throw new \ErrorException('Controller not found');
+        }
         
         $controller = new $fullyQualifiedControllerName();
         

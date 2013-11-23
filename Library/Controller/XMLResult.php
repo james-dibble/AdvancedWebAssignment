@@ -18,14 +18,13 @@ class XMLResult implements IActionResult {
             "typeHints" => false,
             "addDecl" => true,
             "encoding" => "UTF-8",
-            "rootName" => "rdf:RDF",
+            "rootName" => (new \ReflectionClass($this->_model))->getShortName(),
             "defaultTagName" => "item"
         );
 
-        $serializer = new XML_Serializer($options);
+        $serializer = new \XML_Serializer($options);
 
         if ($serializer->serialize($this->_model)) {
-            header('Content-type: text/xml');
             echo $serializer->getSerializedData();
         }
     }
