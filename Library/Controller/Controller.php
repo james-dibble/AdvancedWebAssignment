@@ -12,13 +12,20 @@ abstract class Controller
         if ($arguments == null)
         {
             $actionParameterValues = array();
+            $requestMethodParams = $this->GetRequestMethodParams();
+            $actionParameters = $this->GetActionParameters($action);
 
-            foreach ($this->GetActionParameters($action) as $parameter)
+            foreach ($actionParameters as $parameter)
             {
-                array_push($actionParameterValues, $this->GetActionParameters([$parameter]));
+                if(!isset($requestMethodParams[$parameter->name]))
+                {
+                    throw new \Library\Models\Errors\UriNotRecognizedException('Parameters do not match action method');
+                }
+                
+                array_push($actionParameterValues, $requestMethodParams[$parameter->name]);
             }
 
-            $actionResult = $this->$action($actionParameterValues);
+            $actionResult = call_user_func_array(array($this, $action), $actionParameterValues);
         }
         else
         {
@@ -30,6 +37,12 @@ abstract class Controller
 
     private function GetActionParameters($actionName)
     {
+        if(!method_exists($this, $actionName))
+        {
+            $controllerName = $this->GetControllerName();
+            throw new \Library\Models\Errors\NotFoundException("Action [$actionName] does not exists on controller [$controllerName].");
+        }
+        
         $method = new \ReflectionMethod($this, $actionName);
 
         return $method->getParameters();
@@ -37,20 +50,33 @@ abstract class Controller
 
     private function GetRequestMethodParams()
     {
+        $params = null;
+        
         switch ($_SERVER['REQUEST_METHOD'])
         {
             case 'GET':
-                return $_GET;
+                $params = $_GET;
+                break;
             case 'POST':
-                return $_POST;
+                $params = $_POST;
+                break;
             case 'PUT':
             case 'DELETE':
-                parse_str(file_get_contents('php://input'), array());
+                $params = parse_str(file_get_contents('php://input'), array());
+                break;
             default:
                 throw new \ErrorException('Request method not supported');
         }
+        
+        return $params;
     }
 
+    private function GetControllerName()
+    {
+        $controller = new \ReflectionClass($this);
+        
+        return $controller->getShortName();
+    }
 }
 
 ?>
