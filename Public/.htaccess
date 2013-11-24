@@ -1,8 +1,4 @@
 RewriteEngine on
-RewriteBase /atwd
-RewriteCond %{REQUEST_FILENAME} -s [OR]
-RewriteCond %{REQUEST_FILENAME} -l [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^.*$ - [NC,L]
-RewriteRule ^.*$ index.php [NC,L]
+RewriteRule ^crimes/([0-9]{1}[-]{1}[0-9]{4})/(xml|json)$ index.php?controller=crimes&action=get&year=$1&format=$2 [NC,L]
+RewriteRule ^$ index.php?controller=home&action=index [NC,L]
 RewriteRule ^(?:application|library)\b.* index.php/$0 [L]
