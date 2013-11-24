@@ -1,5 +1,5 @@
 <?php
-namespace Application\Models;
+namespace Application\Models\Errors;
 
 class Error
 {

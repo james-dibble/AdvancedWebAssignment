@@ -5,9 +5,29 @@ class ErrorsController extends \Library\Controller\Controller
 {
     public function Index(\Exception $ex)
     {
-        $errorResponse = new \Application\Models\Error();
-        $errorResponse->code = 500;
-        $errorResponse->desc = $ex->getMessage();
+        $errorResponse = new \Application\Models\Errors\Response();
+        
+        $error = new \Application\Models\Errors\Error();
+        
+        if($ex instanceof \Library\Models\Errors\NotFoundException)
+        {
+            http_response_code(404);
+            $error->code = 404;
+        }
+        if($ex instanceof \Library\Models\Errors\UriNotRecognizedException)
+        {
+            http_response_code(501);
+            $error->code = 501;
+        }
+        else
+        {
+            http_response_code(500);
+            $error->code = 500;
+        }
+        
+        $error->desc = $ex->getMessage();
+        
+        $errorResponse->error = $error;
         
         return new \Library\Controller\XmlResult($errorResponse);
     }

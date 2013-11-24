@@ -81,7 +81,7 @@ class Router
         
         if(!class_exists($fullyQualifiedControllerName))
         {
-            throw new \ErrorException('Controller not found');
+            throw new \Library\Models\Errors\NotFoundException('Controller not found');
         }
         
         $controller = new $fullyQualifiedControllerName();
