@@ -18,9 +18,9 @@ class XMLResult implements IActionResult {
             "typeHints" => false,
             "addDecl" => true,
             "encoding" => "UTF-8",
-            "rootName" => (new \ReflectionClass($this->_model))->getShortName(),
-            "defaultTagName" => "item"
-        );
+            "rootName" => strtolower((new \ReflectionClass($this->_model))->getShortName()),
+            "defaultTagName" => "item",
+            "scalarAsAttributes" => true);
 
         $serializer = new \XML_Serializer($options);
 
