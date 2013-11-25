@@ -9,5 +9,5 @@ function AutoLoader($classname)
     }
 }
 
-spl_autoload_register('DomainAutoLoader');
+spl_autoload_register('AutoLoader');
 ?>

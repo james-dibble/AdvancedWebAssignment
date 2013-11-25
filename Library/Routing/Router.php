@@ -3,7 +3,14 @@ namespace Library\Routing;
 
 class Router
 {    
-    public static function Dispatch($controllerName, $actionName)
+    private $_container;
+    
+    public function __construct(\Library\Composition\IContainer $container)
+    {
+        $this->_container = $container;
+    }
+    
+    public function Dispatch($controllerName, $actionName)
     {
         try
         {
@@ -11,7 +18,7 @@ class Router
             // if something goes wrong
             ob_start();
 
-            $controller = Router::CreateController($controllerName);
+            $controller = $this->CreateController($controllerName);
 
             $controller->ProcessRequest($actionName);
         }
@@ -21,13 +28,13 @@ class Router
             // output is sent.
             ob_end_clean();
             
-            $controller = Router::CreateController('errors');
+            $controller = $this->CreateController('errors');
 
             $controller->ProcessRequest('index', $ex);
         }
     }
     
-    private static function CreateController($controllerName)
+    private function CreateController($controllerName)
     {
         $fullyQualifiedControllerName = '\Application\\Controllers\\' . $controllerName . 'Controller';
         
@@ -36,9 +43,36 @@ class Router
             throw new \Library\Models\Errors\NotFoundException('Controller not found');
         }
         
-        $controller = new $fullyQualifiedControllerName();
+        $controllerConstructorArguments = $this->BuildDependencies($fullyQualifiedControllerName);
+        
+        $controllerClass = new \ReflectionClass($fullyQualifiedControllerName);
+        
+        $controller = $controllerClass->newInstanceArgs($controllerConstructorArguments);
         
         return $controller;
+    }
+    
+    private function BuildDependencies($controllerName)
+    {
+        $constructorArguments = array();
+        
+        $controller = new \ReflectionClass($controllerName);
+        
+        if(!method_exists($controllerName, '__construct'))
+        {
+            return $constructorArguments;
+        }
+        
+        $constructor = $controller->getConstructor();
+        $args = $constructor->getParameters();
+        
+        foreach($args as $arg)
+        {
+            $resolved = $this->_container->Resolve($arg->getClass()->name);
+            array_push($constructorArguments, $resolved);
+        }
+        
+        return $constructorArguments;
     }
 }
 ?>
