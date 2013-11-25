@@ -1,5 +1,5 @@
 <?php
-function DomainAutoLoader($classname)
+function AutoLoader($classname)
 {    
     $fullPath = '..\\' . $classname . '.php';
             
