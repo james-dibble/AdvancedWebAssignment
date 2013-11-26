@@ -1,54 +1,67 @@
-<?xml version="1.0"?>
-<xs:schema version="1.0"
-           xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           elementFormDefault="qualified">
-    <xs:element name="Country">
-        <xs:attribute name="Name" type="xs:string" />
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element name="Crimes" type="CrimeStatistics" />
-                <xs:element name="Region">
-                    <xs:complexType>
-                        <xs:attribute name="Name" type="xs:string" />
-                        <xs:sequence>
-                            <xs:element name="Crimes" type="CrimeStatistics" />
-                            <xs:element name="Area">
-                                <xs:attribute name="Name" type="xs:string" />
-                                <xs:sequence>
-                                    <xs:element name="Crimes" type="CrimeStatistics" />
-                                </xs:sequence>
-                            </xs:element>
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-    <xs:complexType name="CrimeStatistics">
-        <xs:sequence>
-            <xs:element name="Total recorded crime - including fraud" type="xs:integer"/>
-            <xs:element name="Total recorded crime - excluding fraud" type="xs:integer"/>
-            <xs:element name="Violence against the person" type="xs:integer"/>
-            <xs:element name="Homicide" type="xs:integer"/>
-            <xs:element name="Violence with injury" type="xs:integer"/>
-            <xs:element name="Violencewithoutinjury" type="xs:integer"/>
-            <xs:element name="Sexual offences" type="xs:integer"/>
-            <xs:element name="Robbery" type="xs:integer"/>
-            <xs:element name="Theft offences" type="xs:integer"/>
-            <xs:element name="Burglary" type="xs:integer"/>
-            <xs:element name="Domestic burglary" type="xs:integer"/>
-            <xs:element name="Non-domestic burglary" type="xs:integer"/>
-            <xs:element name="Vehicle offences" type="xs:integer"/>
-            <xs:element name="Theftfrom the person" type="xs:integer"/>
-            <xs:element name="Bicycletheft" type="xs:integer"/>
-            <xs:element name="Shoplifting" type="xs:integer"/>
-            <xs:element name="All other theft offences" type="xs:integer"/>
-            <xs:element name="Criminal damage and arson" type="xs:integer"/>
-            <xs:element name="Drug offences" type="xs:integer"/>
-            <xs:element name="Possession of weaponsoffences" type="xs:integer"/>
-            <xs:element name="Public order offences" type="xs:integer"/>
-            <xs:element name="Miscellaneous crimes againstsociety" type="xs:integer"/>
-            <xs:element name="Fraud" type="xs:integer"/>
-        </xs:sequence>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://tempuri.org/XMLSchema.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://tempuri.org/XMLSchema.xsd"
+    xmlns:mstns="http://tempuri.org/XMLSchema.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <xs:element name="CrimeRecord">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="region" type="Region" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element name="national" type="National" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element name="country" type="Country" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
     </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="CrimeStatistics">
+    <xs:sequence>
+      <xs:sequence>
+        <xs:element name="Homocide" type="xs:integer" minOccurs="1" maxOccurs="1" />
+        <xs:element name="ViolenceWithInjury" type="xs:integer" minOccurs="1" maxOccurs="1" />
+        <xs:element name="ViolenceWithoutInjury" type="xs:integer" minOccurs="1" maxOccurs="1" />
+        <xs:element name="SexualOffences" type="xs:integer" minOccurs="1" maxOccurs="1" />
+        <xs:element name="Robbery" type="xs:integer" minOccurs="1" maxOccurs="1" />
+        <xs:element name="DomesticBurglary" type="xs:integer" minOccurs="1" maxOccurs="1" />
+        <xs:element name="NonDomesticBurglary" type="xs:integer" minOccurs="1" maxOccurs="1" />
+        <xs:element name="VehicleOffences" type="xs:integer" minOccurs="1" maxOccurs="1" />
+        <xs:element name="TheftFromPerson" type="xs:integer" minOccurs="1" maxOccurs="1" />
+        <xs:element name="BicycleTheft" type="xs:integer" minOccurs="1" maxOccurs="1" />
+        <xs:element name="Shoplifting" type="xs:integer" minOccurs="1" maxOccurs="1" />
+        <xs:element name="MiscTheft" type="xs:integer" minOccurs="1" maxOccurs="1" />
+        <xs:element name="CriminalDamageAndArson" type="xs:integer" minOccurs="1" maxOccurs="1" />
+        <xs:element name="DrugOffences" type="xs:integer" minOccurs="1" maxOccurs="1" />
+        <xs:element name="PossessionOfWeapons" type="xs:integer" minOccurs="1" maxOccurs="1" />
+        <xs:element name="PublicOrderOffences" type="xs:integer" minOccurs="1" maxOccurs="1" />
+        <xs:element name="MiscDrimesAgainstSociety" type="xs:integer" minOccurs="1" maxOccurs="1" />
+        <xs:element name="Fraud" type="xs:integer" minOccurs="1" maxOccurs="1" />
+      </xs:sequence>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Area">
+    <xs:sequence>
+      <xs:element name="stats" type="CrimeStatistics" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="Region">
+    <xs:sequence>
+      <xs:element name="area" type="Area" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="National">
+    <xs:sequence>
+      <xs:element name="stats" type="CrimeStatistics" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="total" type="xs:integer" />
+    <xs:attribute name="id" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="Country">
+    <xs:sequence>
+      <xs:element name="stats" type="CrimeStatistics" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+  </xs:complexType>
 </xs:schema>
