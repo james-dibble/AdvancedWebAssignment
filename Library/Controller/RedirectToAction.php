@@ -12,7 +12,13 @@ class RedirectToAction implements \Library\Controller\IActionResult
     
     public function DoAction()
     {
-        header(CONTEXT_PATH . $this->_newAction);
+        ob_clean();
+        header_remove();
+        
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+        
+        header('Location: ' . $protocol . $_SERVER['HTTP_HOST'] . CONTEXT_PATH . $this->_newAction, true, 302);
+        ob_end_flush();
     }    
 }
 
