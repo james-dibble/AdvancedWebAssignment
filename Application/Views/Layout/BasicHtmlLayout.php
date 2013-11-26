@@ -23,10 +23,10 @@ abstract class BasicHtmlLayout
 <head>
         <title>$this->_title</title>
         <!-- LE META -->
-        <meta charset="utf-8" />
-        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
         <meta name="Description" content="$this->_description">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+HTML;
+        include 'MetaTags.php';
+        echo <<<HTML
         <!-- LE STYLE -->
         {$this->BuildStyleSheets()}
 </head>
