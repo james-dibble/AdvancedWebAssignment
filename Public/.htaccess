@@ -1,7 +1,8 @@
 RewriteEngine on
+RewriteBase /~j3-dibble/atwd/
 RewriteRule ^crimes/([0-9]{1}[-]{1}[0-9]{4})/(xml|json)$ index.php?controller=crimes&action=get&year=$1&format=$2 [NC,L]
 RewriteRule ^import/file$ index.php?controller=import&action=file [NC,L]
 RewriteRule ^import$ index.php?controller=import&action=index [NC,L]
 RewriteRule ^$ index.php?controller=home&action=index [NC,L]
-RewriteRule ^(.*)$ index.php?controller=errors&action=notfound [NC,L]
+#RewriteRule ^(.*)$ index.php?controller=errors&action=notfound [NC,L]
 RewriteRule ^(?:application|library)\b.* index.php/$0 [L]
