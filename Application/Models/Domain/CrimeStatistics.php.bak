@@ -3,6 +3,7 @@ namespace Application\Models\Domain;
 
 class CrimeStatistics
 {
-    public $total;
+    public $year;
 }
+
 ?>

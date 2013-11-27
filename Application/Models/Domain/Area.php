@@ -1,8 +1,9 @@
 <?php
 namespace Application\Models\Domain;
 
-class CrimeStatistics
+class Area
 {
+    public $id;
     public $total;
 }
 ?>

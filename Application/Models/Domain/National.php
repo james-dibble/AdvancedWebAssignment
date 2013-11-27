@@ -1,8 +1,7 @@
 <?php
 namespace Application\Models\Domain;
 
-class CrimeStatistics
+class National extends Region
 {
-    public $total;
 }
 ?>
