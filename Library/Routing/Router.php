@@ -36,7 +36,7 @@ class Router
     
     private function CreateController($controllerName)
     {
-        $fullyQualifiedControllerName = '\Application\\Controllers\\' . $controllerName . 'Controller';
+        $fullyQualifiedControllerName = '\Application\\Controllers\\' . ucwords($controllerName) . 'Controller';
         
         if(!class_exists($fullyQualifiedControllerName))
         {

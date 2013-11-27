@@ -11,7 +11,7 @@
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav">
             <li><a href="<?php echo CONTEXT_PATH; ?>">Home</a></li>
-            <li><a href="<?php echo CONTEXT_PATH; ?>import">import</a></li>
+            <li><a href="<?php echo CONTEXT_PATH; ?>import">Import</a></li>
         </ul>
     </div>
 </nav>
