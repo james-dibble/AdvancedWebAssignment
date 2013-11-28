@@ -62,13 +62,11 @@ class CrimeFileParsingService implements ICrimeFileParsingService
                 continue;
             }
             
-            if(CrimeFileParsingService::IsRegionRow($row))
+            if(CrimeFileParsingService::IsNationalRow($row))
             {
-                $currentRegion->id = CrimeFileParsingService::SplitRow($row)[CrimeFileParsingService::locationId];
+                $national = $this->ParseArea($row);
                 
-                array_push($currentCountry->regions, $currentRegion);
-                
-                $currentRegion = new \Application\Models\Domain\Region();
+                array_push($statistics->nationals, $national);
                 continue;
             }
             
@@ -94,8 +92,13 @@ class CrimeFileParsingService implements ICrimeFileParsingService
         {
             return null;
         }
-        
+                        
         $area = new \Application\Models\Domain\Area();
+        
+        if(CrimeFileParsingService::IsNationalRow($row))
+        {
+            $area = new \Application\Models\Domain\National();
+        }
         
         $lineContents = CrimeFileParsingService::SplitRow($row);
         
@@ -136,7 +139,7 @@ class CrimeFileParsingService implements ICrimeFileParsingService
         
         foreach(str_getcsv($row) as $element)
         {
-            array_push($lineContents, str_replace(',', '', $element));
+            array_push($lineContents, str_replace('..', '0', str_replace(',', '', $element)));
         }
         
         return $lineContents;
@@ -158,7 +161,9 @@ class CrimeFileParsingService implements ICrimeFileParsingService
     
     private static function IsNationalRow($row)
     {
+        $possibleNational = CrimeFileParsingService::SplitRow($row)[0];
         
+        return CrimeFileParsingService::in_arrayi($possibleNational, CrimeFileParsingService::$_nationals);
     }
         
     // From: http://uk.php.net/manual/en/function.in-array.php#89256
