@@ -21,7 +21,7 @@ class Area extends \Application\Models\Domain\GeographicReference
     public $possesionOfWeapons;
     public $publicOrderOffenses;
     public $miscCrimes;
-    public $fruad;
+    public $fraud;
 
     public function GetTotal() 
     {
