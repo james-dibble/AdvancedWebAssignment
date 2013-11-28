@@ -1,6 +1,5 @@
 <?php
-
-namespace Application\Models\Domain;
+namespace Application\Models\Responses;
 
 class CrimeForRegion
 {
