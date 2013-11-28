@@ -5,6 +5,11 @@ class Region extends \Application\Models\Domain\GeographicReference
 {
     public $areas;
     
+    public function __construct() 
+    {
+        $this->areas = array();
+    }
+    
     public function GetTotal() 
     {
         $total = 0;

@@ -15,6 +15,10 @@ class Index extends \Application\Views\Layout\ApplicationLayout implements \Libr
                 
         include 'ImportForm.php';
         
+        echo '<br /><br />';
+        
+        include 'ImportFromText.php';
+        
         parent::BuildFooter();
     }    
 }

@@ -19,15 +19,17 @@ class CrimeFileParsingService implements ICrimeFileParsingService
     const miscTheft = 18;
     const criminalDamageAndArson = 19;
     const drugOffenses = 21;
-    const possesionOfWeapons = 23;
-    const publicOrderOffenses = 24;
-    const miscCrimes = 25;
-    const fruad = 27;
+    const possesionOfWeapons = 22;
+    const publicOrderOffenses = 23;
+    const miscCrimes = 24;
+    const fruad = 26;
     private static $_countries = array('England', 'Wales');
+    private static $_nationals = array('British Transport Police');
         
     public function ParseFile(array $fileContents)
     {
-        $countries = array();
+        $statistics = new \Application\Models\Domain\StatisticsCollection();
+        
         $currentCountry = new \Application\Models\Domain\Country();
         $currentRegion = new \Application\Models\Domain\Region();
         
@@ -37,9 +39,26 @@ class CrimeFileParsingService implements ICrimeFileParsingService
             {
                 $currentCountry->id = CrimeFileParsingService::SplitRow($row)[CrimeFileParsingService::locationId];
                 
-                array_push($countries, $currentCountry);
+                if(count($currentCountry->regions) == 0)
+                {
+                    $currentRegion->id = $currentCountry->id;
+                
+                    array_push($currentCountry->regions, $currentRegion);
+                }
+                
+                array_push($statistics->countires, $currentCountry);
                 
                 $currentCountry = new \Application\Models\Domain\Country();
+                continue;
+            }
+            
+            if(CrimeFileParsingService::IsRegionRow($row))
+            {
+                $currentRegion->id = CrimeFileParsingService::SplitRow($row)[CrimeFileParsingService::locationId];
+                
+                array_push($currentCountry->regions, $currentRegion);
+                
+                $currentRegion = new \Application\Models\Domain\Region();
                 continue;
             }
             
@@ -61,17 +80,17 @@ class CrimeFileParsingService implements ICrimeFileParsingService
             }
         }
         
-        return $countries;
+        return $statistics;
     }  
     
     private function ParseArea($row)
     {
-        if(preg_match('^,+$', $row))
+        if(preg_match('/^,+$/', $row))
         {
             return null;
         }
         
-        if(!preg_match('^([A-Za-z,\\-" ]+)((([,]+)(([\\d]{1,3})|(["]{1}[\\d]{1,3}[,]{1}[\\d]{3}["]{1})))+)$', $row))
+        if(!preg_match('/^([A-Za-z,\\-" ]+)((([,]+)(([\\d]{1,3})|(["]{1}[\\d]{1,3}[,]{1}[\\d]{3}["]{1})))+)$/', $row))
         {
             return null;
         }
@@ -82,26 +101,26 @@ class CrimeFileParsingService implements ICrimeFileParsingService
         
         try
         {
-            $action->id = $lineContents[CrimeFileParsingService::locationId];
-            $action->homocide = $lineContents[CrimeFileParsingService::homocide];
-            $action->violenceWithInjury = $lineContents[CrimeFileParsingService::violenceWithInjury];
-            $action->violenceWithoutInjury = $lineContents[CrimeFileParsingService::violenceWithoutInjury];
-            $action->sexualOffenses = $lineContents[CrimeFileParsingService::sexualOffenses];
-            $action->robbery = $lineContents[CrimeFileParsingService::robbery];
-            $action->theftOffenses = $lineContents[CrimeFileParsingService::theftOffenses];
-            $action->domesticBurglary = $lineContents[CrimeFileParsingService::domesticBurglary];
-            $action->nonDomesticBurglary = $lineContents[CrimeFileParsingService::nonDomesticBurglary];
-            $action->vehicleOffenses = $lineContents[CrimeFileParsingService::vehicleOffenses];
-            $action->theftFromPerson = $lineContents[CrimeFileParsingService::theftFromPerson];
-            $action->bicycleTheft = $lineContents[CrimeFileParsingService::bicycleTheft];
-            $action->shoplifting = $lineContents[CrimeFileParsingService::shoplifting];
-            $action->miscTheft = $lineContents[CrimeFileParsingService::miscTheft];
-            $action->criminalDamageAndArson = $lineContents[CrimeFileParsingService::criminalDamageAndArson];
-            $action->drugOffenses = $lineContents[CrimeFileParsingService::drugOffenses];
-            $action->possesionOfWeapons = $lineContents[CrimeFileParsingService::possesionOfWeapons];
-            $action->publicOrderOffenses = $lineContents[CrimeFileParsingService::publicOrderOffenses];
-            $action->miscCrimes = $lineContents[CrimeFileParsingService::miscCrimes];
-            $action->fruad = $lineContents[CrimeFileParsingService::fruad];
+            $area->id = $lineContents[CrimeFileParsingService::locationId];
+            $area->homocide = $lineContents[CrimeFileParsingService::homocide];
+            $area->violenceWithInjury = $lineContents[CrimeFileParsingService::violenceWithInjury];
+            $area->violenceWithoutInjury = $lineContents[CrimeFileParsingService::violenceWithoutInjury];
+            $area->sexualOffenses = $lineContents[CrimeFileParsingService::sexualOffenses];
+            $area->robbery = $lineContents[CrimeFileParsingService::robbery];
+            $area->theftOffenses = $lineContents[CrimeFileParsingService::theftOffenses];
+            $area->domesticBurglary = $lineContents[CrimeFileParsingService::domesticBurglary];
+            $area->nonDomesticBurglary = $lineContents[CrimeFileParsingService::nonDomesticBurglary];
+            $area->vehicleOffenses = $lineContents[CrimeFileParsingService::vehicleOffenses];
+            $area->theftFromPerson = $lineContents[CrimeFileParsingService::theftFromPerson];
+            $area->bicycleTheft = $lineContents[CrimeFileParsingService::bicycleTheft];
+            $area->shoplifting = $lineContents[CrimeFileParsingService::shoplifting];
+            $area->miscTheft = $lineContents[CrimeFileParsingService::miscTheft];
+            $area->criminalDamageAndArson = $lineContents[CrimeFileParsingService::criminalDamageAndArson];
+            $area->drugOffenses = $lineContents[CrimeFileParsingService::drugOffenses];
+            $area->possesionOfWeapons = $lineContents[CrimeFileParsingService::possesionOfWeapons];
+            $area->publicOrderOffenses = $lineContents[CrimeFileParsingService::publicOrderOffenses];
+            $area->miscCrimes = $lineContents[CrimeFileParsingService::miscCrimes];
+            $area->fruad = $lineContents[CrimeFileParsingService::fruad];
         }
         catch(Exception $ex)
         {
@@ -113,7 +132,12 @@ class CrimeFileParsingService implements ICrimeFileParsingService
         
     private static function SplitRow($row)
     {
-        $lineContents = str_getcsv($row);
+        $lineContents = array();
+        
+        foreach(str_getcsv($row) as $element)
+        {
+            array_push($lineContents, str_replace(',', '', $element));
+        }
         
         return $lineContents;
     }
@@ -122,14 +146,19 @@ class CrimeFileParsingService implements ICrimeFileParsingService
     {
         $possibleCountry = CrimeFileParsingService::SplitRow($row)[0];
         
-        return in_arrayi($possibleCountry, CrimeFileParsingService::$_countries);
+        return CrimeFileParsingService::in_arrayi($possibleCountry, CrimeFileParsingService::$_countries);
     }
     
     private static function IsRegionRow($row)
     {
         $possibleRegion = CrimeFileParsingService::SplitRow($row)[0];
         
-        return preg_match('^[A-Za-z ]+ Region$', $possibleRegion);
+        return preg_match('/^[A-Za-z ]+ Region$/', $possibleRegion);
+    }
+    
+    private static function IsNationalRow($row)
+    {
+        
     }
         
     // From: http://uk.php.net/manual/en/function.in-array.php#89256
