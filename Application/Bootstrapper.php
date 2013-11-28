@@ -10,7 +10,7 @@ class Bootstrapper
         $crimeService = new \Application\Services\CrimeService();
         $container->Bind('Application\Services\ICrimeService', $crimeService);
         
-        $fileParser = new \Application\Services\CrimeFileParser();
+        $fileParser = new \Application\Services\CrimeFileParsingService();
         $container->Bind('Application\Services\ICrimeFileParsingService', $fileParser);
         
         return $container;
