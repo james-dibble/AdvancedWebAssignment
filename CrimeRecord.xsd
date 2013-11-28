@@ -8,7 +8,6 @@
   <xs:element name="CrimeRecord">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="region" type="Region" minOccurs="0" maxOccurs="unbounded" />
         <xs:element name="national" type="National" minOccurs="0" maxOccurs="unbounded" />
         <xs:element name="country" type="Country" minOccurs="0" maxOccurs="unbounded" />
       </xs:sequence>
@@ -60,7 +59,7 @@
   </xs:complexType>
   <xs:complexType name="Country">
     <xs:sequence>
-      <xs:element name="stats" type="CrimeStatistics" minOccurs="1" maxOccurs="1" />
+      <xs:element name="regions" type="Region" minOccurs="1" maxOccurs="1" />
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" />
   </xs:complexType>
