@@ -54,11 +54,34 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
     public function Get(IPersistenceSearcher $search)
     {
         $mapper = $this->_mappers->GetMapper($search->TypeToSearch());
+        
+        $query = $mapper->GetFindQuery($search);
+        
+        $results = $this->GetConnection()->query($query);
+        
+        $mappedObject = $mapper->MapObject($results);
+        
+        return $mappedObject;
     }
 
     public function GetCollection(IPersistenceSearcher $search)
-    {
+    {        
         $mapper = $this->_mappers->GetMapper($search->TypeToSearch());
+        
+        $query = $mapper->GetFindQuery($search);
+        
+        $results = $this->GetConnection()->query($query);
+        
+        $mappedObjects = array();
+        
+        foreach($results as $row)
+        {
+            $mappedObject = $mapper->MapObject($row);
+            
+            array_push($mappedObjects, $mappedObject);
+        }
+                
+        return $mappedObjects;
     }
 
     private function GetConnection()
