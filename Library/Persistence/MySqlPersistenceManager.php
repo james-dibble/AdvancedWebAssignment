@@ -9,7 +9,7 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
     private $_mappers;
     private $_connection;
 
-    public function __construct($connectionString, array $mappers)
+    public function __construct($connectionString, \Library\Persistence\IMapperDictionary $mappers)
     {
         $this->_connectionString = $connectionString;
         $this->_mappers = $mappers;
@@ -18,12 +18,16 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
 
     public function Add($objectToAdd)
     {
+        $mapper = $this->_mappers->GetMapper(new \ReflectionClass($objectToAdd));
         
+        array_push($this->_statementsToCommit, $mapper->GetAddQueries($objectToAdd));
     }
 
     public function Change($objectToChange)
     {
+        $mapper = $this->_mappers->GetMapper(new \ReflectionClass($objectToChange));
         
+        array_push($this->_statementsToCommit, $mapper->GetChangeQueries($objectToChange));
     }
 
     public function Commit()
@@ -49,12 +53,12 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
 
     public function Get(IPersistenceSearcher $search)
     {
-        
+        $mapper = $this->_mappers->GetMapper($search->TypeToSearch());
     }
 
     public function GetCollection(IPersistenceSearcher $search)
     {
-        
+        $mapper = $this->_mappers->GetMapper($search->TypeToSearch());
     }
 
     private function GetConnection()

@@ -1,8 +1,12 @@
 <?php
 namespace Library\Persistence;
 
-interface IPersistenceSearcher {
+interface IPersistenceSearcher 
+{
+    function TypeToSearch();
     
+    function HasKey($key);
+    
+    function GetKey($key);
 }
-
 ?>
