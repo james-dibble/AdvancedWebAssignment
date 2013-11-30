@@ -3,10 +3,19 @@ namespace Application\Services;
 
 class CrimeService implements ICrimeService 
 {
-    public function GetCrimesForAllAreas($year) 
+    private $_persistence;
+    
+    public function __construct(\Library\Persistence\IPersistenceManager $persistence)
     {
-        $crimes = new \Application\Models\Domain\CrimeCollection();
-        $crimes->year = $year;
+        $this->_persistence = $persistence;
+    }
+
+    public function GetCrimesForAllRegions($year) 
+    {
+        $crimes = 
+                $this->_persistence->GetCollection(
+                        new \Library\Persistence\PersistenceSearcher(
+                            new \ReflectionClass('\Application\Models\Domain\Region'), array()));
         
         return $crimes;
     }    

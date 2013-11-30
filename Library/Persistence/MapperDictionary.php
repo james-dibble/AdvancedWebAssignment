@@ -5,6 +5,11 @@ class MapperDictionary implements \Library\Persistence\IMapperDictionary
 {
     private $_mappers;
     
+    public function __construct()
+    {
+        $this->_mappers = array();
+    }
+
     public function Add(\Library\Persistence\IMapper $mapper)
     {
         array_push($this->_mappers, $mapper);

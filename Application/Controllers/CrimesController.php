@@ -10,12 +10,11 @@ class CrimesController extends \Library\Controller\Controller
         $this->_crimeService = $crimeService;
     }
 
-
     public function Get($year, $format)
     {
         $response = new \Application\Models\Domain\Response();
         
-        $crimes = new \Application\Models\Domain\CrimeStatistics();
+        $crimes = $this->_crimeService->GetCrimesForAllRegions($year);
         $crimes->year = $year;
         
         $response->crimes = $crimes;

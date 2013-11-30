@@ -3,7 +3,7 @@ namespace Application\Services;
 
 interface ICrimeService 
 {
-    function GetCrimesForAllAreas($year);
+    function GetCrimesForAllRegions($year);
     
     function GetCrimesForRegion($year, $region);
 }

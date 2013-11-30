@@ -4,14 +4,19 @@ namespace Library\Persistence;
 
 class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManager
 {
+
     private $_statementsToCommit;
-    private $_connectionString;
+    private $_host;
+    private $_user;
+    private $_password;
     private $_mappers;
     private $_connection;
 
-    public function __construct($connectionString, \Library\Persistence\IMapperDictionary $mappers)
+    public function __construct($host, $user, $password, \Library\Persistence\IMapperDictionary $mappers)
     {
-        $this->_connectionString = $connectionString;
+        $this->_host = $host;
+        $this->_user = $user;
+        $this->_password = $password;
         $this->_mappers = $mappers;
         $this->_statementsToCommit = array();
     }
@@ -19,14 +24,14 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
     public function Add($objectToAdd)
     {
         $mapper = $this->_mappers->GetMapper(new \ReflectionClass($objectToAdd));
-        
+
         array_push($this->_statementsToCommit, $mapper->GetAddQueries($objectToAdd));
     }
 
     public function Change($objectToChange)
     {
         $mapper = $this->_mappers->GetMapper(new \ReflectionClass($objectToChange));
-        
+
         array_push($this->_statementsToCommit, $mapper->GetChangeQueries($objectToChange));
     }
 
@@ -35,8 +40,8 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
         try
         {
             $this->GetConnection()->autocommit(FALSE);
-            
-            foreach($this->_statementsToCommit as $statement)
+
+            foreach ($this->_statementsToCommit as $statement)
             {
                 $this->GetConnection()->query($statement);
             }
@@ -54,33 +59,53 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
     public function Get(IPersistenceSearcher $search)
     {
         $mapper = $this->_mappers->GetMapper($search->TypeToSearch());
-        
-        $query = $mapper->GetFindQuery($search);
-        
-        $results = $this->GetConnection()->query($query);
-        
-        $mappedObject = $mapper->MapObject($results);
-        
+
+        $query = $this->GetConnection()->prepare('CALL ' . $mapper->GetFindQuery($search));
+
+        $query->execute();
+
+        $query->store_result();
+
+        $result = $query->get_result();
+        while ($row = $result->fetch_array(MYSQLI_NUM))
+        {
+            $mappedObject = $mapper->MapObject($row);
+        }
+
+        $query->free_result();
+
+        $query->close();
+
         return $mappedObject;
     }
 
     public function GetCollection(IPersistenceSearcher $search)
-    {        
+    {
         $mapper = $this->_mappers->GetMapper($search->TypeToSearch());
-        
-        $query = $mapper->GetFindQuery($search);
-        
-        $results = $this->GetConnection()->query($query);
-        
+
+        $query = $this->GetConnection()->prepare('CALL ' . $mapper->GetFindQuery($search));
+
+        if (!$query->execute())
+        {
+            throw new \Exception($query->error, $query->errno);
+        }
+
+        $query->store_result();
+
         $mappedObjects = array();
-        
-        foreach($results as $row)
+
+        $results = $this->BindResults($query);
+        foreach ($results as $row)
         {
             $mappedObject = $mapper->MapObject($row);
-            
+
             array_push($mappedObjects, $mappedObject);
         }
-                
+
+        $query->free_result();
+
+        $query->close();
+
         return $mappedObjects;
     }
 
@@ -88,7 +113,7 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
     {
         if ($this->_connection == null)
         {
-            $this->_connection = mysqli_connect($this->_connectionString);
+            $this->_connection = new \mysqli($this->_host, $this->_user, $this->_password, 'fet10009689');
         }
 
         return $this->_connection;
