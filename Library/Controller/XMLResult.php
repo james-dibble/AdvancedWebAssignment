@@ -12,21 +12,9 @@ class XMLResult implements IActionResult {
     }
 
     public function DoAction() {
-        $options = array(
-            "indent" => "    ",
-            "linebreak" => "\n",
-            "typeHints" => false,
-            "addDecl" => true,
-            "encoding" => "UTF-8",
-            "rootName" => strtolower((new \ReflectionClass($this->_model))->getShortName()),
-            "defaultTagName" => "item",
-            "scalarAsAttributes" => true);
-
-        $serializer = new \XML_Serializer($options);
-
-        if ($serializer->serialize($this->_model)) {
-            echo $serializer->getSerializedData();
-        }
+        $asXml = \Library\Persistence\XMLSerialiser::Serialise($this->_model);
+        
+        echo $asXml->saveXML();
     }
 }
 ?>

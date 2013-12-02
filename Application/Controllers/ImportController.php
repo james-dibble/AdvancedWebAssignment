@@ -33,8 +33,8 @@ class ImportController extends \Library\Controller\Controller
     {
         $inputContents = preg_split('/\r\n|[\r\n]/', $inputContents);
         
-        return new \Library\Controller\JsonResult($this->_importService->ParseFile($inputContents));
-        
+        $stats = $this->_importService->ParseFile($inputContents);
+                
         return new \Library\Controller\RedirectToAction('import');
     }
 }
