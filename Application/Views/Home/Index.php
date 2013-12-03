@@ -8,6 +8,8 @@ class Index extends \Application\Views\Layout\ApplicationLayout implements \Libr
         parent::__construct();
         $this->SetTitle('Home');
         $this->SetDescription('Home');
+        
+        $this->AddScript(CONTEXT_PATH . 'script/views/home/index/charts-controller.js');
     }
 
     public function BuildView() 

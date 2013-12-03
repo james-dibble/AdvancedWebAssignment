@@ -19,7 +19,7 @@ abstract class BasicHtmlLayout
     {
         echo <<<HTML
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-ng-app="">
 <head>
         <title>$this->_title</title>
         <!-- LE META -->

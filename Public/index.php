@@ -1,8 +1,8 @@
 <?php
     #ini_set('display_errors', '0');
 
-    define('CONTEXT_PATH', '/~j3-dibble/atwd/');
-    #define('CONTEXT_PATH', '/atwd/');
+    #define('CONTEXT_PATH', '/~j3-dibble/atwd/');
+    define('CONTEXT_PATH', '/atwd/');
     include_once dirname(__FILE__) . '/../Application/AutoLoader.php';
              
     $container = \Application\Bootstrapper::BuildContainer();

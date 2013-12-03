@@ -6,6 +6,8 @@ abstract class ApplicationLayout extends \Application\Views\Layout\BasicBootstra
     public function __construct()
     {
         parent::__construct();
+        
+        $this->AddScript('//ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular.min.js');
     }
     
     public function BuildHeader()
