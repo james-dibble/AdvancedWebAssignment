@@ -12,6 +12,7 @@
         <ul class="nav navbar-nav">
             <li><a href="<?php echo CONTEXT_PATH; ?>">Home</a></li>
             <li><a href="<?php echo CONTEXT_PATH; ?>import">Import</a></li>
+            <li><a href="<?php echo CONTEXT_PATH; ?>api">API Methods</a></li>
         </ul>
     </div>
 </nav>

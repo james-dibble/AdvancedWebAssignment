@@ -85,7 +85,7 @@ HTML;
         foreach($this->_scripts as $script)
         {
             $html .= <<<HTML
-            <script type="text/javascript href="$script"></script>
+            <script type="text/javascript" src="$script"></script>
 HTML;
         }
         

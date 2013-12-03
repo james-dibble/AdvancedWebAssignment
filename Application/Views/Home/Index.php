@@ -13,9 +13,9 @@ class Index extends \Application\Views\Layout\ApplicationLayout implements \Libr
     public function BuildView() 
     {        
         $this->BuildHeader();
-        echo <<<HTML
-        <h1>Home/Index</h1>
-HTML;
+        
+        include dirname(__FILE__) . '/Index/ChartDisplay.php';
+        
         $this->BuildFooter();
     }    
 }
