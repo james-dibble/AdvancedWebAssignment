@@ -28,11 +28,13 @@ class CrimesController extends \Library\Controller\Controller
     
     public function GetForRegion($year, $region, $format)
     {
+        $escapedRegionName = str_replace('-', ' ', $region);
+        
         $response = new \Application\Models\Responses\Response();
         
-        $regionalCrimes = $this->_crimeService->GetCrimesForRegion($year, $region);
+        $regionalCrimes = $this->_crimeService->GetCrimesForRegion($year, $escapedRegionName);
                 
-        $response->crimes = $regionalCrimes;
+        $response->crimes = new \Application\Models\Responses\RegionalCrimeCollection($year, $regionalCrimes);
         
         return CrimesController::BuildRespose($response, $format);
     }

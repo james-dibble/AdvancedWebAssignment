@@ -9,6 +9,7 @@ class Response
     public function __construct()
     {
         $this->timestamp = time();
+        $this->crimes = array();
     }
 }
 ?>
