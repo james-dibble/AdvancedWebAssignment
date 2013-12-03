@@ -12,8 +12,8 @@ class Router
     
     public function Dispatch($controllerName, $actionName)
     {
-        try
-        {
+//        try
+//        {
             // Use the output buffer so we can clear the output stream
             // if something goes wrong
             ob_start();
@@ -21,17 +21,17 @@ class Router
             $controller = $this->CreateController($controllerName);
 
             $controller->ProcessRequest($actionName);
-        }
-        catch(\Exception $ex)
-        {
+//        }
+//        catch(\Exception $ex)
+//        {
             // Something went wrong so clear the buffer so only our error
             // output is sent.
-            ob_end_clean();
-            
-            $controller = $this->CreateController('errors');
-
-            $controller->ProcessRequest('index', $ex);
-        }
+//            ob_end_clean();
+//            
+//            $controller = $this->CreateController('errors');
+//
+//            $controller->ProcessRequest('index', $ex);
+//        }
     }
     
     private function CreateController($controllerName)

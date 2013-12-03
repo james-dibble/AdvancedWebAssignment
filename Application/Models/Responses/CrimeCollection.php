@@ -9,33 +9,25 @@ class CrimeCollection
     public $england;
     public $wales;
     
-    public function __construct()
+    public function __construct($year, array $regions, array $nationals, \Application\Models\Domain\Country $england, \Application\Models\Domain\Country $wales)
     {
+        $this->year = $year;
+        
         $this->region = array();
+        foreach($regions as $region)        
+        {
+            array_push($this->region, new \Application\Models\Responses\Region($region));
+        }
+        
         $this->national = array();
+        foreach($nationals as $national)        
+        {
+            array_push($this->national, new \Application\Models\Responses\National($national));
+        }
         
-        $region1 = new \Application\Models\Domain\Region();
-        $region1->id = 'North';
-        $region1->total = 12345;
+        $this->england = new \Application\Models\Responses\Country($england);
         
-        $region2 = new \Application\Models\Domain\Region();
-        $region2->id = 'South';
-        $region2->total = 54321;
-        
-        array_push($this->region, $region1);
-        array_push($this->region, $region2);
-        
-        $national = new \Application\Models\Domain\National();
-        $national->id = 'British Transport Police';
-        $national->total = 74947;
-               
-        array_push($this->national, $national);
-        
-        $this->england = new \Application\Models\Domain\CrimeStatistics();
-        $this->england->total = 2342;
-        
-        $this->wales = new \Application\Models\Domain\CrimeStatistics();
-        $this->wales->total = 0985;
+        $this->wales = new \Application\Models\Responses\Country($wales);
     }
 }
 ?>

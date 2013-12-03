@@ -22,12 +22,23 @@ class RegionMapper implements \Library\Persistence\IMapper
 
     public function GetFindQuery(\Library\Persistence\IPersistenceSearcher $searcher)
     {
+        $query = 
+            'SELECT `gr`.`id`, `gr`.`name` FROM
+                `region` `r`
+            INNER JOIN `geographicreference` `gr`
+                ON `gr`.`id` = `r`.`GeographicReference_Id`';
+        
         if($searcher->HasKey('ForCountry'))
         {
-            return sprintf('GetRegionForCountry(%s)', $searcher->GetKey('ForCountry'));
+            $query .= sprintf(' WHERE `r`.`Country_Id` = %d', $searcher->GetKey('ForCountry'));
         }
         
-        return 'GetAllRegions()';
+        if($searcher->HasKey('ById'))
+        {
+            $query .= sprintf(" WHERE LOWER(`gr`.`name`) = LOWER('%s')", $searcher->GetKey('ById'));
+        }
+                        
+        return $query;
     }
 
     public function GetMappedClass()
@@ -39,9 +50,9 @@ class RegionMapper implements \Library\Persistence\IMapper
     {
         $mappedObject = new \Application\Models\Domain\Region();
         
-        $mappedObject->id = $results['name'];
+        $mappedObject->id = $results->name;
         
-        $searchCriteria = array('ForRegion' => $results['id']);
+        $searchCriteria = array('ForRegion' => $results->id);
         
         $searcher = new \Library\Persistence\PersistenceSearcher(new \ReflectionClass('\Application\Models\Domain\Area'), $searchCriteria);
         

@@ -28,5 +28,4 @@ class MapperDictionary implements \Library\Persistence\IMapperDictionary
         return null;
     }    
 }
-
 ?>

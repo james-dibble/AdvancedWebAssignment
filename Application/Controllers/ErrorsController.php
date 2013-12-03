@@ -29,7 +29,7 @@ class ErrorsController extends \Library\Controller\Controller
         
         $errorResponse->error = $error;
         
-        return new \Library\Controller\XmlResult($errorResponse);
+        return new \Library\Controller\XMLResult($errorResponse);
     }
     
     public function NotFound()

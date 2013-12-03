@@ -12,22 +12,44 @@ class CrimesController extends \Library\Controller\Controller
 
     public function Get($year, $format)
     {
-        $response = new \Application\Models\Domain\Response();
+        $response = new \Application\Models\Responses\Response();
         
-        $crimes = $this->_crimeService->GetCrimesForAllRegions($year);
-        $crimes->year = $year;
+        $regionalCrimes = $this->_crimeService->GetCrimesForAllRegions($year);
+                        
+        $nationalCrimes = $this->_crimeService->GetCrimesForAllNationalStatistics($year);
         
-        $response->crimes = $crimes;
+        $englandCrimes = $this->_crimeService->GetCrimesForCountry($year, 'England');
+        $walesCrimes = $this->_crimeService->GetCrimesForCountry($year, 'Wales');
+                                
+        $response->crimes = new \Application\Models\Responses\CrimeCollection($year, $regionalCrimes, $nationalCrimes, $englandCrimes, $walesCrimes);
         
-        if($format === 'xml')
+        return CrimesController::BuildRespose($response, $format);
+    }
+    
+    public function GetForRegion($year, $region, $format)
+    {
+        $response = new \Application\Models\Responses\Response();
+        
+        $regionalCrimes = $this->_crimeService->GetCrimesForRegion($year, $region);
+                
+        $response->crimes = $regionalCrimes;
+        
+        return CrimesController::BuildRespose($response, $format);
+    }
+    
+    private static function BuildRespose($model, $format)
+    {
+        if(strtolower($format) === 'xml')
         {
-            return new \Library\Controller\XMLResult($response);
+            return new \Library\Controller\XMLResult($model);
         }
         
-        if($format === 'json')
+        if(strtolower($format) === 'json')
         {
-            return new \Library\Controller\JsonResult($response);
+            return new \Library\Controller\JsonResult($model);
         }
+        
+        return null;
     }
 }
 ?>

@@ -22,12 +22,32 @@ class CrimeService implements ICrimeService
     
     public function GetCrimesForRegion($year, $region)
     {
-        $crimes = new \Application\Models\Domain\CrimeForRegion();
-        
-        $crimes->year = $year;
-        $crimes->region->id = $region;
+        $region = 
+                $this->_persistence->Get(
+                        new \Library\Persistence\PersistenceSearcher(
+                            new \ReflectionClass('\Application\Models\Domain\Region'), array('ById' => $region)));
+                
+        return $region;
+    }
+
+    public function GetCrimesForAllNationalStatistics($year)
+    {
+        $crimes = 
+                $this->_persistence->GetCollection(
+                        new \Library\Persistence\PersistenceSearcher(
+                            new \ReflectionClass('\Application\Models\Domain\National'), array()));
         
         return $crimes;
+    }
+
+    public function GetCrimesForCountry($year, $country)
+    {   
+        $country = 
+                $this->_persistence->Get(
+                        new \Library\Persistence\PersistenceSearcher(
+                            new \ReflectionClass('\Application\Models\Domain\Country'), array('ById' => $country)));
+                
+        return $country;
     }
 }
 ?>

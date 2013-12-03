@@ -46,7 +46,7 @@ class CrimeStatistics
                 $this->possesionOfWeapons +
                 $this->publicOrderOffenses +
                 $this->miscCrimes +
-                $this->fruad;
+                $this->fraud;
 
         return $total;
     }

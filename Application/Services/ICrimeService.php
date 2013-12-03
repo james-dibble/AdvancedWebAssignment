@@ -6,5 +6,9 @@ interface ICrimeService
     function GetCrimesForAllRegions($year);
     
     function GetCrimesForRegion($year, $region);
+    
+    function GetCrimesForAllNationalStatistics($year);
+    
+    function GetCrimesForCountry($year, $country);
 }
 ?>

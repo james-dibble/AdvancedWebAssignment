@@ -12,13 +12,17 @@ class Bootstrapper
         
         $mapperDictionary = new \Library\Persistence\MapperDictionary();
         
-        $persistenceManager = new \Library\Persistence\MySqlPersistenceManager('localhost', 'root', '', $mapperDictionary);
+        $persistenceManager = new \Library\Persistence\MySqlPersistenceManager('mysql5.cems.uwe.ac.uk', 'fet10009689', 'jli798ik', $mapperDictionary);
         
-        $areaMapper = new Persistence\Mapping\AreaMapper();
-        $regionMapper = new Persistence\Mapping\RegionMapper($persistenceManager);
+        $areaMapper = new \Application\Persistence\Mapping\AreaMapper();
+        $regionMapper = new \Application\Persistence\Mapping\RegionMapper($persistenceManager);
+        $nationalMapper = new \Application\Persistence\Mapping\NationalMapper();
+        $countryMapper = new \Application\Persistence\Mapping\CountryMapper($persistenceManager);
         
         $mapperDictionary->Add($areaMapper);
         $mapperDictionary->Add($regionMapper);
+        $mapperDictionary->Add($nationalMapper);
+        $mapperDictionary->Add($countryMapper);
         
         $container->Bind('\Library\Persistence\IPersistenceManager', $persistenceManager);
         
@@ -28,5 +32,4 @@ class Bootstrapper
         return $container;
     }
 }
-
 ?>

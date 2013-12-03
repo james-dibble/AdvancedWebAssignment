@@ -35,6 +35,8 @@ class ImportController extends \Library\Controller\Controller
         
         $stats = $this->_importService->ParseFile($inputContents);
                 
+        return new \Library\Controller\XMLResult($stats);
+        
         return new \Library\Controller\RedirectToAction('import');
     }
 }

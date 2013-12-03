@@ -14,9 +14,9 @@ class Country extends \Application\Models\Domain\GeographicReference
     {
         $total = 0;
         
-        foreach($this->areas as $area)
+        foreach($this->regions as $region)
         {
-            $total += $area->GetTotal();
+            $total += $region->GetTotal();
         }
         
         return $total;

@@ -1,7 +1,11 @@
 <?php
 namespace Application\Models\Responses;
 
-class National extends Region
-{
+class National extends UniqueCrimeStatistic
+{    
+    public function __construct(\Application\Models\Domain\National $national)
+    {
+        parent::__construct($national->id, $national->GetTotal());
+    }
 }
 ?>
