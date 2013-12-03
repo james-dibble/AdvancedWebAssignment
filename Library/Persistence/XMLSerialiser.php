@@ -3,21 +3,21 @@ namespace Library\Persistence;
 
 class XMLSerialiser
 {
-    public static function Serialise($object)
+    public static function Serialise($object, $arraysAsElements = false)
     {
         $rootElement = new \DOMDocument();
         $rootElement->formatOutput = true;
         
         $reflectedObject = new \ReflectionObject($object);
         
-        $serailisedObjectNode = XMLSerialiser::SerialiseChild($object, $reflectedObject->getShortName(), $rootElement);
+        $serailisedObjectNode = XMLSerialiser::SerialiseChild($object, $reflectedObject->getShortName(), $rootElement, $arraysAsElements);
         
         $rootElement->appendChild($serailisedObjectNode);
         
         return $rootElement;
     }
     
-    public static function SerialiseChild($childObject, $childName, $domDocument)
+    public static function SerialiseChild($childObject, $childName, $domDocument, $arraysAsElements = false)
     {
         $childElement = $domDocument->createElement(strtolower($childName));
         
@@ -25,6 +25,12 @@ class XMLSerialiser
         
         foreach($reflectedObject->getProperties() as $property)
         {
+            if($property->getValue($childObject) == null)
+            {
+                $childElement->setAttribute($property->getName(), 'null');
+                continue;
+            }
+            
             if(is_scalar($property->getValue($childObject)))
             {
                 $childElement->setAttribute($property->getName(), $property->getValue($childObject));
@@ -33,16 +39,31 @@ class XMLSerialiser
             
             if(is_array($property->getValue($childObject)))
             {
-                $arrayElement = $domDocument->createElement($property->getName());
+                $arrayElement = $childElement;
                 
-                foreach($property->getValue($childObject) as $arrayConent)
+                if($arraysAsElements)
                 {
-                    $reflectedArrayObject = new \ReflectionObject($arrayConent);
-                    
-                    $arrayElement->appendChild(XMLSerialiser::SerialiseChild($arrayConent, $reflectedArrayObject->getShortName(), $domDocument));
+                    $arrayElement = $domDocument->createElement($property->getName());
                 }
                 
-                $childElement->appendChild($arrayElement);
+                foreach($property->getValue($childObject) as $arrayContent)
+                {   
+                    if($arraysAsElements)
+                    {
+                        $reflectedArrayObject = new \ReflectionObject($arrayContent);
+                    
+                        $arrayElement->appendChild(XMLSerialiser::SerialiseChild($arrayContent, $reflectedArrayObject->getShortName(), $domDocument, $arraysAsElements));
+                    }
+                    else
+                    {
+                        $arrayElement->appendChild(XMLSerialiser::SerialiseChild($arrayContent, $property->getName(), $domDocument, $arraysAsElements));
+                    }
+                }
+                
+                if($arraysAsElements)
+                {
+                    $childElement->appendChild($arrayElement);
+                }
                 
                 continue;
             }
