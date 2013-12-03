@@ -48,33 +48,73 @@
                     <ul class="nav nav-pills nav-stacked text-center">
                         <li data-ng-show="regionsLoading" class="disabled"><a href="#">Loading</a></li>
                         <li data-ng-show="loadingRegionsFailed" class="disabled"><a href="#">Failed</a></li>
-                        <li data-ng-hide="filteredRegions.length" class="disabled"><a href="#">No Results</a></li>
-                        <li data-ng-show="!regionsLoading && !loadingRegionsFailed" data-ng-repeat="region in filteredRegions = (regions | filter:regionFilter)"><a href="#">{{region.name}}</a></li>
+                        <li data-ng-hide="filteredRegions.length || !loadingRegionsFailed" class="disabled"><a href="#">No Results</a></li>
+                        <li data-ng-show="!regionsLoading && !loadingRegionsFailed" data-ng-repeat="region in filteredRegions = (regions | filter:regionFilter)"><a href="#" data-ng-click="setActiveRegion(region)">{{region.name}}</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-4">
-                    <h3>Data</h3>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h3>Data</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12" data-ng-show="areaDataLoading">
+                            <div class="alert alert-warning">Data loading</div>
+                        </div>
+                        <div class="col-lg-12" data-ng-show="loadingAreaDataFailed">
+                            <div class="alert alert-danger">Loading Area Data Failed</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>Area</th>
+                                    <th>Total</th>
+                                </tr>
+                                <tr data-ng-repeat="area in areas">
+                                    <td>{{area.name}}</td>
+                                    <td>{{area.total}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-lg-4">
                     <h3>Charts</h3>
                     <ul class="nav nav-tabs">
-                        <li><a href="#region-bar" data-toggle="tab" class="active">Bar</a></li>
+                        <li class="active"><a href="#region-bar" data-toggle="tab">Bar</a></li>
                         <li><a href="#region-pie" data-toggle="tab">Pie</a></li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="region-bar">
                             <div class="row">&nbsp;</div>
                             <div class="row">
-                                <div class="col-lg-12">
+                                <div class="col-lg-12" data-ng-show="areaDataLoading">
                                     <div class="alert alert-warning">Data loading</div>
+                                </div>
+                                <div class="col-lg-12" data-ng-show="loadingAreaDataFailed">
+                                    <div class="alert alert-danger">Loading Area Data Failed</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
                                 </div>
                             </div>
                         </div>
                         <div class="tab-pane" id="region-pie">
                             <div class="row">&nbsp;</div>
                             <div class="row">
-                                <div class="col-lg-12">
+                                <div class="col-lg-12" data-ng-show="areaDataLoading">
                                     <div class="alert alert-warning">Data loading</div>
+                                </div>
+                                <div class="col-lg-12" data-ng-show="loadingAreaDataFailed">
+                                    <div class="alert alert-danger">Loading Area Data Failed</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
                                 </div>
                             </div>
                         </div>
