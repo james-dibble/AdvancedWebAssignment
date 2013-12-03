@@ -29,6 +29,9 @@ class Bootstrapper
         $crimeService = new \Application\Services\CrimeService($persistenceManager);
         $container->Bind('Application\Services\ICrimeService', $crimeService);
         
+        $locationsService = new \Application\Services\LocationService($persistenceManager);
+        $container->Bind('Application\Services\ILocationService', $locationsService);
+        
         return $container;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Application\Controllers;
 
-class CrimesController extends \Library\Controller\Controller
+class CrimesController extends \Library\Controller\APIController
 {
     private $_crimeService;
     
@@ -37,21 +37,6 @@ class CrimesController extends \Library\Controller\Controller
         $response->crimes = new \Application\Models\Responses\RegionalCrimeCollection($year, $regionalCrimes);
         
         return CrimesController::BuildRespose($response, $format);
-    }
-    
-    private static function BuildRespose($model, $format)
-    {
-        if(strtolower($format) === 'xml')
-        {
-            return new \Library\Controller\XMLResult($model);
-        }
-        
-        if(strtolower($format) === 'json')
-        {
-            return new \Library\Controller\JsonResult($model);
-        }
-        
-        return null;
     }
 }
 ?>
