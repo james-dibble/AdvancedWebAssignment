@@ -4,7 +4,6 @@ namespace Library\Persistence;
 
 class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManager
 {
-
     private $_statementsToCommit;
     private $_host;
     private $_user;
@@ -57,54 +56,35 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
     }
 
     public function Get(IPersistenceSearcher $search)
-    {
+    {        
         $mapper = $this->_mappers->GetMapper($search->TypeToSearch());
 
-        $query = $this->GetConnection()->prepare('CALL ' . $mapper->GetFindQuery($search));
-
-        $query->execute();
-
-        $query->store_result();
-
-        $result = $query->get_result();
-        while ($row = $result->fetch_array(MYSQLI_NUM))
+        $query = $this->GetConnection()->query($mapper->GetFindQuery($search) . ';');
+        $query->setFetchMode(\PDO::FETCH_OBJ);
+                
+        while ($row = $query->fetch())
         {
-            $mappedObject = $mapper->MapObject($row);
+            return $mapper->MapObject($row);
         }
 
-        $query->free_result();
-
-        $query->close();
-
-        return $mappedObject;
+        return null;
     }
 
     public function GetCollection(IPersistenceSearcher $search)
     {
         $mapper = $this->_mappers->GetMapper($search->TypeToSearch());
 
-        $query = $this->GetConnection()->prepare('CALL ' . $mapper->GetFindQuery($search));
-
-        if (!$query->execute())
-        {
-            throw new \Exception($query->error, $query->errno);
-        }
-
-        $query->store_result();
+        $query = $this->GetConnection()->query($mapper->GetFindQuery($search) . ';');
+        $query->setFetchMode(\PDO::FETCH_OBJ);
 
         $mappedObjects = array();
 
-        $results = $this->BindResults($query);
-        foreach ($results as $row)
+        while($row = $query->fetch())
         {
             $mappedObject = $mapper->MapObject($row);
 
             array_push($mappedObjects, $mappedObject);
         }
-
-        $query->free_result();
-
-        $query->close();
 
         return $mappedObjects;
     }
@@ -113,7 +93,7 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
     {
         if ($this->_connection == null)
         {
-            $this->_connection = new \mysqli($this->_host, $this->_user, $this->_password, 'fet10009689');
+            $this->_connection = new \PDO("mysql:host=$this->_host;dbname=fet10009689", $this->_user, $this->_password);  
         }
 
         return $this->_connection;
