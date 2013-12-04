@@ -42,7 +42,7 @@
         </div>
         <div class="panel-body">
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-2">
                     <h3>Regions</h3>
                     <input type="search" data-ng-model="regionFilter" placeholder="Filter Regions" class="form-control" />
                     <ul class="nav nav-pills nav-stacked text-center">
@@ -52,7 +52,7 @@
                         <li data-ng-show="!regionsLoading && !loadingRegionsFailed" data-ng-repeat="region in filteredRegions = (regions | filter:regionFilter)"><a href="#" data-ng-click="setActiveRegion(region)">{{region.name}}</a></li>
                     </ul>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <div class="row">
                         <div class="col-lg-12">
                             <h3>Data</h3>
@@ -81,40 +81,42 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-7">
                     <h3>Charts</h3>
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a href="#region-bar" data-toggle="tab">Bar</a></li>
-                        <li><a href="#region-pie" data-toggle="tab">Pie</a></li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="region-bar">
-                            <div class="row">&nbsp;</div>
-                            <div class="row">
-                                <div class="col-lg-12" data-ng-show="areaDataLoading">
-                                    <div class="alert alert-warning">Data loading</div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#regionBar" data-toggle="tab">Bar</a></li>
+                                <li><a href="#regionPie" data-toggle="tab">Pie</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane fade active in" id="regionBar">
+                                    <div class="row">&nbsp;</div>
+                                    <div class="row">
+                                        <div class="col-lg-12" data-ng-show="areaDataLoading">
+                                            <div class="alert alert-warning">Data loading</div>
+                                        </div>
+                                        <div class="col-lg-12" data-ng-show="loadingAreaDataFailed">
+                                            <div class="alert alert-danger">Loading Area Data Failed</div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div id="region-bar-chart" style="height: 400px; margin: 0 auto"></div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-lg-12" data-ng-show="loadingAreaDataFailed">
-                                    <div class="alert alert-danger">Loading Area Data Failed</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="region-pie">
-                            <div class="row">&nbsp;</div>
-                            <div class="row">
-                                <div class="col-lg-12" data-ng-show="areaDataLoading">
-                                    <div class="alert alert-warning">Data loading</div>
-                                </div>
-                                <div class="col-lg-12" data-ng-show="loadingAreaDataFailed">
-                                    <div class="alert alert-danger">Loading Area Data Failed</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12">
+                                <div class="tab-pane fade" id="regionPie">
+                                    <div class="row">&nbsp;</div>
+                                    <div class="row">
+                                        <div class="col-lg-12" data-ng-show="areaDataLoading">
+                                            <div class="alert alert-warning">Data loading</div>
+                                        </div>
+                                        <div class="col-lg-12" data-ng-show="loadingAreaDataFailed">
+                                            <div class="alert alert-danger">Loading Area Data Failed</div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div id="region-pie-chart" style="height: 400px; margin: 0 auto"></div>    
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
