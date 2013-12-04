@@ -1,4 +1,4 @@
-function ChartsController($scope, $http)
+function ChartsAreaController($scope, $http)
 {
     $scope.regionsLoading = true;
     $scope.loadingRegionsFailed = false;
@@ -35,7 +35,7 @@ function ChartsController($scope, $http)
     $scope.loadingAreaDataFailed = false;
     $scope.areas = [];
 
-    function LoadRegionData()
+    var LoadRegionData = function ()
     {
         $scope.areaDataLoading = true;
 
@@ -50,7 +50,7 @@ function ChartsController($scope, $http)
                 $scope.areas.push({name: elem.id, total: elem.total});
             });
 
-            $('#region-bar-chart').highcharts({
+            $('#area-bar-chart').highcharts({
                 chart: {
                     type: 'column',
                     margin: [50, 50, 100, 80]
@@ -103,7 +103,7 @@ function ChartsController($scope, $http)
                             return [area.name, area.total / regionTotal];
                         }).ToArray();
 
-            $('#region-pie-chart').highcharts({
+            $('#area-pie-chart').highcharts({
                 chart: {
                     plotBackgroundColor: null,
                     plotBorderWidth: null,
