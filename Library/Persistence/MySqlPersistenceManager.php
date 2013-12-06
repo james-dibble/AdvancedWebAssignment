@@ -24,34 +24,43 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
     {
         $mapper = $this->_mappers->GetMapper(new \ReflectionClass($objectToAdd));
 
-        array_push($this->_statementsToCommit, $mapper->GetAddQueries($objectToAdd));
+        foreach($mapper->GetAddQueries($objectToAdd) as $query)
+        {
+            array_push($this->_statementsToCommit, $query);
+        }
     }
 
     public function Change($objectToChange)
     {
         $mapper = $this->_mappers->GetMapper(new \ReflectionClass($objectToChange));
 
-        array_push($this->_statementsToCommit, $mapper->GetChangeQueries($objectToChange));
+        foreach($mapper->GetChangeQueries($objectToChange) as $query)
+        {
+            array_push($this->_statementsToCommit, $query);
+        }
     }
 
     public function Commit()
     {
         try
         {
-            $this->GetConnection()->autocommit(FALSE);
+            $this->GetConnection()->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+            $this->GetConnection()->beginTransaction();
 
             foreach ($this->_statementsToCommit as $statement)
             {
-                $this->GetConnection()->query($statement);
+                echo $statement . '<br /><br />';
+                
+                $this->GetConnection()->exec($statement);
             }
 
             $this->GetConnection()->commit();
-            $this->GetConnection()->autocommit(TRUE);
         }
         catch (Exception $e)
         {
-            $this->GetConnection()->rollback();
-            $this->GetConnection()->autocommit(TRUE);
+            $this->GetConnection()->rollBack();
+            throw $e;
         }
     }
 

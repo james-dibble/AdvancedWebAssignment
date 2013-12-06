@@ -10,5 +10,7 @@ interface IPersistenceManager
     function Add($objectToAdd);
     
     function Change($objectToChange);
+    
+    function Commit();
 }
 ?>

@@ -4,12 +4,13 @@ namespace Application\Controllers;
 
 class ImportController extends \Library\Controller\Controller
 {
-
     private $_importService;
+    private $_crimeService;
 
-    public function __construct(\Application\Services\ICrimeFileParsingService $importSerivce)
+    public function __construct(\Application\Services\ICrimeFileParsingService $importSerivce, \Application\Services\ICrimeService $crimeService)
     {
         $this->_importService = $importSerivce;
+        $this->_crimeService = $crimeService;
     }
 
     public function Index()
@@ -43,15 +44,20 @@ class ImportController extends \Library\Controller\Controller
             $inputContents = preg_split('/\r\n|[\r\n]/', $inputContents);
 
             $stats = $this->_importService->ParseFile($inputContents);
+            
+            $this->_crimeService->SaveStatistics($stats);
 
             $statsAsXml = \Library\Persistence\XMLSerialiser::Serialise($stats);
 
             $statsAsXml->save('/tmp/import.xml');
 
+            die();
+            
             return new \Library\Controller\RedirectToAction('import/imported-data');
         }
         catch (\Exception $ex)
-        {
+        {            
+            die($ex->getmessage());
             return new \Library\Controller\RedirectToAction('import/error');
         }
     }

@@ -49,5 +49,15 @@ class CrimeService implements ICrimeService
                 
         return $country;
     }
+
+    public function SaveStatistics(\Application\Models\Domain\StatisticsCollection $crimeStatistics)
+    {
+        foreach($crimeStatistics->nationals as $national)
+        {
+            $this->_persistence->Add($national);
+        }
+        
+        $this->_persistence->Commit();
+    }
 }
 ?>
