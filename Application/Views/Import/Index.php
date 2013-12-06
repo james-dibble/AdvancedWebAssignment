@@ -13,11 +13,7 @@ class Index extends \Application\Views\Layout\ApplicationLayout implements \Libr
     {
         parent::BuildHeader();
                 
-        include 'ImportForm.php';
-        
-        echo '<br /><br />';
-        
-        include 'ImportFromText.php';
+        include 'Index/Index.php';
         
         parent::BuildFooter();
     }    

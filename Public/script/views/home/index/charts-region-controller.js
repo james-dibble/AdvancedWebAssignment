@@ -4,7 +4,7 @@ function ChartsRegionController($scope, $http)
     $scope.loadingRegions = true;
     $scope.loadingRegionsFailed = false;
     
-    $http.get('/atwd/crimes/6-2013/json')
+    $http.get('/~j3-dibble/atwd/crimes/6-2013/json')
             .success(function(data)
     {
         $scope.regions = [];
@@ -22,8 +22,8 @@ function ChartsRegionController($scope, $http)
                     text: 'Regional Crime Totals'
                 },
                 xAxis: {
-                    categories: $.Enumerable.From($scope.regions).Select(function(area) {
-                        return area.id;
+                    categories: $.Enumerable.From($scope.regions).Select(function(region) {
+                        return region.id;
                     }).ToArray(),
                     labels: {
                         rotation: -45,
@@ -63,7 +63,7 @@ function ChartsRegionController($scope, $http)
                         }).Sum();
                         
             var pieData = $.Enumerable.From($scope.regions).Select(function(region) {
-                            return [region.name, region.total / regionsTotal];
+                            return [region.id, region.total / regionsTotal];
                         }).ToArray();
 
             $('#region-pie-chart').highcharts({
