@@ -7,7 +7,90 @@ class AreaMapper implements \Library\Persistence\IMapper
 
     public function GetAddQueries($objectToSave)
     {
+        $geographicLocationQuery =
+                sprintf(
+                "INSERT INTO `geographicreference`(`Name`) VALUES ('%s');", $objectToSave->id);
         
+        $geographicLocationId = "SET @geographicReferenceId = (SELECT LAST_INSERT_ID());";
+
+        $crimeStatisticsQuery =
+                sprintf(
+                "INSERT INTO `crimestatistics`
+                (
+                    `Homicide`, 
+                    `ViolenceWithInjury`,
+                    `ViolenceWithoutInjury`,
+                    `SexualOffenses`,
+                    `Robbery`,
+                    `TheftOffenses`,
+                    `DomesticBurglary`,
+                    `NonDomesticBurglary`,
+                    `VehicleOffenses`,
+                    `TheftFromPerson`,
+                    `BicycleTheft`,
+                    `Shoplifting`,
+                    `MiscTheft`,
+                    `CriminalDamageAndArson`,
+                    `DrugOffenses`,
+                    `PossesionOfWeapons`,
+                    `PublicOrderOffenses`,
+                    `MiscCrimes`,
+                    `Fraud`
+                )
+                VALUES
+                (
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s
+                );", 
+                        $objectToSave->crimeStatistics->homocide, 
+                        $objectToSave->crimeStatistics->violenceWithInjury, 
+                        $objectToSave->crimeStatistics->violenceWithoutInjury, 
+                        $objectToSave->crimeStatistics->sexualOffenses, 
+                        $objectToSave->crimeStatistics->robbery, 
+                        $objectToSave->crimeStatistics->theftOffenses, 
+                        $objectToSave->crimeStatistics->domesticBurglary, 
+                        $objectToSave->crimeStatistics->nonDomesticBurglary, 
+                        $objectToSave->crimeStatistics->vehicleOffenses, 
+                        $objectToSave->crimeStatistics->theftFromPerson, 
+                        $objectToSave->crimeStatistics->bicycleTheft, 
+                        $objectToSave->crimeStatistics->shoplifting, 
+                        $objectToSave->crimeStatistics->miscTheft, 
+                        $objectToSave->crimeStatistics->criminalDamageAndArson, 
+                        $objectToSave->crimeStatistics->drugOffenses, 
+                        $objectToSave->crimeStatistics->possesionOfWeapons, 
+                        $objectToSave->crimeStatistics->publicOrderOffenses, 
+                        $objectToSave->crimeStatistics->miscCrimes, 
+                        $objectToSave->crimeStatistics->fraud);
+        
+        $crimeStatisticsId = "SET @crimeStatsId = (SELECT LAST_INSERT_ID());";
+
+        $areaQuery =
+                'INSERT INTO `area`(`GeographicReference_Id`, `CrimeStatistics_Id`, `Region_Id`) 
+                    VALUES(@geographicReferenceId, @crimeStatsId, @regionId);';
+
+        return array(
+            $geographicLocationQuery, 
+            $geographicLocationId, 
+            $crimeStatisticsQuery, 
+            $crimeStatisticsId,
+            $areaQuery);
     }
 
     public function GetChangeQueries($objectToSave)

@@ -9,8 +9,9 @@ class NationalMapper implements \Library\Persistence\IMapper
     {
         $geographicLocationQuery =
                 sprintf(
-                "INSERT INTO `geographicreference`(`Name`) VALUES ('%s');
-                SET @geographicReferenceId = (SELECT LAST_INSERT_ID);", $objectToSave->id);
+                "INSERT INTO `geographicreference`(`Name`) VALUES ('%s');", $objectToSave->id);
+        
+        $geographicLocationId = "SET @geographicReferenceId = (SELECT LAST_INSERT_ID());";
 
         $crimeStatisticsQuery =
                 sprintf(
@@ -57,8 +58,7 @@ class NationalMapper implements \Library\Persistence\IMapper
                     %s,
                     %s,
                     %s
-                );
-               SET @crimeStatsId = (SELECT LAST_INSERT_ID);", 
+                );", 
                         $objectToSave->crimeStatistics->homocide, 
                         $objectToSave->crimeStatistics->violenceWithInjury, 
                         $objectToSave->crimeStatistics->violenceWithoutInjury, 
@@ -78,12 +78,19 @@ class NationalMapper implements \Library\Persistence\IMapper
                         $objectToSave->crimeStatistics->publicOrderOffenses, 
                         $objectToSave->crimeStatistics->miscCrimes, 
                         $objectToSave->crimeStatistics->fraud);
+        
+        $crimeStatisticsId = "SET @crimeStatsId = (SELECT LAST_INSERT_ID());";
 
         $nationalQuery =
                 'INSERT INTO `national`(`GeographicReference_Id`, `CrimeStatistics_Id`) 
                     VALUES(@geographicReferenceId, @crimeStatsId);';
 
-        return array(sprintf('%s  %s  %s', $crimeStatisticsQuery, $geographicLocationQuery, $nationalQuery));
+        return array(
+            $geographicLocationQuery, 
+            $geographicLocationId, 
+            $crimeStatisticsQuery, 
+            $crimeStatisticsId,
+            $nationalQuery);
     }
 
     public function GetChangeQueries($objectToSave)

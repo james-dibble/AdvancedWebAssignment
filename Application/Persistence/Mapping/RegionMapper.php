@@ -12,7 +12,18 @@ class RegionMapper implements \Library\Persistence\IMapper
     
     public function GetAddQueries($objectToSave)
     {
+        $geographicLocationQuery =
+                sprintf(
+                "INSERT INTO `geographicreference`(`Name`) VALUES ('%s');", $objectToSave->id);
         
+        $geographicLocationId = "SET @geographicReferenceId = (SELECT LAST_INSERT_ID());";
+        
+        $regionId = "SET @regionId = (SELECT @geographicReferenceId);";
+        
+        $regionQuery = 'INSERT INTO `region` (`GeographicReference_Id`, `Country_Id`)
+            VALUES (@geographicReferenceId, @countryId)';
+        
+        return array($geographicLocationQuery, $geographicLocationId, $regionId, $regionQuery);
     }
 
     public function GetChangeQueries($objectToSave)
