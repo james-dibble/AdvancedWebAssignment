@@ -10,12 +10,21 @@ class CountryMapper implements \Library\Persistence\IMapper
         $this->_persistence = $persistence;
     }
     
-    public function GetAddQueries($objectToSave)
+    public function GetAddQueries($objectToSave, array $referenceObjects)
     {
+        $geographicLocationQuery =
+                sprintf(
+                "INSERT INTO `geographicreference`(`Name`) VALUES ('%s');", $objectToSave->id);
         
+        $geographicLocationId = "SET @geographicReferenceId = (SELECT LAST_INSERT_ID());";
+                
+        $countryQuery = 'INSERT INTO `country` (`GeographicReference_Id`)
+            VALUES (@geographicReferenceId);';
+        
+        return array($geographicLocationQuery, $geographicLocationId, $countryQuery);
     }
 
-    public function GetChangeQueries($objectToSave)
+    public function GetChangeQueries($objectToSave, array $referenceObjects)
     {
         
     }
@@ -31,8 +40,8 @@ class CountryMapper implements \Library\Persistence\IMapper
         if($searcher->HasKey('ById'))
         {
             $query .= sprintf(" WHERE LOWER(`gr`.`name`) = LOWER('%s') LIMIT 1", $searcher->GetKey('ById'));
-        }
-             
+        }             
+        
         return $query;
     }
 

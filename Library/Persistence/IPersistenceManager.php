@@ -7,9 +7,9 @@ interface IPersistenceManager
     
     function GetCollection(\Library\Persistence\IPersistenceSearcher $search);
     
-    function Add($objectToAdd);
+    function Add($objectToAdd, array $referenceObjects);
     
-    function Change($objectToChange);
+    function Change($objectToChange, array $referenceObjects);
     
     function Commit();
 }

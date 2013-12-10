@@ -20,21 +20,21 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
         $this->_statementsToCommit = array();
     }
 
-    public function Add($objectToAdd)
+    public function Add($objectToAdd, array $referenceObjects)
     {
         $mapper = $this->_mappers->GetMapper(new \ReflectionClass($objectToAdd));
 
-        foreach($mapper->GetAddQueries($objectToAdd) as $query)
+        foreach($mapper->GetAddQueries($objectToAdd, $referenceObjects) as $query)
         {
             array_push($this->_statementsToCommit, $query);
         }
     }
 
-    public function Change($objectToChange)
+    public function Change($objectToChange, array $referenceObjects)
     {
         $mapper = $this->_mappers->GetMapper(new \ReflectionClass($objectToChange));
 
-        foreach($mapper->GetChangeQueries($objectToChange) as $query)
+        foreach($mapper->GetChangeQueries($objectToChange, $referenceObjects) as $query)
         {
             array_push($this->_statementsToCommit, $query);
         }
@@ -49,9 +49,7 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
             $this->GetConnection()->beginTransaction();
 
             foreach ($this->_statementsToCommit as $statement)
-            {
-                echo $statement . '<br /><br />';
-                
+            {                                
                 $this->GetConnection()->exec($statement);
             }
 

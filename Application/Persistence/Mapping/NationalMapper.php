@@ -5,7 +5,7 @@ namespace Application\Persistence\Mapping;
 class NationalMapper implements \Library\Persistence\IMapper
 {
 
-    public function GetAddQueries($objectToSave)
+    public function GetAddQueries($objectToSave, array $referenceObjects)
     {
         $geographicLocationQuery =
                 sprintf(
@@ -93,7 +93,7 @@ class NationalMapper implements \Library\Persistence\IMapper
             $nationalQuery);
     }
 
-    public function GetChangeQueries($objectToSave)
+    public function GetChangeQueries($objectToSave, array $referenceObjects)
     {
         
     }

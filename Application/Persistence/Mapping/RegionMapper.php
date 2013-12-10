@@ -10,7 +10,7 @@ class RegionMapper implements \Library\Persistence\IMapper
         $this->_persistence = $persistence;
     }
     
-    public function GetAddQueries($objectToSave)
+    public function GetAddQueries($objectToSave, array $referenceObjects)
     {
         $geographicLocationQuery =
                 sprintf(
@@ -20,13 +20,22 @@ class RegionMapper implements \Library\Persistence\IMapper
         
         $regionId = "SET @regionId = (SELECT @geographicReferenceId);";
         
-        $regionQuery = 'INSERT INTO `region` (`GeographicReference_Id`, `Country_Id`)
-            VALUES (@geographicReferenceId, @countryId)';
+        $countryId = sprintf("SET @countryId = 
+            (
+            SELECT `gr`.`id` FROM
+                `country` `c`
+            INNER JOIN `geographicreference` `gr`
+                ON `gr`.`id` = `c`.`GeographicReference_Id`
+            WHERE LOWER(`gr`.`Name`) = '%s'
+            );", $referenceObjects['Country']->id);
         
-        return array($geographicLocationQuery, $geographicLocationId, $regionId, $regionQuery);
+        $regionQuery = 'INSERT INTO `region` (`GeographicReference_Id`, `Country_Id`)
+            VALUES (@geographicReferenceId, @countryId);';
+        
+        return array($geographicLocationQuery, $geographicLocationId, $regionId, $countryId, $regionQuery);
     }
 
-    public function GetChangeQueries($objectToSave)
+    public function GetChangeQueries($objectToSave, array $referenceObjects)
     {
         
     }

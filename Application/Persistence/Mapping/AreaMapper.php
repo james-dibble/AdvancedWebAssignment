@@ -5,7 +5,7 @@ namespace Application\Persistence\Mapping;
 class AreaMapper implements \Library\Persistence\IMapper
 {
 
-    public function GetAddQueries($objectToSave)
+    public function GetAddQueries($objectToSave, array $referenceObjects)
     {
         $geographicLocationQuery =
                 sprintf(
@@ -80,6 +80,15 @@ class AreaMapper implements \Library\Persistence\IMapper
                         $objectToSave->crimeStatistics->fraud);
         
         $crimeStatisticsId = "SET @crimeStatsId = (SELECT LAST_INSERT_ID());";
+        
+        $regionId = sprintf("SET @regionId = 
+            (
+            SELECT `gr`.`id` FROM
+                `region` `r`
+            INNER JOIN `geographicreference` `gr`
+                ON `gr`.`id` = `r`.`GeographicReference_Id`
+            WHERE LOWER(`gr`.`Name`) = '%s'
+            );", $referenceObjects['Region']->id);
 
         $areaQuery =
                 'INSERT INTO `area`(`GeographicReference_Id`, `CrimeStatistics_Id`, `Region_Id`) 
@@ -90,10 +99,11 @@ class AreaMapper implements \Library\Persistence\IMapper
             $geographicLocationId, 
             $crimeStatisticsQuery, 
             $crimeStatisticsId,
+            $regionId,
             $areaQuery);
     }
 
-    public function GetChangeQueries($objectToSave)
+    public function GetChangeQueries($objectToSave, array $refernceObjects)
     {
         
     }
@@ -102,8 +112,6 @@ class AreaMapper implements \Library\Persistence\IMapper
     {
         $query =
                 'SELECT `gr`.`id`, `gr`.`name`, 
-                    `cs`.`Homicide`, 
-                    `cs`.`ViolenceWithInjury`,
                     `cs`.`Homicide`,
                     `cs`.`ViolenceWithInjury`,
                     `cs`.`ViolenceWithoutInjury`,
@@ -146,7 +154,7 @@ class AreaMapper implements \Library\Persistence\IMapper
     public function MapObject($results)
     {
         $crimeStatistics = new \Application\Models\Domain\CrimeStatistics();
-
+        
         $crimeStatistics->homocide = $results->Homicide;
         $crimeStatistics->violenceWithInjury = $results->ViolenceWithInjury;
         $crimestatistics->violenceWithoutInjury = $results->ViolenceWithoutInjury;
@@ -166,14 +174,12 @@ class AreaMapper implements \Library\Persistence\IMapper
         $crimestatistics->publicOrderOffenses = $results->PublicOrderOffenses;
         $crimestatistics->miscCrimes = $results->MiscCrimes;
         $crimestatistics->fraud = $results->Fraud;
-
+        
         $mappedObject = new \Application\Models\Domain\Area($crimeStatistics);
 
         $mappedObject->id = $results->name;
 
         return $mappedObject;
     }
-
 }
-
 ?>

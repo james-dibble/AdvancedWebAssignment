@@ -5,9 +5,9 @@ interface IMapper
 {
     function GetMappedClass();
             
-    function GetAddQueries($objectToSave);
+    function GetAddQueries($objectToSave, array $refernceObjects);
     
-    function GetChangeQueries($objectToSave);
+    function GetChangeQueries($objectToSave, array $referenceObjects);
     
     function GetFindQuery(\Library\Persistence\IPersistenceSearcher $searcher);
     
