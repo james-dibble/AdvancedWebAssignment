@@ -99,7 +99,7 @@
                         <li data-ng-show="regionsLoading" class="disabled"><a href="#">Loading</a></li>
                         <li data-ng-show="loadingRegionsFailed" class="disabled"><a href="#">Failed</a></li>
                         <li data-ng-hide="filteredRegions.length || !loadingRegionsFailed" class="disabled"><a href="#">No Results</a></li>
-                        <li data-ng-show="!regionsLoading && !loadingRegionsFailed" data-ng-repeat="region in filteredRegions = (regions | filter:regionFilter)"><a href="#" data-ng-click="setActiveRegion(region)">{{region.name}}</a></li>
+                        <li data-ng-show="!regionsLoading && !loadingRegionsFailed" data-ng-repeat="region in filteredRegions = (regions | filter:regionFilter)"><a href="" data-ng-click="setActiveRegion(region)">{{region.name}}</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3">
