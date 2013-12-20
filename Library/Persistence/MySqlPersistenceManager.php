@@ -13,6 +13,7 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
 
     public function __construct($host, $user, $password, \Library\Persistence\IMapperDictionary $mappers)
     {
+        $this->_connection = null;
         $this->_host = $host;
         $this->_user = $user;
         $this->_password = $password;

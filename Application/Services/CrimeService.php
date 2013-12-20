@@ -4,7 +4,6 @@ namespace Application\Services;
 
 class CrimeService implements ICrimeService
 {
-
     private $_persistence;
 
     public function __construct(\Library\Persistence\IPersistenceManager $persistence)
@@ -77,6 +76,11 @@ class CrimeService implements ICrimeService
         $this->_persistence->Commit();
     }
 
+    public function SaveArea(\Application\Models\Domain\Area $area, \Application\Models\Domain\Region $region) 
+    {
+        $this->_persistence->Add($area, array('Region' => $region));
+        
+        $this->_persistence->Commit();
+    }
 }
-
 ?>

@@ -2,7 +2,13 @@ SET NAMES 'utf8';
 
 USE fet10009689;
 
+DROP TABLE IF EXISTS national;
+DROP TABLE IF EXISTS area;
+DROP TABLE IF EXISTS region;
+DROP TABLE IF EXISTS country;
 DROP TABLE IF EXISTS crimestatistics;
+DROP TABLE IF EXISTS geographicreference;
+
 CREATE TABLE crimestatistics (
   Id INT(11) NOT NULL AUTO_INCREMENT,
   Homicide INT(11) DEFAULT NULL,
@@ -32,7 +38,6 @@ AVG_ROW_LENGTH = 16384
 CHARACTER SET latin1
 COLLATE latin1_swedish_ci;
 
-DROP TABLE IF EXISTS geographicreference;
 CREATE TABLE geographicreference (
   Id INT(11) NOT NULL AUTO_INCREMENT,
   Name VARCHAR(50) NOT NULL,
@@ -44,7 +49,6 @@ AVG_ROW_LENGTH = 4096
 CHARACTER SET latin1
 COLLATE latin1_swedish_ci;
 
-DROP TABLE IF EXISTS country;
 CREATE TABLE country (
   GeographicReference_Id INT(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (GeographicReference_Id),
@@ -57,7 +61,6 @@ AVG_ROW_LENGTH = 16384
 CHARACTER SET latin1
 COLLATE latin1_swedish_ci;
 
-DROP TABLE IF EXISTS national;
 CREATE TABLE national (
   GeographicReference_Id INT(11) NOT NULL AUTO_INCREMENT,
   CrimeStatistics_Id INT(11) DEFAULT NULL,
@@ -72,7 +75,6 @@ AUTO_INCREMENT = 1
 CHARACTER SET latin1
 COLLATE latin1_swedish_ci;
 
-DROP TABLE IF EXISTS region;
 CREATE TABLE region (
   GeographicReference_Id INT(11) NOT NULL DEFAULT 0,
   Country_Id INT(11) DEFAULT NULL,
@@ -87,7 +89,6 @@ AVG_ROW_LENGTH = 8192
 CHARACTER SET latin1
 COLLATE latin1_swedish_ci;
 
-DROP TABLE IF EXISTS area;
 CREATE TABLE area (
   GeographicReference_id INT(11) NOT NULL,
   CrimeStatistics_Id INT(11) DEFAULT NULL,

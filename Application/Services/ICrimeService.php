@@ -12,5 +12,7 @@ interface ICrimeService
     function GetCrimesForCountry($year, $country);
     
     function SaveStatistics(\Application\Models\Domain\StatisticsCollection $crimeStatistics);
+    
+    function SaveArea(\Application\Models\Domain\Area $area, \Application\Models\Domain\Region $region);
 }
 ?>

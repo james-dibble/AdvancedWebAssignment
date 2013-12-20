@@ -1,9 +1,10 @@
 RewriteEngine on
-RewriteBase /~j3-dibble/atwd/
+#RewriteBase /~j3-dibble/atwd/
 RewriteRule ^crimes/([0-9]{1}[-]{1}[0-9]{4})/(xml|json)$ index.php?controller=crimes&action=get&year=$1&format=$2 [NC,L]
 RewriteRule ^crimes/([0-9]{1}[-]{1}[0-9]{4})/([A-Za-z-]+)/(xml|json)$ index.php?controller=crimes&action=getforregion&year=$1&region=$2&format=$3 [NC,L]
 RewriteRule ^crimes/doc/index.html$ index.php?controller=documentation&action=index [NC,L]
 RewriteRule ^crimes/doc/source/(.*)+$ index.php?controller=documentation&action=source&path=$1 [NC,L]
+RewriteRule ^crimes/([0-9]{1}[-]{1}[0-9]{4})/post/(.*)/(.*)/(.*)/(xml|json)$ index.php?controller=crimes&action=post&regionName=$2&newArea=$3&areaData=$4&format=$5 [NC,L]
 RewriteRule ^locations/region/(xml|json)$ index.php?controller=locations&action=getregions&format=$1 [NC,L]
 RewriteRule ^import/file$ index.php?controller=import&action=file [NC,L]
 RewriteRule ^import/text$ index.php?controller=import&action=text [NC,L]

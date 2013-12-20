@@ -1,5 +1,5 @@
 RewriteEngine on
-RewriteBase /~j3-dibble/atwd/
+#RewriteBase /~j3-dibble/atwd/
 RewriteRule ^(.*)$ Public/$1 [NC,L]
 #RewriteRule ^(.*)$ index.php?controller=errors&action=notfound [NC,L]
 RewriteRule ^(?:application|library)\b.* index.php/$0 [L]

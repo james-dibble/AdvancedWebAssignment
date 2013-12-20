@@ -2,7 +2,7 @@
 namespace Application\Models\Domain;
 
 class Region extends \Application\Models\Domain\GeographicReference
-{
+{   
     public $areas;
     
     public function __construct() 
@@ -20,6 +20,6 @@ class Region extends \Application\Models\Domain\GeographicReference
         }
         
         return $total;
-    }    
+    }   
 }
 ?>
