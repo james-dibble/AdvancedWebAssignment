@@ -41,7 +41,7 @@ class CrimesController extends \Library\Controller\APIController
     
     public function Post($regionName, $newArea, $areaData, $format)
     {
-        $region = $this->_crimeService->GetCrimesForRegion(null, str_replace('_', ' ', $regionName));
+        $region = $this->_crimeService->GetCrimesForRegion(null, str_replace('_', ' ', $regionName . '_region'));
         
         $areaDataSplit = explode('-', $areaData);
         $areaDataDictionary = array();
