@@ -28,7 +28,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-12" data-ng-hide="areaDataLoading">
                             <table class="table table-bordered">
                                 <tr>
                                     <th>Region</th>
@@ -60,7 +60,7 @@
                                         <div class="col-lg-12" data-ng-show="loadingAreaDataFailed">
                                             <div class="alert alert-danger">Loading Area Data Failed</div>
                                         </div>
-                                        <div class="col-lg-12">
+                                        <div class="col-lg-12" data-ng-hide="areaDataLoading">
                                             <div id="region-bar-chart" style="height: 400px; margin: 0 auto"></div>
                                         </div>
                                     </div>
@@ -74,7 +74,7 @@
                                         <div class="col-lg-12" data-ng-show="loadingAreaDataFailed">
                                             <div class="alert alert-danger">Loading Area Data Failed</div>
                                         </div>
-                                        <div class="col-lg-12">
+                                        <div class="col-lg-12" data-ng-hide="areaDataLoading">
                                             <div id="region-pie-chart" style="height: 400px; margin: 0 auto"></div>    
                                         </div>
                                     </div>
@@ -117,7 +117,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-12" data-ng-hide="areaDataLoading">
                             <table class="table table-bordered">
                                 <tr>
                                     <th>Area</th>
@@ -149,7 +149,7 @@
                                         <div class="col-lg-12" data-ng-show="loadingAreaDataFailed">
                                             <div class="alert alert-danger">Loading Area Data Failed</div>
                                         </div>
-                                        <div class="col-lg-12">
+                                        <div class="col-lg-12" data-ng-hide="areaDataLoading">
                                             <div id="area-bar-chart" style="height: 400px; margin: 0 auto"></div>
                                         </div>
                                     </div>
@@ -163,7 +163,7 @@
                                         <div class="col-lg-12" data-ng-show="loadingAreaDataFailed">
                                             <div class="alert alert-danger">Loading Area Data Failed</div>
                                         </div>
-                                        <div class="col-lg-12">
+                                        <div class="col-lg-12" data-ng-hide="areaDataLoading">
                                             <div id="area-pie-chart" style="height: 400px; margin: 0 auto"></div>    
                                         </div>
                                     </div>
