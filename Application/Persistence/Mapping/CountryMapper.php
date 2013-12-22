@@ -40,7 +40,17 @@ class CountryMapper implements \Library\Persistence\IMapper
         if($searcher->HasKey('ById'))
         {
             $query .= sprintf(" WHERE LOWER(`gr`.`name`) = LOWER('%s') LIMIT 1", $searcher->GetKey('ById'));
-        }             
+        }    
+        
+        if($searcher->HasKey('ForRegion'))
+        {
+            $query .= sprintf(" INNER JOIN `region` `r` ON
+                `r`.`Country_Id` = `c`.`GeographicReference_Id`
+              INNER JOIN `geographicreference` `grr`
+                            ON `grr`.`id` = `r`.`GeographicReference_Id`
+            WHERE 
+              LOWER(`grr`.`Name`) = LOWER('%s') LIMIT 1", $searcher->GetKey('ForRegion')->id);
+        }
         
         return $query;
     }

@@ -4,10 +4,13 @@ namespace Application\Controllers;
 class CrimesController extends \Library\Controller\APIController
 {
     private $_crimeService;
-    
-    public function __construct(\Application\Services\ICrimeService $crimeService) 
+    private $_locationService;
+
+
+    public function __construct(\Application\Services\ICrimeService $crimeService, \Application\Services\ILocationService $locationService) 
     {
         $this->_crimeService = $crimeService;
+        $this->_locationService = $locationService;
     }
 
     public function Get($year, $format)
@@ -41,7 +44,7 @@ class CrimesController extends \Library\Controller\APIController
     
     public function Post($regionName, $newArea, $areaData, $format)
     {
-        $region = $this->_crimeService->GetCrimesForRegion(null, str_replace('_', ' ', $regionName . '_region'));
+        $region = $this->_crimeService->GetCrimesForRegion(null, str_replace('_', ' ', $regionName));
         
         $areaDataSplit = explode('-', $areaData);
         $areaDataDictionary = array();
@@ -67,7 +70,11 @@ class CrimesController extends \Library\Controller\APIController
         
         $this->_crimeService->SaveArea($area, $region);
         
+        $country = $this->_locationService->GetCountryForRegion($region);
+        $allCountries = $this->_locationService->GetAllCountries();
+        
         $response = new \Application\Models\Responses\Response();
+        $response->crimes = new \Application\Models\Responses\PostResponse($region, $country, $allCountries);
         
         return CrimesController::BuildRespose($response, $format);
     }

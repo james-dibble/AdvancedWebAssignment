@@ -1,5 +1,5 @@
 <?php
-    ini_set('display_errors', '0');
+    #ini_set('display_errors', '0');
 
     #define('CONTEXT_PATH', '/~j3-dibble/atwd/');
     define('CONTEXT_PATH', '/atwd/');

@@ -57,7 +57,8 @@ class CrimeFileParsingService implements ICrimeFileParsingService
 
             if (CrimeFileParsingService::IsRegionRow($row))
             {
-                $currentRegion->id = CrimeFileParsingService::SplitRow($row)[CrimeFileParsingService::locationId];
+                $regionName = CrimeFileParsingService::SplitRow($row)[CrimeFileParsingService::locationId];
+                $currentRegion->id = str_ireplace('region', '', $regionName);
 
                 array_push($currentCountry->regions, $currentRegion);
 
