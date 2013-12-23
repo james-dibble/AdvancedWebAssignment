@@ -74,7 +74,7 @@ class CrimesController extends \Library\Controller\APIController
         $allCountries = $this->_locationService->GetAllCountries();
         
         $response = new \Application\Models\Responses\Response();
-        $response->crimes = new \Application\Models\Responses\PostResponse($region, $country, $allCountries);
+        $response->crimes = new \Application\Models\Responses\PostResponse($area, $region, $country, $allCountries);
         
         return CrimesController::BuildRespose($response, $format);
     }

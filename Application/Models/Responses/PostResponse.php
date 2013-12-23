@@ -6,22 +6,15 @@ class PostResponse
     public $region;
     public $england_wales;
     
-    public function __construct(\Application\Models\Domain\Region $region, \Application\Models\Domain\Country $country, array $allCountries)
+    public function __construct(\Application\Models\Domain\Area $area, \Application\Models\Domain\Region $region, \Application\Models\Domain\Country $country, array $allCountries)
     {
-        $this->region = new \Application\Models\Responses\Region($region);
+        $this->region = new \Application\Models\Responses\RegionWithAreaStatistics($region, $area);
         
         $countryProperty = $country->id;
         
-        $this->$countryProperty = $country->GetTotal();
+        $this->$countryProperty = new \Application\Models\Responses\Country($country);
         
-        $countryTotal = 0;
-        
-        foreach($allCountries as $countryForTotal)
-        {
-            $countryTotal += $countryForTotal->GetTotal();
-        }
-        
-        $this->england_wales = $countryTotal;
+        $this->england_wales = new \Application\Models\Responses\AllCountriesStatistic($allCountries);
     }
 }
 ?>
