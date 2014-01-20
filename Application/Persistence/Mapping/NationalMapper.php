@@ -23,9 +23,9 @@ class NationalMapper implements \Library\Persistence\IMapper
     public function GetFindQuery(\Library\Persistence\IPersistenceSearcher $searcher)
     {
         $baseQuery = 
-                "SELECT `gr`.`Id`, `gr`.`Name` FROM `national` `n`
+                "SELECT `gr`.`Id`, `gr`.`Name` FROM `nationals` `n`
                  INNER JOIN 
-                    `geograpic_reference` `gr`
+                    `geograpic_references` `gr`
                     ON `n`.`GeographicReference_Id` = `gr`.`Id`";
         
         if($searcher->HasKey('ByName'))
@@ -58,6 +58,16 @@ class NationalMapper implements \Library\Persistence\IMapper
         $mappedObject->crimeStatistics = $statistics;
         
         return $mappedObject;
+    }
+    
+    public function GetDeleteQueries($objectToSave = null, \Library\Persistence\IPersistenceSearcher $searcher = null) 
+    {
+        if($searcher != null && $searcher->HasKey('Clear'))
+        {
+            $query = 'DELETE FROM `geographic_references` `gr` WHERE `gr`.`Id` IN (SELECT FROM `nationals` `a`);';
+            
+            return array($query);
+        }
     }
 }
 ?>

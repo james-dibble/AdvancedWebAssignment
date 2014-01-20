@@ -12,6 +12,27 @@ class RegionMapper implements \Library\Persistence\IMapper
     
     public function GetAddQueries($objectToSave, array $referenceObjects)
     {
+        $geographicLocationQuery =
+                sprintf(
+                "INSERT INTO `geographic_references`(`Name`) VALUES ('%s');", $objectToSave->id);
+        
+        $geographicLocationId = "SET @geographicReferenceId = (SELECT LAST_INSERT_ID());";
+        
+        $regionId = "SET @regionId = (SELECT @geographicReferenceId);";
+        
+        $countryId = sprintf("SET @countryId = 
+            (
+            SELECT `gr`.`id` FROM
+                `countrys` `c`
+            INNER JOIN `geographic_references` `gr`
+                ON `gr`.`id` = `c`.`GeographicReference_Id`
+            WHERE LOWER(`gr`.`Name`) = '%s'
+            );", $referenceObjects['Country']->id);
+        
+        $regionQuery = 'INSERT INTO `region` (`GeographicReference_Id`, `Country_Id`)
+            VALUES (@geographicReferenceId, @countryId);';
+        
+        return array($geographicLocationQuery, $geographicLocationId, $regionId, $countryId, $regionQuery);
     }
 
     public function GetChangeQueries($objectToSave, array $referenceObjects)
@@ -21,9 +42,9 @@ class RegionMapper implements \Library\Persistence\IMapper
     public function GetFindQuery(\Library\Persistence\IPersistenceSearcher $searcher)
     {
         $baseQuery = 
-                "SELECT `gr`.`Id`, `gr`.`Name` FROM `region` `r`
+                "SELECT `gr`.`Id`, `gr`.`Name` FROM `regions` `r`
                  INNER JOIN 
-                    `geograpic_reference` `gr`
+                    `geograpic_references` `gr`
                     ON `r`.`GeographicReference_Id` = `gr`.`Id`";
         
         if($searcher->HasKey('ByName'))
@@ -64,6 +85,16 @@ class RegionMapper implements \Library\Persistence\IMapper
         $mappedObject->areas = $areas;
         
         return $mappedObject;
-    }    
+    } 
+    
+    public function GetDeleteQueries($objectToSave = null, \Library\Persistence\IPersistenceSearcher $searcher = null) 
+    {
+        if($searcher != null && $searcher->HasKey('Clear'))
+        {
+            $query = 'DELETE FROM `geographic_references` `gr` WHERE `gr`.`Id` IN (SELECT FROM `regions` `a`);';
+            
+            return array($query);
+        }
+    }
 }
 ?>

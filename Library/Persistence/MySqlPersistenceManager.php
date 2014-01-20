@@ -41,6 +41,26 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
         }
     }
 
+    public function Delete($objectToDelete = null, IPersistenceSearcher $search = null) 
+    {
+        $mapper = null;
+        
+        if($objectToDelete != null)
+        {
+            $mapper = $this->_mappers->GetMapper(new \ReflectionClass($objectToDelete));
+        }
+        
+        if($objectToDelete != null)
+        {
+            $mapper = $this->_mappers->GetMapper($search->TypeToSearch());
+        }
+        
+        foreach($mapper->GetDeleteQueries($objectToDelete, $search) as $query)
+        {
+            array_push($this->_statementsToCommit, $query);
+        }
+    }
+    
     public function Commit()
     {
         try
