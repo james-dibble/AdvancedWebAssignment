@@ -82,5 +82,10 @@ class CrimeService implements ICrimeService
         
         $this->_persistence->Commit();
     }
+
+    public function ClearCrimes() 
+    {
+        \Application\Persistence\DataSeeder::ClearAndSeed($this->_persistence);
+    }
 }
 ?>

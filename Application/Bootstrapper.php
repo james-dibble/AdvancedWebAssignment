@@ -15,9 +15,9 @@ class Bootstrapper
         #$persistenceManager = new \Library\Persistence\MySqlPersistenceManager('mysql5.cems.uwe.ac.uk', 'fet10009689', 'jli798ik', $mapperDictionary);
         $persistenceManager = new \Library\Persistence\MySqlPersistenceManager('localhost', 'root', '', $mapperDictionary);
         
-        $areaMapper = new \Application\Persistence\Mapping\AreaMapper();
+        $areaMapper = new \Application\Persistence\Mapping\AreaMapper($persistenceManager);
         $regionMapper = new \Application\Persistence\Mapping\RegionMapper($persistenceManager);
-        $nationalMapper = new \Application\Persistence\Mapping\NationalMapper();
+        $nationalMapper = new \Application\Persistence\Mapping\NationalMapper($persistenceManager);
         $countryMapper = new \Application\Persistence\Mapping\CountryMapper($persistenceManager);
         
         $mapperDictionary->Add($areaMapper);

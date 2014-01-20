@@ -13,19 +13,32 @@ class AreaMapper implements \Library\Persistence\IMapper
     
     public function GetAddQueries($objectToSave, array $referenceObjects)
     {
+        $geographicLocationQuery =
+                sprintf(
+                "INSERT INTO `geographic_references`(`Name`) VALUES ('%s');", $objectToSave->name);
+        
+        $geographicLocationId = "SET @geographicReferenceId = (SELECT LAST_INSERT_ID());";
+        
+        $areaQuery =
+                sprintf('INSERT INTO `areas`(`GeographicReference_Id`, `CrimeStatistics_Id`, `Region_Id`) 
+                    VALUES(@geographicReferenceId, @crimeStatsId, %s)', $objectToSave->region->id);
+
+        return array(
+            $geographicLocationQuery, 
+            $geographicLocationId, 
+            $areaQuery);
     }
 
     public function GetChangeQueries($objectToSave, array $refernceObjects)
     {
-        
     }
 
     public function GetFindQuery(\Library\Persistence\IPersistenceSearcher $searcher)
     {
         $baseQuery = 
-                "SELECT `gr`.`Id`, `gr`.`Name` FROM `area` `a`
+                "SELECT `gr`.`Id`, `gr`.`Name` FROM `areas` `a`
                  INNER JOIN 
-                    `geograpic_reference` `gr`
+                    `geograpic_references` `gr`
                     ON `a`.`GeographicReference_Id` = `gr`.`Id`";
         
         if($searcher->HasKey('ByName'))
@@ -66,6 +79,16 @@ class AreaMapper implements \Library\Persistence\IMapper
         $mappedObject->crimeStatistics = $statistics;
         
         return $mappedObject;
+    }
+
+    public function GetDeleteQueries($objectToSave = null, \Library\Persistence\IPersistenceSearcher $searcher = null) 
+    {
+        if($searcher != null && $searcher->HasKey('Clear'))
+        {
+            $query = 'DELETE FROM `geographic_references` `gr` WHERE `gr`.`Id` IN (SELECT FROM `areas` `a`);';
+            
+            return array($query);
+        }
     }
 }
 ?>

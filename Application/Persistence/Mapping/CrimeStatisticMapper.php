@@ -57,6 +57,16 @@ class CrimeStatisticMapper implements \Library\Persistence\IMapper
         $mappedObject->type = $type;
         
         return $mappedObject;
-    }    
+    }  
+    
+    public function GetDeleteQueries($objectToSave = null, \Library\Persistence\IPersistenceSearcher $searcher = null) 
+    {
+        if($searcher != null && $searcher->HasKey('Clear'))
+        {
+            $query = 'DELETE FROM `crime_statistics`;';
+            
+            return array($query);
+        }
+    }
 }
 ?>

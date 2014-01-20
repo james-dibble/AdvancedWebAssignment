@@ -40,7 +40,9 @@ class ImportController extends \Library\Controller\Controller
             {
                 unlink('/tmp/import.xml');
             }
-
+            
+            $this->_crimeService->ClearCrimes();
+            
             $inputContents = preg_split('/\r\n|[\r\n]/', $inputContents);
 
             $stats = $this->_importService->ParseFile($inputContents);

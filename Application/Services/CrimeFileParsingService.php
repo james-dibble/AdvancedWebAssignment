@@ -30,7 +30,7 @@ class CrimeFileParsingService implements ICrimeFileParsingService
     private static $_nationals = array('British Transport Police', 'Action Fraud1');
 
     public function ParseFile(array $fileContents)
-    {
+    {       
         $statistics = new \Application\Models\Domain\StatisticsCollection();
 
         $currentCountry = new \Application\Models\Domain\Country();
@@ -131,13 +131,13 @@ class CrimeFileParsingService implements ICrimeFileParsingService
         if (CrimeFileParsingService::IsNationalRow($row))
         {
             $national = new \Application\Models\Domain\National($statistics);
-            $national->id = $lineContents[CrimeFileParsingService::locationId];
+            $national->name = $lineContents[CrimeFileParsingService::locationId];
 
             return $national;
         }
 
         $area = new \Application\Models\Domain\Area($statistics);
-        $area->id = $lineContents[CrimeFileParsingService::locationId];
+        $area->name = $lineContents[CrimeFileParsingService::locationId];
 
         return $area;
     }
