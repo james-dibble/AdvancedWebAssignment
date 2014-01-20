@@ -19,14 +19,14 @@ abstract class BasicHtmlLayout
     {
         echo <<<HTML
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-ng-app="">
 <head>
         <title>$this->_title</title>
         <!-- LE META -->
-        <meta charset="utf-8" />
-        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
         <meta name="Description" content="$this->_description">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+HTML;
+        include 'MetaTags.php';
+        echo <<<HTML
         <!-- LE STYLE -->
         {$this->BuildStyleSheets()}
 </head>
@@ -85,7 +85,7 @@ HTML;
         foreach($this->_scripts as $script)
         {
             $html .= <<<HTML
-            <script type="text/javascript href="$script"></script>
+            <script type="text/javascript" src="$script"></script>
 HTML;
         }
         

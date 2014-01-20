@@ -14,7 +14,7 @@ class ErrorsController extends \Library\Controller\Controller
             http_response_code(404);
             $error->code = 404;
         }
-        if($ex instanceof \Library\Models\Errors\UriNotRecognizedException)
+        else if($ex instanceof \Library\Models\Errors\UriNotRecognizedException)
         {
             http_response_code(501);
             $error->code = 501;
@@ -29,7 +29,12 @@ class ErrorsController extends \Library\Controller\Controller
         
         $errorResponse->error = $error;
         
-        return new \Library\Controller\XmlResult($errorResponse);
+        return new \Library\Controller\XMLResult($errorResponse);
+    }
+    
+    public function NotFound()
+    {
+        return $this->Index(new \Library\Models\Errors\NotFoundException('Action not found.'));
     }
 }
 

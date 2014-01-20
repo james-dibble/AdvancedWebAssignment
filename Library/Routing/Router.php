@@ -2,91 +2,77 @@
 namespace Library\Routing;
 
 class Router
-{
-    const scriptTarget = 'Public/index.php';
+{    
+    private $_container;
     
-    private static $_contextPath;
+    public function __construct(\Library\Composition\IContainer $container)
+    {
+        $this->_container = $container;
+    }
     
-    public static function Dispatch()
+    public function Dispatch($controllerName, $actionName)
     {
         try
         {
             // Use the output buffer so we can clear the output stream
             // if something goes wrong
             ob_start();
-            $route = trim(str_replace(Router::GetContextPath(), '', $_SERVER['REQUEST_URI']), '/');
-            $routeParameters = array_filter(explode('/', $route), 'strlen');
-            $requestContext = Router::DetermineRequestContext($routeParameters);
-            $controllerName = $requestContext->GetController();
 
-            $controller = Router::CreateController($controllerName);
+            $controller = $this->CreateController($controllerName);
 
-            $controller->ProcessRequest($requestContext);
+            $controller->ProcessRequest($actionName);
         }
         catch(\Exception $ex)
         {
             // Something went wrong so clear the buffer so only our error
             // output is sent.
             ob_end_clean();
-            $errorContext = new RequestContext('errors', 'index', $ex);
             
-            $controllerName = $errorContext->GetController();
-            $controller = Router::CreateController($controllerName);
+            $controller = $this->CreateController('errors');
 
-            $controller->ProcessRequest($errorContext);
+            $controller->ProcessRequest('index', $ex);
         }
     }
     
-    private static function DetermineRequestContext($routeParameters)
+    private function CreateController($controllerName)
     {
-        if(count($routeParameters) === 0 || (count($routeParameters) === 1 && $routeParameters[0] === ''))
-        {
-            return new RequestContext('home', 'index', []);
-        }
-        
-        if(count($routeParameters) === 1)
-        {
-            if(method_exists(Router::CreateController('home'), $routeParameters[0]))
-            {
-                return new RequestContext('home', $routeParameters[0], []);
-            }
-            
-            return new RequestContext($routeParameters[0], 'index', []);
-        }
-        
-        if(!method_exists(Router::CreateController($routeParameters[0]), $routeParameters[1]))
-        {           
-            return new RequestContext($routeParameters[0], 'index', array_slice($routeParameters, 1));
-        }
-        
-        return new RequestContext(
-                $routeParameters[0], 
-                $routeParameters[1], 
-                array_slice($routeParameters, 2));
-    }
-    
-    private static function GetContextPath()
-    {
-        if(Router::$_contextPath == null)
-        {
-            Router::$_contextPath = trim(str_replace(Router::scriptTarget, '', $_SERVER['SCRIPT_NAME']), '/');
-        }
-        
-        return Router::$_contextPath;
-    }
-    
-    private static function CreateController($controllerName)
-    {
-        $fullyQualifiedControllerName = 'Application\\Controllers\\' . $controllerName . 'Controller';
+        $fullyQualifiedControllerName = '\Application\\Controllers\\' . ucwords($controllerName) . 'Controller';
         
         if(!class_exists($fullyQualifiedControllerName))
         {
             throw new \Library\Models\Errors\NotFoundException('Controller not found');
         }
         
-        $controller = new $fullyQualifiedControllerName();
+        $controllerConstructorArguments = $this->BuildDependencies($fullyQualifiedControllerName);
+        
+        $controllerClass = new \ReflectionClass($fullyQualifiedControllerName);
+        
+        $controller = $controllerClass->newInstanceArgs($controllerConstructorArguments);
         
         return $controller;
+    }
+    
+    private function BuildDependencies($controllerName)
+    {
+        $constructorArguments = array();
+        
+        $controller = new \ReflectionClass($controllerName);
+        
+        if(!method_exists($controllerName, '__construct'))
+        {
+            return $constructorArguments;
+        }
+        
+        $constructor = $controller->getConstructor();
+        $args = $constructor->getParameters();
+        
+        foreach($args as $arg)
+        {
+            $resolved = $this->_container->Resolve($arg->getClass()->name);
+            array_push($constructorArguments, $resolved);
+        }
+        
+        return $constructorArguments;
     }
 }
 ?>
