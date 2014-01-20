@@ -12,16 +12,6 @@ class CountryMapper implements \Library\Persistence\IMapper
     
     public function GetAddQueries($objectToSave, array $referenceObjects)
     {
-        $geographicLocationQuery =
-                sprintf(
-                "INSERT INTO `geographicreference`(`Name`) VALUES ('%s');", $objectToSave->id);
-        
-        $geographicLocationId = "SET @geographicReferenceId = (SELECT LAST_INSERT_ID());";
-                
-        $countryQuery = 'INSERT INTO `country` (`GeographicReference_Id`)
-            VALUES (@geographicReferenceId);';
-        
-        return array($geographicLocationQuery, $geographicLocationId, $countryQuery);
     }
 
     public function GetChangeQueries($objectToSave, array $referenceObjects)
@@ -31,28 +21,6 @@ class CountryMapper implements \Library\Persistence\IMapper
 
     public function GetFindQuery(\Library\Persistence\IPersistenceSearcher $searcher)
     {
-        $query = 
-            'SELECT `gr`.`id`, `gr`.`name` FROM
-                `country` `c`
-            INNER JOIN `geographicreference` `gr`
-                ON `gr`.`id` = `c`.`GeographicReference_Id`';
-        
-        if($searcher->HasKey('ById'))
-        {
-            $query .= sprintf(" WHERE LOWER(`gr`.`name`) = LOWER('%s') LIMIT 1", $searcher->GetKey('ById'));
-        }    
-        
-        if($searcher->HasKey('ForRegion'))
-        {
-            $query .= sprintf(" INNER JOIN `region` `r` ON
-                `r`.`Country_Id` = `c`.`GeographicReference_Id`
-              INNER JOIN `geographicreference` `grr`
-                            ON `grr`.`id` = `r`.`GeographicReference_Id`
-            WHERE 
-              LOWER(`grr`.`Name`) = LOWER('%s') LIMIT 1", $searcher->GetKey('ForRegion')->id);
-        }
-        
-        return $query;
     }
 
     public function GetMappedClass()
@@ -62,17 +30,6 @@ class CountryMapper implements \Library\Persistence\IMapper
 
     public function MapObject($results)
     {        
-        $mappedObject = new \Application\Models\Domain\Country();
-        
-        $mappedObject->id = $results->name;
-        
-        $searchCriteria = array('ForCountry' => $results->id);
-        
-        $searcher = new \Library\Persistence\PersistenceSearcher(new \ReflectionClass('\Application\Models\Domain\Region'), $searchCriteria);
-        
-        $mappedObject->regions = $this->_persistence->GetCollection($searcher);
-        
-        return $mappedObject;
     }    
 }
 
