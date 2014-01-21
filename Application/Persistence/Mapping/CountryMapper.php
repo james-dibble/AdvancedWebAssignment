@@ -18,7 +18,7 @@ class CountryMapper implements \Library\Persistence\IMapper
         
         $geographicLocationId = "SET @geographicReferenceId = (SELECT LAST_INSERT_ID());";
         
-        $countryQuery = 'INSERT INTO `countrys`(`GeographicReference_Id`) VALUES(@geographicReferenceId)';
+        $countryQuery = 'INSERT INTO `countrys`(`GeographicReference_Id`) VALUES(@geographicReferenceId);';
 
         return array(
             $geographicLocationQuery, 
@@ -77,9 +77,9 @@ class CountryMapper implements \Library\Persistence\IMapper
         {
             $query = 'DELETE FROM `countrys`;';
             
-            $geographicReferencesQuery = 'DELETE FROM `geographical_references`;';
+            $geographicReferencesQuery = 'DELETE FROM `geographic_references`;';
             
-            return array($query);
+            return array($query, $geographicReferencesQuery);
         }
     }
 }

@@ -38,7 +38,7 @@ class AreaMapper implements \Library\Persistence\IMapper
         $baseQuery = 
                 "SELECT `gr`.`Id`, `gr`.`Name` FROM `areas` `a`
                  INNER JOIN 
-                    `geograpic_references` `gr`
+                    `geographic_references` `gr`
                     ON `a`.`GeographicReference_Id` = `gr`.`Id`";
         
         if($searcher->HasKey('ByName'))
@@ -72,9 +72,9 @@ class AreaMapper implements \Library\Persistence\IMapper
         $mappedObject->id = $results->Id;
         $mappedObject->name = $results->Name;
         
-        $statistics = $this->_persistence->Get(
+        $statistics = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
                 new \ReflectionClass('\Application\Models\Domain\CrimeStatistic'),
-                array('ForArea' => $mappedObject->id));
+                array('ForArea' => $mappedObject->id)));
         
         $mappedObject->crimeStatistics = $statistics;
         
