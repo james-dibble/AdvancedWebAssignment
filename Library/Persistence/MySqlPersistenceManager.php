@@ -76,6 +76,8 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
             }
 
             $this->GetConnection()->commit();
+            
+            $this->_statementsToCommit = array();
         }
         catch (Exception $e)
         {
