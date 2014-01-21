@@ -27,8 +27,9 @@ class CrimeService implements ICrimeService
         $region =
                 $this->_persistence->Get(
                 new \Library\Persistence\PersistenceSearcher(
-                new \ReflectionClass('\Application\Models\Domain\Region'), array('ById' => $region)));
-
+                    new \ReflectionClass('\Application\Models\Domain\Region'), 
+                    array('ByName' => $region)));
+        
         return $region;
     }
 

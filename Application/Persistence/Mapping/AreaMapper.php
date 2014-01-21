@@ -52,8 +52,8 @@ class AreaMapper implements \Library\Persistence\IMapper
         if($searcher->HasKey('ForRegion'))
         {
             $query = 
-               sprintf("%s WHERE `a`.`Region_Id` = %s", $baseQuery, $searcher->GetKey('ForRegion'));
-                    
+               sprintf("%s WHERE `a`.`Region_Id` = '%s'", $baseQuery, $searcher->GetKey('ForRegion'));
+                                
             return $query;
         }
         

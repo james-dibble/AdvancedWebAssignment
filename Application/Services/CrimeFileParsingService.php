@@ -109,8 +109,6 @@ class CrimeFileParsingService implements ICrimeFileParsingService
             return null;
         }
         
-        $statistics = array();
-
         $lineContents = CrimeFileParsingService::SplitRow($row);
         
         $area = null;
@@ -124,29 +122,29 @@ class CrimeFileParsingService implements ICrimeFileParsingService
             $area = new \Application\Models\Domain\Area();
         }
         
-        $area->crimeStatistics = $statistics;
+        $area->crimeStatistics = array();
         $area->name = $lineContents[CrimeFileParsingService::locationId];
 
         try
         {
-            array_push($statistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::homocide], $this->GetCrimeType("homocide"), $area));
-            array_push($statistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::violenceWithInjury], $this->GetCrimeType("violenceWithInjury"), $area));
-            array_push($statistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::violenceWithoutInjury], $this->GetCrimeType("violenceWithoutInjury"), $area));
-            array_push($statistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::sexualOffenses], $this->GetCrimeType("sexualOffenses"), $area));
-            array_push($statistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::robbery], $this->GetCrimeType("robbery"), $area));
-            array_push($statistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::theftOffenses], $this->GetCrimeType("theftOffenses"), $area));
-            array_push($statistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::domesticBurglary], $this->GetCrimeType("domesticBurglary"), $area));
-            array_push($statistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::nonDomesticBurglary], $this->GetCrimeType("nonDomesticBurglary"), $area));
-            array_push($statistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::vehicleOffenses], $this->GetCrimeType("theftFromPerson"), $area));
-            array_push($statistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::bicycleTheft], $this->GetCrimeType("bicycleTheft"), $area));
-            array_push($statistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::shoplifting], $this->GetCrimeType("shoplifting"), $area));
-            array_push($statistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::miscTheft], $this->GetCrimeType("miscTheft"), $area));
-            array_push($statistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::criminalDamageAndArson], $this->GetCrimeType("criminalDamageAndArson"), $area));
-            array_push($statistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::drugOffenses], $this->GetCrimeType("drugOffenses"), $area));
-            array_push($statistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::possesionOfWeapons], $this->GetCrimeType("possesionOfWeapons"), $area));
-            array_push($statistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::publicOrderOffenses], $this->GetCrimeType("publicOrderOffenses"), $area));
-            array_push($statistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::miscCrimes], $this->GetCrimeType("miscCrimes"), $area));
-            array_push($statistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::fruad], $this->GetCrimeType("fruad"), $area));
+            array_push($area->crimeStatistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::homocide], $this->GetCrimeType("homocide"), $area));
+            array_push($area->crimeStatistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::violenceWithInjury], $this->GetCrimeType("violenceWithInjury"), $area));
+            array_push($area->crimeStatistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::violenceWithoutInjury], $this->GetCrimeType("violenceWithoutInjury"), $area));
+            array_push($area->crimeStatistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::sexualOffenses], $this->GetCrimeType("sexualOffenses"), $area));
+            array_push($area->crimeStatistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::robbery], $this->GetCrimeType("robbery"), $area));
+            array_push($area->crimeStatistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::theftOffenses], $this->GetCrimeType("theftOffenses"), $area));
+            array_push($area->crimeStatistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::domesticBurglary], $this->GetCrimeType("domesticBurglary"), $area));
+            array_push($area->crimeStatistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::nonDomesticBurglary], $this->GetCrimeType("nonDomesticBurglary"), $area));
+            array_push($area->crimeStatistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::vehicleOffenses], $this->GetCrimeType("theftFromPerson"), $area));
+            array_push($area->crimeStatistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::bicycleTheft], $this->GetCrimeType("bicycleTheft"), $area));
+            array_push($area->crimeStatistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::shoplifting], $this->GetCrimeType("shoplifting"), $area));
+            array_push($area->crimeStatistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::miscTheft], $this->GetCrimeType("miscTheft"), $area));
+            array_push($area->crimeStatistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::criminalDamageAndArson], $this->GetCrimeType("criminalDamageAndArson"), $area));
+            array_push($area->crimeStatistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::drugOffenses], $this->GetCrimeType("drugOffenses"), $area));
+            array_push($area->crimeStatistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::possesionOfWeapons], $this->GetCrimeType("possesionOfWeapons"), $area));
+            array_push($area->crimeStatistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::publicOrderOffenses], $this->GetCrimeType("publicOrderOffenses"), $area));
+            array_push($area->crimeStatistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::miscCrimes], $this->GetCrimeType("miscCrimes"), $area));
+            array_push($area->crimeStatistics, new \Application\Models\Domain\CrimeStatistic($lineContents[CrimeFileParsingService::fruad], $this->GetCrimeType("fruad"), $area));
         }
         catch (Exception $ex)
         {

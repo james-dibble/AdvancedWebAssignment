@@ -13,5 +13,10 @@ class CrimeStatistic
         $this->type = $type;
         $this->area = $area;
     }
+    
+    public function GetTotal()
+    {
+        return $this->value;
+    }
 }
 ?>

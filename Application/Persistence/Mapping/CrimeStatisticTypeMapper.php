@@ -24,17 +24,17 @@ class CrimeStatisticTypeMapper implements \Library\Persistence\IMapper
         
         if($searcher->HasKey('ById'))
         {
-            return sprintf("%s WHERE `id` == %s", $baseQuery, $searcher->GetKey('ById'));
+            return sprintf("%s WHERE `id` = '%s'", $baseQuery, $searcher->GetKey('ById'));
         }
         
         if($searcher->HasKey('name'))
         {
-            return sprintf("%s WHERE LOWER(`name`) == LOWER(%s)", $baseQuery, $searcher->GetKey('name'));
+            return sprintf("%s WHERE LOWER(`name`) = LOWER(%s)", $baseQuery, $searcher->GetKey('name'));
         }
         
         if($searcher->HasKey('abbreviation'))
         {
-            return sprintf("%s WHERE LOWER(`abbreviation`) == LOWER(%s)", $baseQuery, $searcher->GetKey('abbreviation'));
+            return sprintf("%s WHERE LOWER(`abbreviation`) = LOWER(%s)", $baseQuery, $searcher->GetKey('abbreviation'));
         }
         
         return $baseQuery;
