@@ -5,12 +5,12 @@ class DocumentationController extends \Library\Controller\Controller
 {
     public function Index()
     {
-        return new \Library\Controller\ViewResult(new \Application\Views\Documentation\Index());
+        return $this->ViewResult(new \Application\Views\Documentation\Index());
     }
     
     public function Source($path)
     {
-        return new \Library\Controller\ViewResult(new \Application\Views\Documentation\SourceCode($path));
+        return $this->ViewResult(new \Application\Views\Documentation\SourceCode($path));
     }
 }
 ?>

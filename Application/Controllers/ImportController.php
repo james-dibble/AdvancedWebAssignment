@@ -15,7 +15,7 @@ class ImportController extends \Library\Controller\Controller
 
     public function Index()
     {
-        return new \Library\Controller\ViewResult(new \Application\Views\Import\Index());
+        return $this->ViewResult(new \Application\Views\Import\Index());
     }
 
     public function File()
@@ -29,7 +29,7 @@ class ImportController extends \Library\Controller\Controller
             die('The file was uploaded');
         }
 
-        return new \Library\Controller\RedirectToAction('import');
+        return $this->RedirectToAction('import');
     }
 
     public function Text($inputContents)
@@ -55,18 +55,18 @@ class ImportController extends \Library\Controller\Controller
 
             die();
             
-            return new \Library\Controller\RedirectToAction('import/imported-data');
+            return $this->RedirectToAction('import/imported-data');
         }
         catch (\Exception $ex)
         {            
             die($ex->getmessage());
-            return new \Library\Controller\RedirectToAction('import/error');
+            return $this->RedirectToAction('import/error');
         }
     }
 
     public function ErrorUploading()
     {
-        return new \Library\Controller\ViewResult(new \Application\Views\Import\ErrorUploading());
+        return $this->ViewResult(new \Application\Views\Import\ErrorUploading());
     }
 
     public function ImportedData()
@@ -74,12 +74,12 @@ class ImportController extends \Library\Controller\Controller
         $statsAsXml = new \DOMDocument();
         $statsAsXml->load('/tmp/import.xml');
         
-        return new \Library\Controller\ViewResult(new \Application\Views\Import\ImportedData($statsAsXml));
+        return $this->ViewResult(new \Application\Views\Import\ImportedData($statsAsXml));
     }
 
     public function Save()
     {
-        return new \Library\Controller\RedirectToAction('');
+        return $this->RedirectToAction('');
     }
 }
 ?>

@@ -7,12 +7,12 @@ class APIController extends \Library\Controller\Controller
     {
         if(strtolower($format) === 'xml')
         {
-            return new \Library\Controller\XMLResult($model);
+            return $this->XmlResult($model);
         }
         
         if(strtolower($format) === 'json')
         {
-            return new \Library\Controller\JsonResult($model);
+            return $this->JsonResult($model);
         }
         
         return null;
