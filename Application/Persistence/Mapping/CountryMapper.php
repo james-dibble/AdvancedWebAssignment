@@ -14,14 +14,16 @@ class CountryMapper implements \Library\Persistence\IMapper
     {
         $geographicLocationQuery =
                 sprintf(
-                "INSERT INTO `geographicreference`(`Name`) VALUES ('%s');", $objectToSave->id);
+                "INSERT INTO `geographic_references`(`Name`) VALUES ('%s');", $objectToSave->name);
         
         $geographicLocationId = "SET @geographicReferenceId = (SELECT LAST_INSERT_ID());";
-                
-        $countryQuery = 'INSERT INTO `country` (`GeographicReference_Id`)
-            VALUES (@geographicReferenceId);';
         
-        return array($geographicLocationQuery, $geographicLocationId, $countryQuery);
+        $countryQuery = 'INSERT INTO `countrys`(`GeographicReference_Id`) VALUES(@geographicReferenceId);';
+
+        return array(
+            $geographicLocationQuery, 
+            $geographicLocationId, 
+            $countryQuery);
     }
 
     public function GetChangeQueries($objectToSave, array $referenceObjects)
@@ -31,28 +33,21 @@ class CountryMapper implements \Library\Persistence\IMapper
 
     public function GetFindQuery(\Library\Persistence\IPersistenceSearcher $searcher)
     {
-        $query = 
-            'SELECT `gr`.`id`, `gr`.`name` FROM
-                `country` `c`
-            INNER JOIN `geographicreference` `gr`
-                ON `gr`.`id` = `c`.`GeographicReference_Id`';
+        $baseQuery = 
+                "SELECT `gr`.`Id`, `gr`.`Name` FROM `countrys` `c`
+                 INNER JOIN 
+                    `geographic_references` `gr`
+                    ON `c`.`GeographicReference_Id` = `gr`.`Id`";
         
-        if($searcher->HasKey('ById'))
+        if($searcher->HasKey('ByName'))
         {
-            $query .= sprintf(" WHERE LOWER(`gr`.`name`) = LOWER('%s') LIMIT 1", $searcher->GetKey('ById'));
-        }    
-        
-        if($searcher->HasKey('ForRegion'))
-        {
-            $query .= sprintf(" INNER JOIN `region` `r` ON
-                `r`.`Country_Id` = `c`.`GeographicReference_Id`
-              INNER JOIN `geographicreference` `grr`
-                            ON `grr`.`id` = `r`.`GeographicReference_Id`
-            WHERE 
-              LOWER(`grr`.`Name`) = LOWER('%s') LIMIT 1", $searcher->GetKey('ForRegion')->id);
+            $query = 
+               sprintf("%s WHERE LOWER(`gr`.`name`) = LOWER('%s')", $baseQuery, $searcher->GetKey('ByName'));
+                  
+            return $query;
         }
-        
-        return $query;
+                
+        return $baseQuery;
     }
 
     public function GetMappedClass()
@@ -61,19 +56,32 @@ class CountryMapper implements \Library\Persistence\IMapper
     }
 
     public function MapObject($results)
-    {        
+    {  
         $mappedObject = new \Application\Models\Domain\Country();
         
-        $mappedObject->id = $results->name;
+        $mappedObject->id = $results->Id;
+        $mappedObject->name = $results->Name;
         
-        $searchCriteria = array('ForCountry' => $results->id);
+        $regions = $this->_persistence->GetCollection(new \Library\Persistence\PersistenceSearcher(
+                new \ReflectionClass('\Application\Models\Domain\Region'),
+                array('ForCountry' => $mappedObject->id)));
         
-        $searcher = new \Library\Persistence\PersistenceSearcher(new \ReflectionClass('\Application\Models\Domain\Region'), $searchCriteria);
-        
-        $mappedObject->regions = $this->_persistence->GetCollection($searcher);
+        $mappedObject->regions = $regions;
         
         return $mappedObject;
-    }    
+    }  
+    
+    public function GetDeleteQueries($objectToSave = null, \Library\Persistence\IPersistenceSearcher $searcher = null) 
+    {
+        if($searcher != null && $searcher->HasKey('Clear'))
+        {
+            $query = 'DELETE FROM `countrys`;';
+            
+            $geographicReferencesQuery = 'DELETE FROM `geographic_references`;';
+            
+            return array($query, $geographicReferencesQuery);
+        }
+    }
 }
 
 ?>

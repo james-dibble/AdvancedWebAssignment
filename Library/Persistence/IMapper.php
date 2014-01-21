@@ -9,6 +9,8 @@ interface IMapper
     
     function GetChangeQueries($objectToSave, array $referenceObjects);
     
+    function GetDeleteQueries($objectToSave = null, \Library\Persistence\IPersistenceSearcher $searcher = null);
+    
     function GetFindQuery(\Library\Persistence\IPersistenceSearcher $searcher);
     
     function MapObject($results);

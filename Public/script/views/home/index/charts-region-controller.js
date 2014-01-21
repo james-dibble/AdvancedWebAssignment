@@ -4,6 +4,7 @@ function ChartsRegionController($scope, $http)
     $scope.loadingRegions = true;
     $scope.loadingRegionsFailed = false;
     
+    //$http.get('/~j3-dibble/atwd/crimes/6-2013/json')
     $http.get('/atwd/crimes/6-2013/json')
             .success(function(data)
     {

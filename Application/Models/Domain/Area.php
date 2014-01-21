@@ -4,15 +4,23 @@ namespace Application\Models\Domain;
 class Area extends \Application\Models\Domain\GeographicReference 
 {
     public $crimeStatistics;
+    public $region;
     
-    public function __construct(\Application\Models\Domain\CrimeStatistics $crimeStatistics)
+    public function __construct()
     {
-        $this->crimeStatistics = $crimeStatistics;
+        $this->crimeStatistics = array();
     }
     
     public function GetTotal()
     {
-        return $this->crimeStatistics->GetTotal();
+        $total = 0;
+        
+        foreach($this->crimeStatistics as $crimeStatistic)
+        {
+            $total += $crimeStatistic->value;
+        }
+        
+        return $total;
     }
 }
 ?>

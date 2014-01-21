@@ -7,7 +7,7 @@ class GeographicLocationName
     
     public function __construct(\Application\Models\Domain\GeographicReference $location)
     {
-        $this->name = $location->id;
+        $this->name = $location->name;
     }
 }
 ?>

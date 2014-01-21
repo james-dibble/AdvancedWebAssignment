@@ -11,6 +11,8 @@ interface IPersistenceManager
     
     function Change($objectToChange, array $referenceObjects);
     
+    function Delete($objectToDelete = null, \Library\Persistence\IPersistenceSearcher $search = null);
+    
     function Commit();
 }
 ?>

@@ -41,6 +41,26 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
         }
     }
 
+    public function Delete($objectToDelete = null, IPersistenceSearcher $search = null) 
+    {
+        $mapper = null;
+        
+        if($objectToDelete != null)
+        {
+            $mapper = $this->_mappers->GetMapper(new \ReflectionClass($objectToDelete));
+        }
+        
+        if($search != null)
+        {
+            $mapper = $this->_mappers->GetMapper($search->TypeToSearch());
+        }
+        
+        foreach($mapper->GetDeleteQueries($objectToDelete, $search) as $query)
+        {
+            array_push($this->_statementsToCommit, $query);
+        }
+    }
+    
     public function Commit()
     {
         try
@@ -50,11 +70,14 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
             $this->GetConnection()->beginTransaction();
 
             foreach ($this->_statementsToCommit as $statement)
-            {                                
+            {    
+                echo $statement . '<br />';
                 $this->GetConnection()->exec($statement);
             }
 
             $this->GetConnection()->commit();
+            
+            $this->_statementsToCommit = array();
         }
         catch (Exception $e)
         {

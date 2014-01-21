@@ -1,6 +1,8 @@
 <div class="row">
     <div class="col-lg-12">
-        <?php include 'ImportForm.php'; ?>
+        <div class="alert alert-danger">
+            <strong>Warning!</strong>&nbsp;Importing a file will delete all current crime entries.
+        </div>
     </div>
 </div>
 <div class="row">

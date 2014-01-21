@@ -4,6 +4,7 @@ namespace Application\Models\Domain;
 class Region extends \Application\Models\Domain\GeographicReference
 {   
     public $areas;
+    public $country;
     
     public function __construct() 
     {

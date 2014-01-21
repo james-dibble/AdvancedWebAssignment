@@ -14,51 +14,46 @@ class RegionMapper implements \Library\Persistence\IMapper
     {
         $geographicLocationQuery =
                 sprintf(
-                "INSERT INTO `geographicreference`(`Name`) VALUES ('%s');", $objectToSave->id);
+                "INSERT INTO `geographic_references`(`Name`) VALUES ('%s');", $objectToSave->name);
         
         $geographicLocationId = "SET @geographicReferenceId = (SELECT LAST_INSERT_ID());";
-        
-        $regionId = "SET @regionId = (SELECT @geographicReferenceId);";
-        
-        $countryId = sprintf("SET @countryId = 
-            (
-            SELECT `gr`.`id` FROM
-                `country` `c`
-            INNER JOIN `geographicreference` `gr`
-                ON `gr`.`id` = `c`.`GeographicReference_Id`
-            WHERE LOWER(`gr`.`Name`) = '%s'
-            );", $referenceObjects['Country']->id);
-        
-        $regionQuery = 'INSERT INTO `region` (`GeographicReference_Id`, `Country_Id`)
-            VALUES (@geographicReferenceId, @countryId);';
-        
-        return array($geographicLocationQuery, $geographicLocationId, $regionId, $countryId, $regionQuery);
+                
+        $regionQuery = sprintf(
+                "INSERT INTO `regions` (`GeographicReference_Id`, `Country_Id`) VALUES (@geographicReferenceId, '%s');", 
+                $objectToSave->country->id);
+                
+        return array($geographicLocationQuery, $geographicLocationId, $regionQuery);
     }
 
     public function GetChangeQueries($objectToSave, array $referenceObjects)
     {
-        
     }
 
     public function GetFindQuery(\Library\Persistence\IPersistenceSearcher $searcher)
     {
-        $query = 
-            'SELECT `gr`.`id`, `gr`.`name` FROM
-                `region` `r`
-            INNER JOIN `geographicreference` `gr`
-                ON `gr`.`id` = `r`.`GeographicReference_Id`';
+        $baseQuery = 
+                "SELECT `gr`.`Id`, `gr`.`Name` FROM `regions` `r`
+                 INNER JOIN 
+                    `geographic_references` `gr`
+                    ON `r`.`GeographicReference_Id` = `gr`.`Id`";
+        
+        if($searcher->HasKey('ByName'))
+        {
+            $query = 
+               sprintf("%s WHERE LOWER(`gr`.`name`) = LOWER('%s')", $baseQuery, $searcher->GetKey('ByName'));
+                    
+            return $query;
+        }
         
         if($searcher->HasKey('ForCountry'))
         {
-            $query .= sprintf(' WHERE `r`.`Country_Id` = %d', $searcher->GetKey('ForCountry'));
+            $query = 
+               sprintf("%s WHERE `r`.`Country_Id` = %s", $baseQuery, $searcher->GetKey('ForCountry'));
+                    
+            return $query;
         }
         
-        if($searcher->HasKey('ById'))
-        {
-            $query .= sprintf(" WHERE LOWER(`gr`.`name`) = LOWER('%s')", $searcher->GetKey('ById'));
-        }
-                        
-        return $query;
+        return $baseQuery;
     }
 
     public function GetMappedClass()
@@ -70,15 +65,26 @@ class RegionMapper implements \Library\Persistence\IMapper
     {
         $mappedObject = new \Application\Models\Domain\Region();
         
-        $mappedObject->id = $results->name;
+        $mappedObject->id = $results->Id;
+        $mappedObject->name = $results->Name;
         
-        $searchCriteria = array('ForRegion' => $results->id);
+        $areas = $this->_persistence->GetCollection(new \Library\Persistence\PersistenceSearcher(
+                new \ReflectionClass('\Application\Models\Domain\Area'),
+                array('ForRegion' => $mappedObject->id)));
         
-        $searcher = new \Library\Persistence\PersistenceSearcher(new \ReflectionClass('\Application\Models\Domain\Area'), $searchCriteria);
-        
-        $mappedObject->areas = $this->_persistence->GetCollection($searcher);
+        $mappedObject->areas = $areas;
         
         return $mappedObject;
-    }    
+    } 
+    
+    public function GetDeleteQueries($objectToSave = null, \Library\Persistence\IPersistenceSearcher $searcher = null) 
+    {
+        if($searcher != null && $searcher->HasKey('Clear'))
+        {
+            $query = 'DELETE FROM `regions`;';
+            
+            return array($query);
+        }
+    }
 }
 ?>
