@@ -14,25 +14,16 @@ class RegionMapper implements \Library\Persistence\IMapper
     {
         $geographicLocationQuery =
                 sprintf(
-                "INSERT INTO `geographic_references`(`Name`) VALUES ('%s');", $objectToSave->id);
+                "INSERT INTO `geographic_references`(`Name`) VALUES ('%s');", $objectToSave->name);
         
         $geographicLocationId = "SET @geographicReferenceId = (SELECT LAST_INSERT_ID());";
+                
+        $regionQuery = sprintf("INSERT INTO `regions` (`GeographicReference_Id`, `Country_Id`)
+            VALUES (@geographicReferenceId, %s);", $objectToSave->country->id);
         
-        $regionId = "SET @regionId = (SELECT @geographicReferenceId);";
+        echo $regionQuery;
         
-        $countryId = sprintf("SET @countryId = 
-            (
-            SELECT `gr`.`id` FROM
-                `countrys` `c`
-            INNER JOIN `geographic_references` `gr`
-                ON `gr`.`id` = `c`.`GeographicReference_Id`
-            WHERE LOWER(`gr`.`Name`) = '%s'
-            );", $referenceObjects['Country']->id);
-        
-        $regionQuery = 'INSERT INTO `region` (`GeographicReference_Id`, `Country_Id`)
-            VALUES (@geographicReferenceId, @countryId);';
-        
-        return array($geographicLocationQuery, $geographicLocationId, $regionId, $countryId, $regionQuery);
+        return array($geographicLocationQuery, $geographicLocationId, $regionQuery);
     }
 
     public function GetChangeQueries($objectToSave, array $referenceObjects)
@@ -44,13 +35,13 @@ class RegionMapper implements \Library\Persistence\IMapper
         $baseQuery = 
                 "SELECT `gr`.`Id`, `gr`.`Name` FROM `regions` `r`
                  INNER JOIN 
-                    `geograpic_references` `gr`
+                    `geographic_references` `gr`
                     ON `r`.`GeographicReference_Id` = `gr`.`Id`";
         
         if($searcher->HasKey('ByName'))
         {
             $query = 
-               sprintf("%s WHERE LOWER(`gr`.`name`) = LOWER(%s)", $baseQuery, $searcher->GetKey('ByName'));
+               sprintf("%s WHERE LOWER(`gr`.`name`) = LOWER('%s')", $baseQuery, $searcher->GetKey('ByName'));
                     
             return $query;
         }
@@ -91,7 +82,7 @@ class RegionMapper implements \Library\Persistence\IMapper
     {
         if($searcher != null && $searcher->HasKey('Clear'))
         {
-            $query = 'DELETE FROM `geographic_references` `gr` WHERE `gr`.`Id` IN (SELECT FROM `regions` `a`);';
+            $query = 'DELETE FROM `geographic_references` WHERE `Id` IN (SELECT `GeographicReference_Id` FROM `regions`);';
             
             return array($query);
         }

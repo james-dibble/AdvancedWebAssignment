@@ -50,7 +50,7 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
             $mapper = $this->_mappers->GetMapper(new \ReflectionClass($objectToDelete));
         }
         
-        if($objectToDelete != null)
+        if($search != null)
         {
             $mapper = $this->_mappers->GetMapper($search->TypeToSearch());
         }
@@ -70,7 +70,7 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
             $this->GetConnection()->beginTransaction();
 
             foreach ($this->_statementsToCommit as $statement)
-            {                                
+            {    
                 $this->GetConnection()->exec($statement);
             }
 

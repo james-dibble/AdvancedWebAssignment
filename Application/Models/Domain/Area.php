@@ -4,6 +4,7 @@ namespace Application\Models\Domain;
 class Area extends \Application\Models\Domain\GeographicReference 
 {
     public $crimeStatistics;
+    public $region;
     
     public function __construct()
     {

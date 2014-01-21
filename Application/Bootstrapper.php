@@ -6,24 +6,28 @@ class Bootstrapper
     public static function BuildContainer()
     {        
         $container = new \Library\Composition\Container();
-                        
-        $fileParser = new \Application\Services\CrimeFileParsingService();
-        $container->Bind('Application\Services\ICrimeFileParsingService', $fileParser);
-        
+                 
         $mapperDictionary = new \Library\Persistence\MapperDictionary();
         
-        #$persistenceManager = new \Library\Persistence\MySqlPersistenceManager('mysql5.cems.uwe.ac.uk', 'fet10009689', 'jli798ik', $mapperDictionary);
-        $persistenceManager = new \Library\Persistence\MySqlPersistenceManager('localhost', 'root', '', $mapperDictionary);
+        $persistenceManager = new \Library\Persistence\MySqlPersistenceManager('mysql5.cems.uwe.ac.uk', 'fet10009689', 'jli798ik', $mapperDictionary);
+        #$persistenceManager = new \Library\Persistence\MySqlPersistenceManager('localhost', 'root', '', $mapperDictionary);
         
         $areaMapper = new \Application\Persistence\Mapping\AreaMapper($persistenceManager);
         $regionMapper = new \Application\Persistence\Mapping\RegionMapper($persistenceManager);
         $nationalMapper = new \Application\Persistence\Mapping\NationalMapper($persistenceManager);
         $countryMapper = new \Application\Persistence\Mapping\CountryMapper($persistenceManager);
+        $crimeStatisticMapper = new \Application\Persistence\Mapping\CrimeStatisticMapper($persistenceManager);
+        $crimeStatisticTypeMapper = new \Application\Persistence\Mapping\CrimeStatisticTypeMapper();
         
         $mapperDictionary->Add($areaMapper);
         $mapperDictionary->Add($regionMapper);
         $mapperDictionary->Add($nationalMapper);
         $mapperDictionary->Add($countryMapper);
+        $mapperDictionary->Add($crimeStatisticMapper);
+        $mapperDictionary->Add($crimeStatisticTypeMapper);
+                       
+        $fileParser = new \Application\Services\CrimeFileParsingService($persistenceManager);
+        $container->Bind('Application\Services\ICrimeFileParsingService', $fileParser);
         
         $container->Bind('\Library\Persistence\IPersistenceManager', $persistenceManager);
         

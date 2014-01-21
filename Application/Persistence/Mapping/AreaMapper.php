@@ -20,8 +20,8 @@ class AreaMapper implements \Library\Persistence\IMapper
         $geographicLocationId = "SET @geographicReferenceId = (SELECT LAST_INSERT_ID());";
         
         $areaQuery =
-                sprintf('INSERT INTO `areas`(`GeographicReference_Id`, `CrimeStatistics_Id`, `Region_Id`) 
-                    VALUES(@geographicReferenceId, @crimeStatsId, %s)', $objectToSave->region->id);
+                sprintf('INSERT INTO `areas`(`GeographicReference_Id`, `Region_Id`) 
+                    VALUES(@geographicReferenceId, %s)', $objectToSave->region->id);
 
         return array(
             $geographicLocationQuery, 
@@ -44,7 +44,7 @@ class AreaMapper implements \Library\Persistence\IMapper
         if($searcher->HasKey('ByName'))
         {
             $query = 
-               sprintf("%s WHERE LOWER(`gr`.`name`) = LOWER(%s)", $baseQuery, $searcher->GetKey('ByName'));
+               sprintf("%s WHERE LOWER(`gr`.`name`) = LOWER('%s')", $baseQuery, $searcher->GetKey('ByName'));
                     
             return $query;
         }
@@ -85,7 +85,7 @@ class AreaMapper implements \Library\Persistence\IMapper
     {
         if($searcher != null && $searcher->HasKey('Clear'))
         {
-            $query = 'DELETE FROM `geographic_references` `gr` WHERE `gr`.`Id` IN (SELECT FROM `areas` `a`);';
+            $query = 'DELETE FROM `geographic_references` WHERE `Id` IN (SELECT `GeographicReference_Id` FROM `areas`);';
             
             return array($query);
         }

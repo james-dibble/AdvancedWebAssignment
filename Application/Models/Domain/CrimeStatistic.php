@@ -7,7 +7,7 @@ class CrimeStatistic
     public $type;
     public $area;
     
-    public function __construct($value, \Application\Models\Domain\CrimeStatisticType $type, \Application\Models\Domain\Area $area)
+    public function __construct($value, \Application\Models\Domain\CrimeStatisticType $type, \Application\Models\Domain\Area $area = null)
     {
         $this->value = $value;
         $this->type = $type;

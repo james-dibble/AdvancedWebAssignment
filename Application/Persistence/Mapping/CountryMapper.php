@@ -12,6 +12,18 @@ class CountryMapper implements \Library\Persistence\IMapper
     
     public function GetAddQueries($objectToSave, array $referenceObjects)
     {
+        $geographicLocationQuery =
+                sprintf(
+                "INSERT INTO `geographic_references`(`Name`) VALUES ('%s');", $objectToSave->name);
+        
+        $geographicLocationId = "SET @geographicReferenceId = (SELECT LAST_INSERT_ID());";
+        
+        $countryQuery = 'INSERT INTO `countrys`(`GeographicReference_Id`) VALUES(@geographicReferenceId)';
+
+        return array(
+            $geographicLocationQuery, 
+            $geographicLocationId, 
+            $countryQuery);
     }
 
     public function GetChangeQueries($objectToSave, array $referenceObjects)
@@ -24,14 +36,14 @@ class CountryMapper implements \Library\Persistence\IMapper
         $baseQuery = 
                 "SELECT `gr`.`Id`, `gr`.`Name` FROM `countrys` `c`
                  INNER JOIN 
-                    `geograpic_references` `gr`
+                    `geographic_references` `gr`
                     ON `c`.`GeographicReference_Id` = `gr`.`Id`";
         
         if($searcher->HasKey('ByName'))
         {
             $query = 
-               sprintf("%s WHERE LOWER(`gr`.`name`) = LOWER(%s)", $baseQuery, $searcher->GetKey('ByName'));
-                    
+               sprintf("%s WHERE LOWER(`gr`.`name`) = LOWER('%s')", $baseQuery, $searcher->GetKey('ByName'));
+                  
             return $query;
         }
                 
@@ -50,9 +62,9 @@ class CountryMapper implements \Library\Persistence\IMapper
         $mappedObject->id = $results->Id;
         $mappedObject->name = $results->Name;
         
-        $regions = $this->_persistence->Get(
+        $regions = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
                 new \ReflectionClass('\Application\Models\Domain\Region'),
-                array('ForCountry' => $mappedObject->id));
+                array('ForCountry' => $mappedObject->id)));
         
         $mappedObject->regions = $regions;
         
@@ -63,7 +75,7 @@ class CountryMapper implements \Library\Persistence\IMapper
     {
         if($searcher != null && $searcher->HasKey('Clear'))
         {
-            $query = 'DELETE FROM `geographic_references` `gr` WHERE `gr`.`Id` IN (SELECT FROM `countrys` `a`);';
+            $query = 'DELETE FROM `geographic_references` WHERE `Id` IN (SELECT `GeographicReference_Id` FROM `countrys`);';
             
             return array($query);
         }

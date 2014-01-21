@@ -10,7 +10,7 @@ class CrimeStatisticTypeMapper implements \Library\Persistence\IMapper
                 $objectToSave->name,
                 $objectToSave->abbreviation);
         
-        return $query;
+        return array($query);
     }
 
     public function GetChangeQueries($objectToSave, array $referenceObjects)
