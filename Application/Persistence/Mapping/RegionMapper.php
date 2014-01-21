@@ -18,11 +18,10 @@ class RegionMapper implements \Library\Persistence\IMapper
         
         $geographicLocationId = "SET @geographicReferenceId = (SELECT LAST_INSERT_ID());";
                 
-        $regionQuery = sprintf("INSERT INTO `regions` (`GeographicReference_Id`, `Country_Id`)
-            VALUES (@geographicReferenceId, %s);", $objectToSave->country->id);
-        
-        echo $regionQuery;
-        
+        $regionQuery = sprintf(
+                "INSERT INTO `regions` (`GeographicReference_Id`, `Country_Id`) VALUES (@geographicReferenceId, '%s');", 
+                $objectToSave->country->id);
+                
         return array($geographicLocationQuery, $geographicLocationId, $regionQuery);
     }
 
@@ -82,7 +81,7 @@ class RegionMapper implements \Library\Persistence\IMapper
     {
         if($searcher != null && $searcher->HasKey('Clear'))
         {
-            $query = 'DELETE FROM `geographic_references` WHERE `Id` IN (SELECT `GeographicReference_Id` FROM `regions`);';
+            $query = 'DELETE FROM `regions`;';
             
             return array($query);
         }

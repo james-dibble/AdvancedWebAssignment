@@ -75,7 +75,9 @@ class CountryMapper implements \Library\Persistence\IMapper
     {
         if($searcher != null && $searcher->HasKey('Clear'))
         {
-            $query = 'DELETE FROM `geographic_references` WHERE `Id` IN (SELECT `GeographicReference_Id` FROM `countrys`);';
+            $query = 'DELETE FROM `countrys`;';
+            
+            $geographicReferencesQuery = 'DELETE FROM `geographical_references`;';
             
             return array($query);
         }

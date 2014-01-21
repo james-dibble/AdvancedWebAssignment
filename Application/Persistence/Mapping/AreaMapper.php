@@ -85,7 +85,7 @@ class AreaMapper implements \Library\Persistence\IMapper
     {
         if($searcher != null && $searcher->HasKey('Clear'))
         {
-            $query = 'DELETE FROM `geographic_references` WHERE `Id` IN (SELECT `GeographicReference_Id` FROM `areas`);';
+            $query = 'DELETE FROM `areas`;';
             
             return array($query);
         }

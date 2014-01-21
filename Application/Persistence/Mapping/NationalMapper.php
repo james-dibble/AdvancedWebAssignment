@@ -77,7 +77,7 @@ class NationalMapper implements \Library\Persistence\IMapper
     {
         if ($searcher != null && $searcher->HasKey('Clear'))
         {
-            $query = 'DELETE FROM `geographic_references` WHERE `Id` IN (SELECT `Area_Id` FROM `nationals`);';
+            $query = 'DELETE FROM `areas` WHERE `GeographicReference_Id` IN (SELECT `Area_Id` FROM `nationals`);';
 
             return array($query);
         }

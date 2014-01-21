@@ -71,8 +71,7 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
 
             foreach ($this->_statementsToCommit as $statement)
             {    
-                echo $statement;
-                
+                echo $statement . '<br />';
                 $this->GetConnection()->exec($statement);
             }
 
