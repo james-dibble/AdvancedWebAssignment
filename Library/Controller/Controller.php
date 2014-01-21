@@ -4,7 +4,6 @@ namespace Library\Controller;
 
 abstract class Controller
 {
-
     public function ProcessRequest($action, $arguments = null)
     {
         $actionResult = null;
@@ -33,6 +32,26 @@ abstract class Controller
         }
 
         $actionResult->DoAction();
+    }
+    
+    protected function ViewResult(\Library\Views\IView $view)
+    {
+        return new \Library\Controller\ViewResult($view);
+    }
+    
+    protected function RedirectToAction($action)
+    {
+        return new \Library\Controller\RedirectToAction($action);
+    }
+    
+    protected function JsonResult($object)
+    {
+        return new \Library\Controller\JsonResult($object);
+    }
+    
+    protected function XmlResult($object)
+    {
+        return new \Library\Controller\XmlResult($object);
     }
 
     private function GetActionParameters($actionName)
