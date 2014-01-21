@@ -26,6 +26,8 @@ class DataSeeder
     
     static function ClearAndSeed(\Library\Persistence\IPersistenceManager $persistence)
     {
+        echo "I AM CLEARING <br /><br />";
+        
         $persistence->Delete(
                 null, 
                 new \Library\Persistence\PersistenceSearcher(
