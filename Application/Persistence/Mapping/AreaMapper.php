@@ -72,7 +72,7 @@ class AreaMapper implements \Library\Persistence\IMapper
         $mappedObject->id = $results->Id;
         $mappedObject->name = $results->Name;
         
-        $statistics = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
+        $statistics = $this->_persistence->GetCollection(new \Library\Persistence\PersistenceSearcher(
                 new \ReflectionClass('\Application\Models\Domain\CrimeStatistic'),
                 array('ForArea' => $mappedObject->id)));
         

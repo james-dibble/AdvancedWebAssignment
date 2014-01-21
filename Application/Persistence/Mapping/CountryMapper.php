@@ -62,7 +62,7 @@ class CountryMapper implements \Library\Persistence\IMapper
         $mappedObject->id = $results->Id;
         $mappedObject->name = $results->Name;
         
-        $regions = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
+        $regions = $this->_persistence->GetCollection(new \Library\Persistence\PersistenceSearcher(
                 new \ReflectionClass('\Application\Models\Domain\Region'),
                 array('ForCountry' => $mappedObject->id)));
         

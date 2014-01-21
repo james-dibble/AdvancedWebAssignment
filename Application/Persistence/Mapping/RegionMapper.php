@@ -68,7 +68,7 @@ class RegionMapper implements \Library\Persistence\IMapper
         $mappedObject->id = $results->Id;
         $mappedObject->name = $results->Name;
         
-        $areas = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
+        $areas = $this->_persistence->GetCollection(new \Library\Persistence\PersistenceSearcher(
                 new \ReflectionClass('\Application\Models\Domain\Area'),
                 array('ForRegion' => $mappedObject->id)));
         
