@@ -26,7 +26,7 @@ class CrimesController extends \Library\Controller\APIController
                                 
         $response->crimes = new \Application\Models\Responses\CrimeCollection($year, $regionalCrimes, $nationalCrimes, $englandCrimes, $walesCrimes);
         
-        return CrimesController::BuildRespose($response, $format);
+        return $this->BuildRespose($response, $format);
     }
     
     public function GetForRegion($year, $region, $format)
@@ -39,7 +39,7 @@ class CrimesController extends \Library\Controller\APIController
                 
         $response->crimes = new \Application\Models\Responses\RegionalCrimeCollection($year, $regionalCrimes);
         
-        return CrimesController::BuildRespose($response, $format);
+        return $this->BuildRespose($response, $format);
     }
     
     public function Post($regionName, $newArea, $areaData, $format)
@@ -76,7 +76,7 @@ class CrimesController extends \Library\Controller\APIController
         $response = new \Application\Models\Responses\Response();
         $response->crimes = new \Application\Models\Responses\PostResponse($area, $region, $country, $allCountries);
         
-        return CrimesController::BuildRespose($response, $format);
+        return $this->BuildRespose($response, $format);
     }
 }
 ?>
