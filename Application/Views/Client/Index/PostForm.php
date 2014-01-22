@@ -18,12 +18,17 @@
             <div class="form-group">
                 <button type="button" class="btn btn-primary btn-block" data-ng-click="post()">Post</button>
             </div>
-            <div>
-                <span class="label label-primary">Request URI</span><code>{{requestUri}}</code>
-                <br />
-                <br />
-                <span class="label label-primary">Response</span><br />
-                <pre>{{json}}</pre> 
+            <div class="panel panel-primary">
+                <div class="panel-heading">Request URI</div>
+                <div class="panel-body">
+                    <pre>{{requestUri}}</pre>
+                </div>
+            </div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">Response</div>
+                <div class="panel-body">
+                    <pre>{{json}}</pre>
+                </div>
             </div>
         </div>
         <div class="col-lg-6 col-md-6">
