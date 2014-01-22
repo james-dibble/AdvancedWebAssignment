@@ -14,9 +14,9 @@ class LocationsController extends \Library\Controller\APIController
     {
         $regions = $this->_locationService->GetAllRegions();
         
-        $response = new \Application\Models\Responses\GeographicLocationCollection($regions);
+        $response = new \Application\Models\Responses\LocationCollection($regions);
         
-        return LocationsController::BuildRespose($response, $format);
+        return $this->BuildRespose($response, $format);
     }
 }
 ?>

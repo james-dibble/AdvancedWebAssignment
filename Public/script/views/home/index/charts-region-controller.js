@@ -3,14 +3,15 @@ function ChartsRegionController($scope, $http)
     $scope.regions = [];
     $scope.loadingRegions = true;
     $scope.loadingRegionsFailed = false;
+    $scope.json = '';
+    $scope.requestUri = '/atwd/crimes/6-2013/json';
     
-    //$http.get('/~j3-dibble/atwd/crimes/6-2013/json')
-    $http.get('/atwd/crimes/6-2013/json')
-            .success(function(data)
+    $http.get($scope.requestUri).success(function(data)
     {
         $scope.regions = [];
         $scope.loadingRegions = false;
         $scope.loadingRegionsFailed = false;
+        $scope.json = JSON.stringify(data, null, 4);
         
         $scope.regions = data.response.crimes.region;
         

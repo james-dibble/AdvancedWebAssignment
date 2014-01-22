@@ -71,7 +71,6 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
 
             foreach ($this->_statementsToCommit as $statement)
             {    
-                echo $statement . '<br />';
                 $this->GetConnection()->exec($statement);
             }
 
@@ -91,11 +90,12 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
         $mapper = $this->_mappers->GetMapper($search->TypeToSearch());
 
         $query = $this->GetConnection()->query($mapper->GetFindQuery($search) . ';');
+                
         $query->setFetchMode(\PDO::FETCH_OBJ);
                 
         while ($row = $query->fetch())
         {
-            return $mapper->MapObject($row);
+            return $mapper->MapObject($row, $search);
         }
 
         return null;
@@ -112,7 +112,7 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
 
         while($row = $query->fetch())
         {
-            $mappedObject = $mapper->MapObject($row);
+            $mappedObject = $mapper->MapObject($row, $search);
 
             array_push($mappedObjects, $mappedObject);
         }

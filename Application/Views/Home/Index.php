@@ -21,7 +21,7 @@ class Index extends \Application\Views\Layout\ApplicationLayout implements \Libr
     {
         $this->BuildHeader();
 
-        include dirname(__FILE__) . '/Index/ChartDisplay.php';
+        $this->PartialView('Application/Views/Home/Index/ChartDisplay.php');
 
         $this->BuildFooter();
     }

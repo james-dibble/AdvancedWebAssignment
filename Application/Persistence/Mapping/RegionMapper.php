@@ -45,6 +45,19 @@ class RegionMapper implements \Library\Persistence\IMapper
             return $query;
         }
         
+        if($searcher->HasKey('ForArea'))
+        {
+            $joinArea =
+                    "INNER JOIN
+                        `areas` `a`
+                        ON `a`.`Region_Id` = `r`.`GeographicReference_Id`";
+            
+            $query = 
+               sprintf("%s %s WHERE `a`.`Region_Id` = '%s'", $baseQuery, $joinArea, $searcher->GetKey('ForArea'));
+                    
+            return $query;
+        }
+        
         if($searcher->HasKey('ForCountry'))
         {
             $query = 
@@ -61,18 +74,21 @@ class RegionMapper implements \Library\Persistence\IMapper
         return new \ReflectionClass('\Application\Models\Domain\Region');
     }
 
-    public function MapObject($results)
+    public function MapObject($results, \Library\Persistence\IPersistenceSearcher $searcher)
     {
         $mappedObject = new \Application\Models\Domain\Region();
         
         $mappedObject->id = $results->Id;
         $mappedObject->name = $results->Name;
         
-        $areas = $this->_persistence->GetCollection(new \Library\Persistence\PersistenceSearcher(
+        if(!$searcher->HasKey('ForArea'))
+        {
+            $areas = $this->_persistence->GetCollection(new \Library\Persistence\PersistenceSearcher(
                 new \ReflectionClass('\Application\Models\Domain\Area'),
                 array('ForRegion' => $mappedObject->id)));
         
-        $mappedObject->areas = $areas;
+            $mappedObject->areas = $areas;
+        }
         
         return $mappedObject;
     } 

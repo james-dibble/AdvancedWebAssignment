@@ -3,7 +3,7 @@ namespace Library\Controller;
 
 class APIController extends \Library\Controller\Controller
 {
-    protected static function BuildRespose($model, $format)
+    protected function BuildRespose($model, $format)
     {
         if(strtolower($format) === 'xml')
         {

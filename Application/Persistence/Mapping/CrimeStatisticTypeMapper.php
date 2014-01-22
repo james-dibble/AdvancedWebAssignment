@@ -29,12 +29,12 @@ class CrimeStatisticTypeMapper implements \Library\Persistence\IMapper
         
         if($searcher->HasKey('name'))
         {
-            return sprintf("%s WHERE LOWER(`name`) = LOWER(%s)", $baseQuery, $searcher->GetKey('name'));
+            return sprintf("%s WHERE LOWER(`name`) = LOWER('%s')", $baseQuery, $searcher->GetKey('name'));
         }
         
         if($searcher->HasKey('abbreviation'))
         {
-            return sprintf("%s WHERE LOWER(`abbreviation`) = LOWER(%s)", $baseQuery, $searcher->GetKey('abbreviation'));
+            return sprintf("%s WHERE LOWER(`abbreviation`) = LOWER('%s')", $baseQuery, $searcher->GetKey('abbreviation'));
         }
         
         return $baseQuery;
@@ -45,7 +45,7 @@ class CrimeStatisticTypeMapper implements \Library\Persistence\IMapper
         return new \ReflectionClass('\Application\Models\Domain\CrimeStatisticType');
     }
 
-    public function MapObject($results)
+    public function MapObject($results, \Library\Persistence\IPersistenceSearcher $searcher)
     {
         $mappedObject = new \Application\Models\Domain\CrimeStatisticType();
         

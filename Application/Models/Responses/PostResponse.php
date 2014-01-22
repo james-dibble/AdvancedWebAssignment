@@ -10,7 +10,7 @@ class PostResponse
     {
         $this->region = new \Application\Models\Responses\RegionWithAreaStatistics($region, $area);
         
-        $countryProperty = $country->id;
+        $countryProperty = $country->name;
         
         $this->$countryProperty = new \Application\Models\Responses\Country($country);
         
