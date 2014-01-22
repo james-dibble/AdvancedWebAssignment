@@ -11,14 +11,14 @@ class AreaWithStatistics extends Area
         
         $this->recorded = array();
         
-        foreach($area->crimeStatistics as $key => $value)
+        foreach($area->crimeStatistics as $value)
         {
-            if($value == null || $value == 0)
+            if($value->value == null || $value->value == 0)
             {
                 continue;
             }
             
-            array_push($this->recorded, new RecordedCrimeStatistic($key, $value));
+            array_push($this->recorded, new RecordedCrimeStatistic($value));
         }
     }
 }

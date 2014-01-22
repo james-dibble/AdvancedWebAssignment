@@ -29,6 +29,17 @@ class CrimesController extends \Library\Controller\APIController
         return $this->BuildRespose($response, $format);
     }
     
+    public function GetCrimeTypes($format)
+    {
+        $response = new \Application\Models\Responses\Response();
+        
+        $crimeTypes = $this->_crimeService->GetAllCrimeTypes();
+        
+        $response->crimes = $crimeTypes;
+        
+        return $this->BuildRespose($response, $format);
+    }
+    
     public function GetForRegion($year, $region, $format)
     {
         $escapedRegionName = str_replace('-', ' ', $region);
@@ -45,29 +56,23 @@ class CrimesController extends \Library\Controller\APIController
     public function Post($regionName, $newArea, $areaData, $format)
     {
         $region = $this->_crimeService->GetCrimesForRegion(null, str_replace('_', ' ', $regionName));
+           
+        $area = new \Application\Models\Domain\Area();
+        $area->name = $newArea;
         
         $areaDataSplit = explode('-', $areaData);
-        $areaDataDictionary = array();
         
         foreach($areaDataSplit as $areaCrimeStatistic)
         {
-            $crimeStatistic = explode(':', $areaCrimeStatistic);
+            $crimeStatisticSplit = explode(':', $areaCrimeStatistic);
             
-            $areaDataDictionary[$crimeStatistic[0]] = $crimeStatistic[1];
+            $crimeStatisticType = $this->_crimeService->GetCrimeType($crimeStatisticSplit[0]);
+            
+            $crimeStatistic = new \Application\Models\Domain\CrimeStatistic($crimeStatisticSplit[1], $crimeStatisticType, $area);
+            
+            array_push($area->crimeStatistics, $crimeStatistic);
         }
-        
-        $homicide = array_key_exists('hom', $areaDataDictionary) ? $areaDataDictionary['hom'] : 0;
-        $violenceWithInjury = array_key_exists('vwi', $areaDataDictionary) ? $areaDataDictionary['vwi'] : 0;
-        $violenceWithoutInjury = array_key_exists('vwoi', $areaDataDictionary) ? $areaDataDictionary['vwoi'] : 0;
-        
-        $crimeStats = new \Application\Models\Domain\CrimeStatistics();
-        $crimeStats->homocide = $homicide;
-        $crimeStats->violenceWithInjury = $violenceWithInjury;
-        $crimeStats->violenceWithoutInjury = $violenceWithoutInjury;
                 
-        $area = new \Application\Models\Domain\Area($crimeStats);
-        $area->id = $newArea;
-        
         $this->_crimeService->SaveArea($area, $region);
         
         $country = $this->_locationService->GetCountryForRegion($region);

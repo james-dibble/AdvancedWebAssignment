@@ -4,7 +4,6 @@ namespace Application\Services;
 
 class CrimeService implements ICrimeService
 {
-
     private $_persistence;
 
     public function __construct(\Library\Persistence\IPersistenceManager $persistence)
@@ -117,6 +116,24 @@ class CrimeService implements ICrimeService
         \Application\Persistence\DataSeeder::ClearAndSeed($this->_persistence);
     }
 
-}
+    public function GetAllCrimeTypes()
+    {
+        $crimeTypes = $this->_persistence->GetCollection(
+                new \Library\Persistence\PersistenceSearcher(
+                        new \ReflectionClass('\Application\Models\Domain\CrimeStatisticType'), 
+                        array()));
+        
+        return $crimeTypes;
+    }
 
+    public function GetCrimeType($abbreviation)
+    {
+        $crimeTypes = $this->_persistence->Get(
+                new \Library\Persistence\PersistenceSearcher(
+                        new \ReflectionClass('\Application\Models\Domain\CrimeStatisticType'), 
+                        array('abbreviation' => $abbreviation)));
+        
+        return $crimeTypes;
+    }
+}
 ?>

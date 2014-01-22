@@ -5,6 +5,10 @@ interface ICrimeService
 {   
     function ClearCrimes();
     
+    function GetAllCrimeTypes();
+    
+    function GetCrimeType($abbreviation);
+    
     function GetCrimesForAllRegions($year);
     
     function GetCrimesForRegion($year, $region);
