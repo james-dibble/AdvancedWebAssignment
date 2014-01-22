@@ -4,7 +4,7 @@ function ChartsRegionController($scope, $http)
     $scope.loadingRegions = true;
     $scope.loadingRegionsFailed = false;
     $scope.json = '';
-    $scope.requestUri = '/~j3-dibble/atwd/crimes/6-2013/json';
+    $scope.requestUri = '/atwd/crimes/6-2013/json';
     
     $http.get($scope.requestUri).success(function(data)
     {

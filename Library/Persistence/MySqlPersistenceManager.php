@@ -95,7 +95,7 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
                 
         while ($row = $query->fetch())
         {
-            return $mapper->MapObject($row);
+            return $mapper->MapObject($row, $search);
         }
 
         return null;
@@ -112,7 +112,7 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
 
         while($row = $query->fetch())
         {
-            $mappedObject = $mapper->MapObject($row);
+            $mappedObject = $mapper->MapObject($row, $search);
 
             array_push($mappedObjects, $mappedObject);
         }

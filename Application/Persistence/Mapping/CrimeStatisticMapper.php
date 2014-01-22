@@ -44,7 +44,7 @@ class CrimeStatisticMapper implements \Library\Persistence\IMapper
         return new \ReflectionClass('\Application\Models\Domain\CrimeStatistic');
     }
 
-    public function MapObject($results)
+    public function MapObject($results, \Library\Persistence\IPersistenceSearcher $searcher)
     {
         $type = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
                 new \ReflectionClass('\Application\Models\Domain\CrimeStatisticType'), 

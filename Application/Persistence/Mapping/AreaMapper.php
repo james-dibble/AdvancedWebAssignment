@@ -65,7 +65,7 @@ class AreaMapper implements \Library\Persistence\IMapper
         return new \ReflectionClass('\Application\Models\Domain\Area');
     }
 
-    public function MapObject($results)
+    public function MapObject($results, \Library\Persistence\IPersistenceSearcher $searcher)
     {
         $mappedObject = new \Application\Models\Domain\Area();
         
@@ -75,6 +75,14 @@ class AreaMapper implements \Library\Persistence\IMapper
         $statistics = $this->_persistence->GetCollection(new \Library\Persistence\PersistenceSearcher(
                 new \ReflectionClass('\Application\Models\Domain\CrimeStatistic'),
                 array('ForArea' => $mappedObject->id)));
+        
+        if(!$searcher->HasKey('ForRegion'))
+        {
+            $region = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
+                   new \ReflectionClass('\Application\Models\Domain\Region'),
+                   array('ForArea' => $mappedObject->id)));   
+            $mappedObject->region = $region;
+        }
         
         $mappedObject->crimeStatistics = $statistics;
         
@@ -88,6 +96,20 @@ class AreaMapper implements \Library\Persistence\IMapper
             $query = 'DELETE FROM `areas`;';
             
             return array($query);
+        }
+        
+        if($objectToSave != null)
+        {
+            $statisticsQuery = 
+                sprintf("DELETE FROM `crime_statistics` WHERE `Area_Id` = '%s';", $objectToSave->id);
+            
+            $areaQuery =
+                sprintf("DELETE FROM `areas` WHERE `GeographicReference_Id` = '%s';", $objectToSave->id);
+            
+            $geographicReferenceQuery =
+                sprintf("DELETE FROM `geographic_references` WHERE `Id` = '%s';", $objectToSave->id);
+            
+            return array($statisticsQuery, $areaQuery, $geographicReferenceQuery);
         }
     }
 }

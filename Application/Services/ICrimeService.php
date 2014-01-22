@@ -5,6 +5,8 @@ interface ICrimeService
 {   
     function ClearCrimes();
     
+    function GetArea($areaName);
+    
     function GetAllCrimeTypes();
     
     function GetCrimeType($abbreviation);
@@ -20,5 +22,7 @@ interface ICrimeService
     function SaveStatistics(\Application\Models\Domain\StatisticsCollection $crimeStatistics);
     
     function SaveArea(\Application\Models\Domain\Area $area, \Application\Models\Domain\Region $region);
+    
+    function DeleteArea(\Application\Models\Domain\Area $area);
 }
 ?>

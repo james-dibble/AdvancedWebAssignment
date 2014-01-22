@@ -8,7 +8,7 @@ function PostFormController($scope, $http)
     $scope.requestUri = '';
     $scope.json = '';
     
-    $scope.regionsRequestUri = '/~j3-dibble/atwd/locations/region/json';
+    $scope.regionsRequestUri = '/atwd/locations/region/json';
 
     $http.get($scope.regionsRequestUri).success(function(data)
     {
@@ -20,7 +20,7 @@ function PostFormController($scope, $http)
         });
     });
     
-    $scope.crimeTypesRequestUri = '/~j3-dibble/atwd/crimes/types/json';
+    $scope.crimeTypesRequestUri = '/atwd/crimes/types/json';
 
     $http.get($scope.crimeTypesRequestUri).success(function(data)
     {
@@ -46,7 +46,7 @@ function PostFormController($scope, $http)
     
     $scope.post = function()
     {
-        var baseUri = '/~j3-dibble/atwd/crimes/6-2013/post';
+        var baseUri = '/atwd/crimes/6-2013/post';
         
         var statistics = $.Enumerable
                 .From($scope.crimeStatistics)

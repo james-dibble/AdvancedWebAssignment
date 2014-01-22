@@ -5,7 +5,7 @@ function ChartsAreaController($scope, $http)
     $scope.regions = [];
     $scope.activeRegion = null;
     $scope.json = '';
-    $scope.requestUri = '/~j3-dibble/atwd/locations/region/json';
+    $scope.requestUri = '/atwd/locations/region/json';
 
     $http.get($scope.requestUri).success(function(data)
     {
@@ -42,7 +42,7 @@ function ChartsAreaController($scope, $http)
 
         var regionName = $scope.activeRegion.name.split(' ').join('-');
         
-        $scope.requestUri = ['/~j3-dibble/atwd/crimes/6-2013/', regionName, '/json'].join('');
+        $scope.requestUri = ['/atwd/crimes/6-2013/', regionName, '/json'].join('');
 
         $http.get($scope.requestUri).success(function(data) 
         {

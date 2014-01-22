@@ -83,5 +83,23 @@ class CrimesController extends \Library\Controller\APIController
         
         return $this->BuildRespose($response, $format);
     }
+    
+    public function Delete($year, $format, $areaName)
+    {
+        $areaToDelete = $this->_crimeService->GetArea($areaName);
+        
+        $this->_crimeService->DeleteArea($areaToDelete);
+        
+        $region = $this->_crimeService->GetCrimesForRegion(null, $areaToDelete->region->name);
+        
+        $country = $this->_locationService->GetCountryForRegion($region);
+        $allCountries = $this->_locationService->GetAllCountries();
+        
+        $response = new \Application\Models\Responses\Response();
+        
+        $response->crimes = new \Application\Models\Responses\DeleteResponse($areaToDelete, $region, $country, $allCountries);
+        
+        return $this->BuildRespose($response, $format);
+    }
 }
 ?>

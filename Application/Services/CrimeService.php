@@ -135,5 +135,22 @@ class CrimeService implements ICrimeService
         
         return $crimeTypes;
     }
+    
+    public function GetArea($areaName)
+    {
+        $area = $this->_persistence->Get(
+                new \Library\Persistence\PersistenceSearcher(
+                        new \ReflectionClass('\Application\Models\Domain\Area'), 
+                        array('ByName' => $areaName)));
+        
+        return $area;
+    }
+    
+    public function DeleteArea(\Application\Models\Domain\Area $area)
+    {
+        $this->_persistence->Delete($area);
+        
+        $this->_persistence->Commit();
+    }
 }
 ?>
