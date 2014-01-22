@@ -56,7 +56,7 @@ class CrimeFileParsingService implements ICrimeFileParsingService
 
                 if (count($currentCountry->regions) == 0)
                 {
-                    $currentRegion->name = $currentCountry->id;
+                    $currentRegion->name = $currentCountry->name;
 
                     array_push($currentCountry->regions, $currentRegion);
                 }
