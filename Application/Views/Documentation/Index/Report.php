@@ -11,8 +11,6 @@
         <p>
             Code can be viewed on <a href="https://github.com/james-dibble/AdvancedWebAssignment">GitHub</a>.
         </p>
-        <p>
-            It can also be browsed using the following link.
-        </p>
+        <div id="repoBrowser"></div>
     </div>
 </div>
