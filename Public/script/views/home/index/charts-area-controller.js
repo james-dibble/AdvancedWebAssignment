@@ -1,13 +1,13 @@
-function ChartsAreaController($scope, $http)
+function ChartsAreaController($scope, $http, apiService)
 {
     $scope.regionsLoading = true;
     $scope.loadingRegionsFailed = false;
     $scope.regions = [];
     $scope.activeRegion = null;
+    $scope.json = '';
+    $scope.requestUri = apiService.baseApiRequest() + '/locations/region/json';
 
-    //$http.get('/~j3-dibble/atwd/locations/region/json')
-    $http.get('/atwd/locations/region/json')
-            .success(function(data)
+    $http.get($scope.requestUri).success(function(data)
     {
         $scope.regions = [];
         $scope.regionsLoading = false;
@@ -19,7 +19,7 @@ function ChartsAreaController($scope, $http)
             $scope.regions.push({name: elem.name});
         });
     })
-            .error(function()
+    .error(function()
     {
         $scope.loadingRegionsFailed = true;
         $scope.regionsLoading = false;
@@ -41,13 +41,15 @@ function ChartsAreaController($scope, $http)
         $scope.areaDataLoading = true;
 
         var regionName = $scope.activeRegion.name.split(' ').join('-');
+        
+        $scope.requestUri = [apiService.baseApiRequest() + '/crimes/6-2013/', regionName, '/json'].join('');
 
-        //$http.get(['/~j3-dibble/atwd/crimes/6-2013/', regionName, '/json'].join(''))
-        $http.get(['/atwd/crimes/6-2013/', regionName, '/json'].join(''))
-                .success(function(data) {
+        $http.get($scope.requestUri).success(function(data) 
+        {
             $scope.areas = [];
             $scope.areaDataLoading = false;
             $scope.loadingAreaDataFailed = false;
+            $scope.json = JSON.stringify(data, null, 4);
 
             $(data.response.crimes.region.area).each(function(index, elem)
             {

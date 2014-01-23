@@ -27,9 +27,8 @@ class CrimeService implements ICrimeService
         $region =
                 $this->_persistence->Get(
                 new \Library\Persistence\PersistenceSearcher(
-                    new \ReflectionClass('\Application\Models\Domain\Region'), 
-                    array('ByName' => $region)));
-        
+                new \ReflectionClass('\Application\Models\Domain\Region'), array('ByName' => $region)));
+
         return $region;
     }
 
@@ -48,8 +47,7 @@ class CrimeService implements ICrimeService
         $country =
                 $this->_persistence->Get(
                 new \Library\Persistence\PersistenceSearcher(
-                    new \ReflectionClass('\Application\Models\Domain\Country'), 
-                    array('ById' => $country)));
+                new \ReflectionClass('\Application\Models\Domain\Country'), array('ById' => $country)));
 
         return $country;
     }
@@ -63,8 +61,7 @@ class CrimeService implements ICrimeService
             $this->_persistence->Commit();
 
             $savedCountry = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
-                    new \ReflectionClass('\Application\Models\Domain\Country'), 
-                    array('ByName' => $country->name)));
+                    new \ReflectionClass('\Application\Models\Domain\Country'), array('ByName' => $country->name)));
 
             foreach ($country->regions as $region)
             {
@@ -75,28 +72,26 @@ class CrimeService implements ICrimeService
                 $this->_persistence->Commit();
 
                 $savedRegion = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
-                        new \ReflectionClass('\Application\Models\Domain\Region'), 
-                        array('ByName' => $region->name)));
+                        new \ReflectionClass('\Application\Models\Domain\Region'), array('ByName' => $region->name)));
 
                 foreach ($region->areas as $area)
                 {
                     $area->region = $savedRegion;
 
                     $this->_persistence->Add($area, array());
-                    
+
                     $this->_persistence->Commit();
-                    
+
                     $savedArea = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
-                        new \ReflectionClass('\Application\Models\Domain\Area'), 
-                        array('ByName' => $area->name)));
-                    
-                    foreach($area->crimeStatistics as $crimeStatistic)
+                            new \ReflectionClass('\Application\Models\Domain\Area'), array('ByName' => $area->name)));
+
+                    foreach ($area->crimeStatistics as $crimeStatistic)
                     {
                         $crimeStatistic->area = $savedArea;
-                        
+
                         $this->_persistence->Add($crimeStatistic, array());
                     }
-                    
+
                     $this->_persistence->Commit();
                 }
             }
@@ -106,7 +101,7 @@ class CrimeService implements ICrimeService
     public function SaveArea(\Application\Models\Domain\Area $area, \Application\Models\Domain\Region $region)
     {
         $area->region = $region;
-        
+
         $this->_persistence->Add($area, array());
 
         $this->_persistence->Commit();
@@ -117,6 +112,48 @@ class CrimeService implements ICrimeService
         \Application\Persistence\DataSeeder::ClearAndSeed($this->_persistence);
     }
 
-}
+    public function GetAllCrimeTypes()
+    {
+        $crimeTypes = $this->_persistence->GetCollection(
+                new \Library\Persistence\PersistenceSearcher(
+                new \ReflectionClass('\Application\Models\Domain\CrimeStatisticType'), array()));
 
+        return $crimeTypes;
+    }
+
+    public function GetCrimeType($abbreviation)
+    {
+        $crimeTypes = $this->_persistence->Get(
+                new \Library\Persistence\PersistenceSearcher(
+                new \ReflectionClass('\Application\Models\Domain\CrimeStatisticType'), array('abbreviation' => $abbreviation)));
+
+        return $crimeTypes;
+    }
+
+    public function GetArea($areaName)
+    {
+        $area = $this->_persistence->Get(
+                new \Library\Persistence\PersistenceSearcher(
+                new \ReflectionClass('\Application\Models\Domain\Area'), array('ByName' => $areaName)));
+
+        return $area;
+    }
+
+    public function DeleteArea(\Application\Models\Domain\Area $area)
+    {
+        $this->_persistence->Delete($area);
+
+        $this->_persistence->Commit();
+    }
+
+    public function ChangeStatistics(array $statistics)
+    {
+        foreach ($statistics as $statistic)
+        {
+            $this->_persistence->Change($statistic, array());
+        }
+
+        $this->_persistence->Commit();
+    }
+}
 ?>

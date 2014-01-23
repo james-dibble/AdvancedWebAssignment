@@ -58,7 +58,7 @@ class NationalMapper implements \Library\Persistence\IMapper
         return new \ReflectionClass('\Application\Models\Domain\National');
     }
 
-    public function MapObject($results)
+    public function MapObject($results, \Library\Persistence\IPersistenceSearcher $searcher)
     {
         $mappedObject = new \Application\Models\Domain\National();
 

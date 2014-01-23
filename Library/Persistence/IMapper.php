@@ -13,6 +13,6 @@ interface IMapper
     
     function GetFindQuery(\Library\Persistence\IPersistenceSearcher $searcher);
     
-    function MapObject($results);
+    function MapObject($results, \Library\Persistence\IPersistenceSearcher $searcher);
 }
 ?>

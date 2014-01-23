@@ -1,7 +1,7 @@
 <?php  
 namespace Application\Views\Layout;
 
-abstract class BasicHtmlLayout
+abstract class BasicHtmlLayout extends \Library\Views\View
 {
     private $_styleSheets;
     private $_scripts;
@@ -19,7 +19,7 @@ abstract class BasicHtmlLayout
     {
         echo <<<HTML
 <!DOCTYPE html>
-<html lang="en" data-ng-app="">
+<html lang="en" data-ng-app="atwd">
 <head>
         <title>$this->_title</title>
         <!-- LE META -->

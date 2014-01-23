@@ -23,6 +23,14 @@ class CrimeStatisticMapper implements \Library\Persistence\IMapper
 
     public function GetChangeQueries($objectToSave, array $referenceObjects)
     {
+        $query = 
+                sprintf(
+                        "UPDATE `crime_statistics` SET `Value` = '%s' WHERE `Area_Id` = '%s' AND `CrimeStatisticType_Id` = '%s'",
+                        $objectToSave->value,
+                        $objectToSave->area->id,
+                        $objectToSave->type->id);
+        
+        return array($query);
     }
 
     public function GetFindQuery(\Library\Persistence\IPersistenceSearcher $searcher)
@@ -44,7 +52,7 @@ class CrimeStatisticMapper implements \Library\Persistence\IMapper
         return new \ReflectionClass('\Application\Models\Domain\CrimeStatistic');
     }
 
-    public function MapObject($results)
+    public function MapObject($results, \Library\Persistence\IPersistenceSearcher $searcher)
     {
         $type = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
                 new \ReflectionClass('\Application\Models\Domain\CrimeStatisticType'), 
