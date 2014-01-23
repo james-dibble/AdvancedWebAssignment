@@ -13,8 +13,8 @@ class CrimeStatisticMapper implements \Library\Persistence\IMapper
     public function GetAddQueries($objectToSave, array $refernceObjects)
     {
         $query =
-            sprintf("INSERT INTO `crime_statistics`(`Area_Id`, `CrimeStatisticType_Id`, `Value`) VALUES (%s, %s, %s);",
-                    $objectToSave->area->id,
+            sprintf("INSERT INTO `crime_statistics`(`Area_Id`, `CrimeStatisticType_Id`, `Value`) VALUES ('%s', '%s', '%s');",
+                    $refernceObjects['area']->id,
                     $objectToSave->type->id,
                     $objectToSave->value);
         

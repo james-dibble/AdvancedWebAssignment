@@ -36,11 +36,6 @@ class ImportController extends \Library\Controller\Controller
     {
         try
         {
-            if (file_exists('/tmp/import.xml'))
-            {
-                unlink('/tmp/import.xml');
-            }
-            
             $this->_crimeService->ClearCrimes();
             
             $inputContents = preg_split('/\r\n|[\r\n]/', $inputContents);
@@ -48,14 +43,10 @@ class ImportController extends \Library\Controller\Controller
             $stats = $this->_importService->ParseFile($inputContents);
             
             $this->_crimeService->SaveStatistics($stats);
-
-            $statsAsXml = \Library\Persistence\XMLSerialiser::Serialise($stats);
-
-            $statsAsXml->save('/tmp/import.xml');
-
-            die();
             
-            return $this->RedirectToAction('import/imported-data');
+            $serializableStats = new \Application\Persistence\XmlSerialisation\CrimesStatitics($stats);
+
+            return $this->XmlResult($serializableStats);
         }
         catch (\Exception $ex)
         {            

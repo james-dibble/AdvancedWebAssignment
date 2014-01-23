@@ -87,9 +87,7 @@ class CrimeService implements ICrimeService
 
                     foreach ($area->crimeStatistics as $crimeStatistic)
                     {
-                        $crimeStatistic->area = $savedArea;
-
-                        $this->_persistence->Add($crimeStatistic, array());
+                        $this->_persistence->Add($crimeStatistic, array('area' => $savedArea));
                     }
 
                     $this->_persistence->Commit();
