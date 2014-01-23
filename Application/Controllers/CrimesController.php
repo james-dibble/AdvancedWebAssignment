@@ -53,6 +53,17 @@ class CrimesController extends \Library\Controller\APIController
         return $this->BuildRespose($response, $format);
     }
     
+    public function GetForArea($year, $areaName, $format)
+    {
+        $area = $this->_crimeService->GetArea($areaName);
+        
+        $response = new \Application\Models\Responses\Response();
+        
+        $response->crimes = new \Application\Models\Responses\AreaWithStatistics($area);
+        
+        return $this->BuildResponse($response, $format);
+    }
+    
     public function Post($regionName, $newArea, $areaData, $format)
     {
         $region = $this->_crimeService->GetCrimesForRegion(null, str_replace('_', ' ', $regionName));

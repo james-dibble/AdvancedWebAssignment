@@ -10,6 +10,7 @@ class Index extends \Application\Views\Layout\ApplicationLayout
         $this->SetDescription('API Methods');
         
         $this->AddScript(CONTEXT_PATH . 'script/jquery.linq.min.js');
+        $this->AddScript(CONTEXT_PATH . 'script/views/client/index/put.controller.js');
         $this->AddScript(CONTEXT_PATH . 'script/views/client/index/post.controller.js');
         $this->AddScript(CONTEXT_PATH . 'script/views/client/index/delete.controller.js');
     }
