@@ -19,7 +19,7 @@ abstract class BasicHtmlLayout extends \Library\Views\View
     {
         echo <<<HTML
 <!DOCTYPE html>
-<html lang="en" data-ng-app="">
+<html lang="en" data-ng-app="atwd">
 <head>
         <title>$this->_title</title>
         <!-- LE META -->

@@ -1,4 +1,4 @@
-function PostFormController($scope, $http)
+function PostFormController($scope, $http, apiService)
 {
     $scope.region = null;
     $scope.areaName = '';
@@ -8,7 +8,7 @@ function PostFormController($scope, $http)
     $scope.requestUri = '';
     $scope.json = '';
     
-    $scope.regionsRequestUri = '/atwd/locations/region/json';
+    $scope.regionsRequestUri = apiService.baseApiRequest() + '/locations/region/json';
 
     $http.get($scope.regionsRequestUri).success(function(data)
     {
@@ -20,7 +20,7 @@ function PostFormController($scope, $http)
         });
     });
     
-    $scope.crimeTypesRequestUri = '/atwd/crimes/types/json';
+    $scope.crimeTypesRequestUri = apiService.baseApiRequest() + '/crimes/types/json';
 
     $http.get($scope.crimeTypesRequestUri).success(function(data)
     {
@@ -46,7 +46,7 @@ function PostFormController($scope, $http)
     
     $scope.post = function()
     {
-        var baseUri = '/atwd/crimes/6-2013/post';
+        var baseUri = apiService.baseApiRequest() + '/crimes/6-2013/post';
         
         var statistics = $.Enumerable
                 .From($scope.crimeStatistics)

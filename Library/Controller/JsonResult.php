@@ -20,7 +20,7 @@ class JsonResult implements IActionResult
         $response-> response = $this->_model;
 
         $asJson = json_encode($response, JSON_PRETTY_PRINT);
-
+        
         echo $asJson;
     }
 

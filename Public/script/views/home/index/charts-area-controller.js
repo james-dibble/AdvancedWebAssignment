@@ -1,11 +1,11 @@
-function ChartsAreaController($scope, $http)
+function ChartsAreaController($scope, $http, apiService)
 {
     $scope.regionsLoading = true;
     $scope.loadingRegionsFailed = false;
     $scope.regions = [];
     $scope.activeRegion = null;
     $scope.json = '';
-    $scope.requestUri = '/atwd/locations/region/json';
+    $scope.requestUri = apiService.baseApiRequest() + '/locations/region/json';
 
     $http.get($scope.requestUri).success(function(data)
     {
@@ -42,7 +42,7 @@ function ChartsAreaController($scope, $http)
 
         var regionName = $scope.activeRegion.name.split(' ').join('-');
         
-        $scope.requestUri = ['/atwd/crimes/6-2013/', regionName, '/json'].join('');
+        $scope.requestUri = [apiService.baseApiRequest() + '/crimes/6-2013/', regionName, '/json'].join('');
 
         $http.get($scope.requestUri).success(function(data) 
         {

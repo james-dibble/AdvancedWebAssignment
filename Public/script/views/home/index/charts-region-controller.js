@@ -1,10 +1,10 @@
-function ChartsRegionController($scope, $http)
+function ChartsRegionController($scope, $http, apiService)
 {
     $scope.regions = [];
     $scope.loadingRegions = true;
     $scope.loadingRegionsFailed = false;
     $scope.json = '';
-    $scope.requestUri = '/atwd/crimes/6-2013/json';
+    $scope.requestUri = apiService.baseApiRequest() + '/crimes/6-2013/json';
     
     $http.get($scope.requestUri).success(function(data)
     {

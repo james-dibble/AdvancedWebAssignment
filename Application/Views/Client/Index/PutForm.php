@@ -21,31 +21,23 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Area</label>
                         <div class="col-sm-9">
-                            <select data-ng-model="area" ng-options="a.name for a in region.areas" class="form-control">
+                            <select data-ng-model="area" ng-options="a.name for a in region.areas" data-ng-change="getAreaStatistics()" class="form-control">
                                 <option>Select Area</option>
                             </select>
                         </div>
                     </div>
                     <div data-ng-repeat="crimeStatistic in crimeStatistics">
-                        <div class="col-lg-5 col-md-6">
+                        <div class="col-lg-9 col-md-9">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">Crime Type</label>
-                                <div class="col-sm-9">
-                                    <select data-ng-model="crimeStatistic.type" ng-options="t.name for t in crimeTypes" class="form-control">
-                                    </select>
-                                </div>
+                                <label class="col-sm-3 control-label">{{crimeStatistic.type.name}}</label>
                             </div>
                         </div>
-                        <div class="col-lg-5 col-md-6">
+                        <div class="col-lg-3 col-md-3">
                             <div class="form-group">
-                                <label class="col-sm-7 control-label">Crime Number</label>
-                                <div class="col-sm-5">
-                                    <input type="text" class="form-control" placeholder="Crime Number" data-ng-model="crimeStatistic.number" />
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" placeholder="Crime Number" data-ng-model="crimeStatistic.value" data-ng-change="makeDirty(crimeStatistic)" />
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-2 col-md-2">
-                            <button type="button" class="btn btn-danger" data-ng-click="removeStatistic(crimeStatistic)">Remove</button>
                         </div>
                     </div>
                     <div class="form-group">

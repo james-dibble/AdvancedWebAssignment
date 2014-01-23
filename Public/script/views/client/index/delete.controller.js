@@ -1,4 +1,4 @@
-function DeleteFormController($scope, $http)
+function DeleteFormController($scope, $http, apiService)
 {
     $scope.region = null;
     $scope.area = null;
@@ -6,7 +6,7 @@ function DeleteFormController($scope, $http)
     $scope.requestUri = '';
     $scope.json = '';
     
-    $scope.regionsRequestUri = '/atwd/locations/region/json';
+    $scope.regionsRequestUri = apiService.baseApiRequest() + '/locations/region/json';
 
     $http.get($scope.regionsRequestUri).success(function(data)
     {
@@ -20,7 +20,7 @@ function DeleteFormController($scope, $http)
     
     $scope.delete = function()
     {
-        var baseUri = '/atwd/crimes/6-2013/delete';
+        var baseUri = apiService.baseApiRequest() + '/crimes/6-2013/delete';
                 
         $scope.requestUri = [baseUri, $scope.area.name.toLowerCase(), 'json'].join('/');
         

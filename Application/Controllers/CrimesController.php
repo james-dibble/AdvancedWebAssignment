@@ -42,7 +42,7 @@ class CrimesController extends \Library\Controller\APIController
     
     public function GetForRegion($year, $region, $format)
     {
-        $escapedRegionName = str_replace('-', ' ', $region);
+        $escapedRegionName = str_replace('_', ' ', $region);
         
         $response = new \Application\Models\Responses\Response();
         
@@ -55,13 +55,13 @@ class CrimesController extends \Library\Controller\APIController
     
     public function GetForArea($year, $areaName, $format)
     {
-        $area = $this->_crimeService->GetArea($areaName);
+        $area = $this->_crimeService->GetArea(str_replace('_', ' ', $areaName));
         
         $response = new \Application\Models\Responses\Response();
         
-        $response->crimes = new \Application\Models\Responses\AreaWithStatistics($area);
-        
-        return $this->BuildResponse($response, $format);
+        $response->crimes = $area;
+                
+        return $this->BuildRespose($response, $format);
     }
     
     public function Post($regionName, $newArea, $areaData, $format)
@@ -95,9 +95,33 @@ class CrimesController extends \Library\Controller\APIController
         return $this->BuildRespose($response, $format);
     }
     
+    public function Put($regionName, $areaName, $changedStatistics, $format)
+    {           
+        $area = $this->_crimeService->GetArea(str_replace('_', ' ', $areaName));
+        
+        $areaDataSplit = explode('-', $changedStatistics);
+        
+        $changedStatisticsModels = array();
+        
+        foreach($areaDataSplit as $areaCrimeStatistic)
+        {
+            $crimeStatisticSplit = explode(':', $areaCrimeStatistic);
+            
+            $crimeStatisticType = $this->_crimeService->GetCrimeType($crimeStatisticSplit[0]);
+            
+            $crimeStatistic = new \Application\Models\Domain\CrimeStatistic($crimeStatisticSplit[1], $crimeStatisticType, $area);
+            
+            array_push($changedStatisticsModels, $crimeStatistic);
+        }
+                
+        $this->_crimeService->ChangeStatistics($changedStatisticsModels);
+        
+        return $this->BuildRespose($response, $format);
+    }
+    
     public function Delete($year, $format, $areaName)
     {
-        $areaToDelete = $this->_crimeService->GetArea($areaName);
+        $areaToDelete = $this->_crimeService->GetArea(str_replace('_', ' ', $areaName));
         
         $this->_crimeService->DeleteArea($areaToDelete);
         
