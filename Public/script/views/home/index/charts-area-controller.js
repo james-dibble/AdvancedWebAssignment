@@ -39,10 +39,13 @@ function ChartsAreaController($scope, $http, apiService)
     var LoadRegionData = function ()
     {
         $scope.areaDataLoading = true;
-
-        var regionName = $scope.activeRegion.name.split(' ').join('-');
         
-        $scope.requestUri = [apiService.baseApiRequest() + '/crimes/6-2013/', regionName, '/json'].join('');
+        $scope.requestUri 
+                = [
+                    apiService.baseApiRequest() + '/crimes/6-2013/', 
+                    $scope.activeRegion.name.toLowerCase().replace(/ /g, '_'), 
+                    '/json'
+                  ].join('');
 
         $http.get($scope.requestUri).success(function(data) 
         {
