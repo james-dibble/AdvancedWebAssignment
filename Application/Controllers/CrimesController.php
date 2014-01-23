@@ -116,6 +116,12 @@ class CrimesController extends \Library\Controller\APIController
                 
         $this->_crimeService->ChangeStatistics($changedStatisticsModels);
         
+        $updatedArea = $this->_crimeService->GetArea(str_replace('_', ' ', $areaName));
+        
+        $response = new \Application\Models\Responses\Response();
+        
+        $response->crimes = new \Application\Models\Responses\PutResponse($area, $updatedArea, $changedStatisticsModels);
+        
         return $this->BuildRespose($response, $format);
     }
     
