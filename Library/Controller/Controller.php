@@ -31,7 +31,7 @@ abstract class Controller
             $actionResult = $this->$action($arguments);
         }
 
-        $actionResult->DoAction();
+        return $actionResult;
     }
     
     protected function ViewResult(\Library\Views\IView $view)
