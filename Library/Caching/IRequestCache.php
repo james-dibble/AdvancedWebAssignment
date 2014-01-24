@@ -7,7 +7,7 @@ interface IRequestCache
     
     function IsCached($requestPath);
     
-    function RetrieveCachedRequest();
+    function RetrieveCachedRequest($requestPath);
     
     function CacheResponse($requestPath, $bufferContents, \Library\Controller\IActionResult $result);
 }

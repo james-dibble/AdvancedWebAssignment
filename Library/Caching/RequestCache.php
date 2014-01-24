@@ -41,13 +41,23 @@ class RequestCache implements \Library\Caching\IRequestCache
     }
 
     public function IsCached($requestPath)
-    {
+    {   
+        $requestCachePath = $this->_basePath . $this->EscapeRequestPath($requestPath) . '.*';
         
+        return count(glob($requestCachePath)) > 0;
     }
 
-    public function RetrieveCachedRequest()
+    public function RetrieveCachedRequest($requestPath)
     {
+        $requestCachePath = $this->_basePath . $this->EscapeRequestPath($requestPath) . '.*';
         
+        $path = glob($requestCachePath)[0];
+                
+        $contents = file_get_contents($path);
+                
+        $path_parts = pathinfo($path);
+        
+        return new CachedRequest($contents, $path_parts['extension']);
     }    
     
     private function EscapeRequestPath($requestPath)
