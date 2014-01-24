@@ -41,6 +41,11 @@ class ErrorsController extends \Library\Controller\Controller
     {
         return $this->Index(new \Library\Models\Errors\UriNotRecognizedException('URL pattern not recognized.'));
     }
+    
+    public function Error(\Exception $error)
+    {
+        return $this->Index($error);
+    }
 }
 
 ?>

@@ -14,7 +14,7 @@ class CrimesController extends \Library\Controller\APIController
     }
 
     public function Get($year, $format)
-    {
+    {   
         $response = new \Application\Models\Responses\Response();
         
         $regionalCrimes = $this->_crimeService->GetCrimesForAllRegions($year);
