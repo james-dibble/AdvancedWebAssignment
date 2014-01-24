@@ -55,6 +55,23 @@ class CrimeService implements ICrimeService
 
     public function SaveStatistics(\Application\Models\Domain\StatisticsCollection $crimeStatistics)
     {
+        foreach ($crimeStatistics->nationals as $national)
+        {
+            $this->_persistence->Add($national, array());
+
+            $this->_persistence->Commit();
+
+            $savedNational = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
+                    new \ReflectionClass('\Application\Models\Domain\National'), array('ByName' => $national->name)));
+
+            foreach ($national->crimeStatistics as $crimeStatistic)
+            {
+                $this->_persistence->Add($crimeStatistic, array('area' => $savedNational));
+            }
+
+            $this->_persistence->Commit();
+        }
+        
         foreach ($crimeStatistics->countires as $country)
         {
             $this->_persistence->Add($country, array());
