@@ -4,12 +4,13 @@ namespace Application\Services;
 
 class CrimeService implements ICrimeService
 {
-
     private $_persistence;
+    private $_cache;
 
-    public function __construct(\Library\Persistence\IPersistenceManager $persistence)
+    public function __construct(\Library\Persistence\IPersistenceManager $persistence, \Library\Caching\IRequestCache $cache)
     {
         $this->_persistence = $persistence;
+        $this->_cache = $cache;
     }
 
     public function GetCrimesForAllRegions($year)
@@ -103,10 +104,14 @@ class CrimeService implements ICrimeService
         $this->_persistence->Add($area, array());
 
         $this->_persistence->Commit();
+        
+        $this->_cache->EmptyCache();
     }
 
     public function ClearCrimes()
     {
+        $this->_cache->EmptyCache();
+        
         \Application\Persistence\DataSeeder::ClearAndSeed($this->_persistence);
     }
 
@@ -142,6 +147,8 @@ class CrimeService implements ICrimeService
         $this->_persistence->Delete($area);
 
         $this->_persistence->Commit();
+        
+        $this->_cache->EmptyCache();
     }
 
     public function ChangeStatistics(array $statistics)
@@ -152,6 +159,8 @@ class CrimeService implements ICrimeService
         }
 
         $this->_persistence->Commit();
+                
+        $this->_cache->EmptyCache();
     }
 }
 ?>

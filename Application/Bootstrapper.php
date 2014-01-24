@@ -25,21 +25,21 @@ class Bootstrapper
         $mapperDictionary->Add($countryMapper);
         $mapperDictionary->Add($crimeStatisticMapper);
         $mapperDictionary->Add($crimeStatisticTypeMapper);
+        
+        $cache = new \Library\Caching\RequestCache();
+        $container->Bind('Library\Caching\IRequestCache', $cache);
                        
         $fileParser = new \Application\Services\CrimeFileParsingService($persistenceManager);
         $container->Bind('Application\Services\ICrimeFileParsingService', $fileParser);
         
         $container->Bind('\Library\Persistence\IPersistenceManager', $persistenceManager);
         
-        $crimeService = new \Application\Services\CrimeService($persistenceManager);
+        $crimeService = new \Application\Services\CrimeService($persistenceManager, $cache);
         $container->Bind('Application\Services\ICrimeService', $crimeService);
         
         $locationsService = new \Application\Services\LocationService($persistenceManager);
         $container->Bind('Application\Services\ILocationService', $locationsService);
-        
-        $cache = new \Library\Caching\RequestCache();
-        $container->Bind('Library\Caching\IRequestCache', $cache);
-        
+                
         return $container;
     }
 }
