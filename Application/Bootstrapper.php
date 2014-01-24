@@ -37,6 +37,9 @@ class Bootstrapper
         $locationsService = new \Application\Services\LocationService($persistenceManager);
         $container->Bind('Application\Services\ILocationService', $locationsService);
         
+        $cache = new \Library\Caching\RequestCache();
+        $container->Bind('Library\Caching\IRequestCache', $cache);
+        
         return $container;
     }
 }

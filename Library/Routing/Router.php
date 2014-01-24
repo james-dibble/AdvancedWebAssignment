@@ -4,10 +4,12 @@ namespace Library\Routing;
 class Router
 {    
     private $_container;
+    private $_cache;
     
     public function __construct(\Library\Composition\IContainer $container)
     {
         $this->_container = $container;
+        $this->_cache = $this->_container->Resolve('Library\Caching\IRequestCache');
     }
     
     public function Dispatch($controllerName, $actionName)
@@ -20,7 +22,11 @@ class Router
 
             $controller = $this->CreateController($controllerName);
 
-            $controller->ProcessRequest($actionName);
+            $actionResult = $controller->ProcessRequest($actionName);
+            
+            $actionResult->DoAction();
+            
+            $this->_cache->CacheResponse($_SERVER['REQUEST_URI'], ob_get_contents(), $actionResult);
         }
         catch(\Exception $ex)
         {
