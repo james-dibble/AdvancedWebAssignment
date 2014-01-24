@@ -6,7 +6,7 @@ abstract class BasicBootstrapLayout extends \Application\Views\Layout\BasicHtmlL
     public function __construct()
     {
         parent::__construct();
-        $this->AddStyleSheet("//netdna.bootstrapcdn.com/bootswatch/3.0.3/flatly/bootstrap.min.css");
+        $this->AddStyleSheet("//netdna.bootstrapcdn.com/bootswatch/3.0.3/readable/bootstrap.min.css");
         $this->AddScript("//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js");
     }
     
