@@ -21,4 +21,6 @@ RewriteRule ^(?:application|library)\b.* index.php/$0 [L]
 
 #Errors
 RewriteRule ^crimes/(.*)$ index.php?controller=errors&action=uriunrecognized
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^.*$ index.php?controller=errors&action=notfound [L]

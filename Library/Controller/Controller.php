@@ -51,7 +51,7 @@ abstract class Controller
     
     protected function XmlResult($object)
     {
-        return new \Library\Controller\XmlResult($object);
+        return new \Library\Controller\XMLResult($object);
     }
 
     private function GetActionParameters($actionName)
