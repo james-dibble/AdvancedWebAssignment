@@ -8,6 +8,7 @@ RewriteRule ^crimes/doc/index.html$ index.php?controller=documentation&action=in
 RewriteRule ^crimes/([0-9]{1}[-]{1}[0-9]{4})/post/([A-Za-z_]+)/([A-Za-z_]+)/(.*)/(xml|json)$ index.php?controller=crimes&action=post&regionName=$2&newArea=$3&areaData=$4&format=$5 [NC,L]
 RewriteRule ^crimes/([0-9]{1}[-]{1}[0-9]{4})/put/([A-Za-z_]+)/([A-Za-z_]+)/(.*)/(xml|json)$ index.php?controller=crimes&action=put&regionName=$2&areaName=$3&changedStatistics=$4&format=$5 [NC,L]
 RewriteRule ^crimes/([0-9]{1}[-]{1}[0-9]{4})/delete/(.*)/(xml|json)$ index.php?controller=crimes&action=delete&year=$1&areaName=$2&format=$3 [NC,L]
+RewriteRule ^crimes/(.*)$ index.php?controller=errors&action=uriunrecognized
 RewriteRule ^locations/region/(xml|json)$ index.php?controller=locations&action=getregions&format=$1 [NC,L]
 RewriteRule ^import/file$ index.php?controller=import&action=file [NC,L]
 RewriteRule ^import/text$ index.php?controller=import&action=text [NC,L]
