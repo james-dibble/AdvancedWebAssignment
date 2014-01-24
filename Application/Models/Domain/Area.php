@@ -22,5 +22,18 @@ class Area extends \Application\Models\Domain\GeographicReference
         
         return $total;
     }
+    
+    public function HasStatistic(\Application\Models\Domain\CrimeStatisticType $type)
+    {
+        foreach($this->crimeStatistics as $statistic)
+        {
+            if($statistic->type->id == $type->id)
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 }
 ?>
