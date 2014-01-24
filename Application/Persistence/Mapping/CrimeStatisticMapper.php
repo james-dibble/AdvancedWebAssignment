@@ -13,7 +13,7 @@ class CrimeStatisticMapper implements \Library\Persistence\IMapper
     public function GetAddQueries($objectToSave, array $refernceObjects)
     {
         $query =
-            sprintf("INSERT INTO `crime_statistics`(`Area_Id`, `CrimeStatisticType_Id`, `Value`) VALUES ('%s', '%s', '%s');",
+            sprintf("INSERT INTO `crime_statistics`(`GeographicReference_Id`, `CrimeStatisticType_Id`, `Value`) VALUES ('%s', '%s', '%s');",
                     $refernceObjects['area']->id,
                     $objectToSave->type->id,
                     $objectToSave->value);
@@ -25,7 +25,7 @@ class CrimeStatisticMapper implements \Library\Persistence\IMapper
     {
         $query = 
                 sprintf(
-                        "UPDATE `crime_statistics` SET `Value` = '%s' WHERE `Area_Id` = '%s' AND `CrimeStatisticType_Id` = '%s'",
+                        "UPDATE `crime_statistics` SET `Value` = '%s' WHERE `GeographicReference_Id` = '%s' AND `CrimeStatisticType_Id` = '%s'",
                         $objectToSave->value,
                         $objectToSave->area->id,
                         $objectToSave->type->id);
@@ -39,7 +39,7 @@ class CrimeStatisticMapper implements \Library\Persistence\IMapper
         
         if($searcher->HasKey('ForArea'))
         {
-            $query = sprintf("%s WHERE `Area_Id` = %s", $baseQuery, $searcher->GetKey('ForArea'));
+            $query = sprintf("%s WHERE `GeographicReference_Id` = %s", $baseQuery, $searcher->GetKey('ForArea'));
             
             return $query;
         }

@@ -20,14 +20,13 @@ class NationalMapper implements \Library\Persistence\IMapper
 
         $geographicLocationId = "SET @geographicReferenceId = (SELECT LAST_INSERT_ID());";
 
-        $areaQuery =
-                sprintf('INSERT INTO `areas`(`GeographicReference_Id`, `Region_Id`) 
-                    VALUES(@geographicReferenceId, %s)', $objectToSave->region->id);
+        $nationalQuery = 'INSERT INTO `nationals`(`GeographicReference_Id`) 
+            VALUES(@geographicReferenceId)';
 
         return array(
             $geographicLocationQuery,
             $geographicLocationId,
-            $areaQuery);
+            $nationalQuery);
     }
 
     public function GetChangeQueries($objectToSave, array $referenceObjects)
@@ -40,12 +39,12 @@ class NationalMapper implements \Library\Persistence\IMapper
                 "SELECT `gr`.`Id`, `gr`.`Name` FROM `nationals` `n`
                  INNER JOIN 
                     `geographic_references` `gr`
-                    ON `n`.`Area_Id` = `gr`.`Id`";
+                    ON `n`.`GeographicReference_Id` = `gr`.`Id`";
 
         if ($searcher->HasKey('ByName'))
         {
             $query =
-                    sprintf("%s WHERE LOWER(`gr`.`name`) = LOWER(%s)", $baseQuery, $searcher->GetKey('ByName'));
+                    sprintf("%s WHERE LOWER(`gr`.`name`) = LOWER('%s')", $baseQuery, $searcher->GetKey('ByName'));
 
             return $query;
         }
@@ -65,8 +64,8 @@ class NationalMapper implements \Library\Persistence\IMapper
         $mappedObject->id = $results->Id;
         $mappedObject->name = $results->Name;
 
-        $statistics = $this->_persistence->Get(
-                new \ReflectionClass('\Application\Models\Domain\CrimeStatistic'), array('ForArea' => $mappedObject->id));
+        $statistics = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
+                new \ReflectionClass('\Application\Models\Domain\CrimeStatistic'), array('ForArea' => $mappedObject->id)));
 
         $mappedObject->crimeStatistics = $statistics;
 
@@ -75,10 +74,10 @@ class NationalMapper implements \Library\Persistence\IMapper
 
     public function GetDeleteQueries($objectToSave = null, \Library\Persistence\IPersistenceSearcher $searcher = null)
     {
-        if ($searcher != null && $searcher->HasKey('Clear'))
+        if($searcher != null && $searcher->HasKey('Clear'))
         {
-            $query = 'DELETE FROM `areas` WHERE `GeographicReference_Id` IN (SELECT `Area_Id` FROM `nationals`);';
-
+            $query = 'DELETE FROM `nationals`;';
+            
             return array($query);
         }
     }

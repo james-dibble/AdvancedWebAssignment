@@ -55,6 +55,23 @@ class CrimeService implements ICrimeService
 
     public function SaveStatistics(\Application\Models\Domain\StatisticsCollection $crimeStatistics)
     {
+        foreach ($crimeStatistics->nationals as $national)
+        {
+            $this->_persistence->Add($national, array());
+
+            $this->_persistence->Commit();
+
+            $savedNational = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
+                    new \ReflectionClass('\Application\Models\Domain\National'), array('ByName' => $national->name)));
+
+            foreach ($national->crimeStatistics as $crimeStatistic)
+            {
+                $this->_persistence->Add($crimeStatistic, array('area' => $savedNational));
+            }
+
+            $this->_persistence->Commit();
+        }
+        
         foreach ($crimeStatistics->countires as $country)
         {
             $this->_persistence->Add($country, array());
@@ -102,6 +119,26 @@ class CrimeService implements ICrimeService
         $area->region = $region;
 
         $this->_persistence->Add($area, array());
+        
+        $this->_persistence->Commit();
+        
+        $savedArea = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
+                            new \ReflectionClass('\Application\Models\Domain\Area'), array('ByName' => $area->name)));
+        
+        $statisticTypes = $this->GetAllCrimeTypes();
+        
+        foreach($statisticTypes as $type)
+        {
+            if(!$area->HasStatistic($type))
+            {
+                $this->_persistence->Add(new \Application\Models\Domain\CrimeStatistic(0, $type, $area), array('area' => $savedArea));
+            }
+        }
+        
+        foreach($area->crimeStatistics as $statistic)
+        {
+            $this->_persistence->Add($statistic, array('area' => $savedArea));
+        }
 
         $this->_persistence->Commit();
         
