@@ -21,6 +21,8 @@ function PutFormController($scope, $http, apiService)
 
     $scope.put = function()
     {
+        $scope.json = '';
+        
         var baseUri = apiService.baseApiRequest() + '/crimes/6-2013/put';
         
         var dirtyStatistics = $.Enumerable.From($scope.crimeStatistics).Where(function(crimeStatistic) { return crimeStatistic.isDirty; });

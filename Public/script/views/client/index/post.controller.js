@@ -46,6 +46,8 @@ function PostFormController($scope, $http, apiService)
     
     $scope.post = function()
     {
+        $scope.json = '';
+        
         var baseUri = apiService.baseApiRequest() + '/crimes/6-2013/post';
         
         var statistics = $.Enumerable

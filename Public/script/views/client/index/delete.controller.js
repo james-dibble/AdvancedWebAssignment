@@ -20,6 +20,8 @@ function DeleteFormController($scope, $http, apiService)
     
     $scope.delete = function()
     {
+        $scope.json = '';
+        
         var baseUri = apiService.baseApiRequest() + '/crimes/6-2013/delete';
                 
         $scope.requestUri = [baseUri, $scope.area.name.toLowerCase(), 'json'].join('/');

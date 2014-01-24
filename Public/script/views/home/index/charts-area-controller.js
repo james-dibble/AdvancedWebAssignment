@@ -38,6 +38,7 @@ function ChartsAreaController($scope, $http, apiService)
 
     var LoadRegionData = function ()
     {
+        $scope.json = '';
         $scope.areaDataLoading = true;
         
         $scope.requestUri 
