@@ -40,7 +40,7 @@ class CrimeStatisticMapper implements \Library\Persistence\IMapper
         if($searcher->HasKey('ForArea'))
         {
             $query = sprintf("%s WHERE `GeographicReference_Id` = %s", $baseQuery, $searcher->GetKey('ForArea'));
-            
+                        
             return $query;
         }
         

@@ -46,7 +46,7 @@ class ImportController extends \Library\Controller\Controller
             
             $serializableStats = new \Application\Persistence\XmlSerialisation\CrimesStatitics($stats);
 
-            return $this->XmlResult($serializableStats);
+            return $this->XmlResult($serializableStats, true);
         }
         catch (\Exception $ex)
         {            

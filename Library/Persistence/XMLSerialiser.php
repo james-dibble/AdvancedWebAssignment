@@ -3,10 +3,15 @@ namespace Library\Persistence;
 
 class XMLSerialiser
 {
-    public static function Serialise($object, $arraysAsElements = false)
+    public static function Serialise($object, $arraysAsElements = false, $schema = false)
     {
         $rootElement = new \DOMDocument();
         $rootElement->formatOutput = true;
+        
+        if($schema)
+        {
+            $rootElement = $rootElement->createElementNS('http://www.cems.uwe.ac.uk/~j3-dibble/CrimeRecord.xsd', 'crimes'); 
+        }
         
         $reflectedObject = new \ReflectionObject($object);
         

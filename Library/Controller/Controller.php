@@ -49,9 +49,9 @@ abstract class Controller
         return new \Library\Controller\JsonResult($object);
     }
     
-    protected function XmlResult($object)
+    protected function XmlResult($object, $schema = false)
     {
-        return new \Library\Controller\XMLResult($object);
+        return new \Library\Controller\XMLResult($object, $schema);
     }
 
     private function GetActionParameters($actionName)

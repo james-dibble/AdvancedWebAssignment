@@ -11,7 +11,7 @@ class CacheResult implements \Library\Controller\IActionResult
     }
     
     public function DoAction()
-    {
+    {        
         if($this->_cache->type == 'json')
         {
             header('Content-type: application/json');

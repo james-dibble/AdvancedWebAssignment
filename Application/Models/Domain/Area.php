@@ -17,7 +17,7 @@ class Area extends \Application\Models\Domain\GeographicReference
         
         foreach($this->crimeStatistics as $crimeStatistic)
         {
-            $total += $crimeStatistic->value;
+            $total += $crimeStatistic->GetTotal();
         }
         
         return $total;

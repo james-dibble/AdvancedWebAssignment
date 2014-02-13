@@ -14,7 +14,7 @@ class Router
         $this->_cache = $this->_container->Resolve('Library\Caching\IRequestCache');
     }
 
-    public function Dispatch($controllerName, $actionName)
+    public function Dispatch($controllerName, $actionName, $noCache)
     {
         try
         {
@@ -39,7 +39,10 @@ class Router
 
             $actionResult->DoAction();
 
-            $this->_cache->CacheResponse($_SERVER['REQUEST_URI'], ob_get_contents(), $actionResult);
+            if(!$noCache)
+            {
+                $this->_cache->CacheResponse($_SERVER['REQUEST_URI'], ob_get_contents(), $actionResult);
+            }
         }
         catch (\Exception $ex)
         {

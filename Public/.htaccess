@@ -11,7 +11,7 @@ RewriteRule ^crimes/([0-9]{1}[-]{1}[0-9]{4})/put/([A-Za-z_]+)/([A-Za-z_]+)/(.*)/
 RewriteRule ^crimes/([0-9]{1}[-]{1}[0-9]{4})/delete/(.*)/(xml|json)$ index.php?controller=crimes&action=delete&year=$1&areaName=$2&format=$3 [NC,L]
 RewriteRule ^locations/region/(xml|json)$ index.php?controller=locations&action=getregions&format=$1 [NC,L]
 RewriteRule ^import/file$ index.php?controller=import&action=file [NC,L]
-RewriteRule ^import/text$ index.php?controller=import&action=text [NC,L]
+RewriteRule ^import/text$ index.php?controller=import&action=text&noCache=1 [NC,L]
 RewriteRule ^import/imported-data$ index.php?controller=import&action=importeddata [NC,L]
 RewriteRule ^import/error$ index.php?controller=import&action=erroruploading [NC,L]
 RewriteRule ^import$ index.php?controller=import&action=index [NC,L]

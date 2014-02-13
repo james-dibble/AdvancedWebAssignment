@@ -8,15 +8,17 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
     private $_host;
     private $_user;
     private $_password;
+    private $_database;
     private $_mappers;
     private $_connection;
 
-    public function __construct($host, $user, $password, \Library\Persistence\IMapperDictionary $mappers)
+    public function __construct($host, $user, $password, $database, \Library\Persistence\IMapperDictionary $mappers)
     {
         $this->_connection = null;
         $this->_host = $host;
         $this->_user = $user;
         $this->_password = $password;
+        $this->_database = $database;
         $this->_mappers = $mappers;
         $this->_statementsToCommit = array();
     }
@@ -104,7 +106,7 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
     public function GetCollection(IPersistenceSearcher $search)
     {
         $mapper = $this->_mappers->GetMapper($search->TypeToSearch());
-
+        
         $query = $this->GetConnection()->query($mapper->GetFindQuery($search) . ';');
         $query->setFetchMode(\PDO::FETCH_OBJ);
 
@@ -124,9 +126,9 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
     {
         if ($this->_connection == null)
         {
-            $this->_connection = new \PDO("mysql:host=$this->_host;dbname=fet10009689", $this->_user, $this->_password);  
+            $this->_connection = new \PDO("mysql:host=$this->_host;dbname=$this->_database", $this->_user, $this->_password);
         }
-
+        
         return $this->_connection;
     }
 }

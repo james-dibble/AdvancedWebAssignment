@@ -1,5 +1,5 @@
 <?php
-ini_set('display_errors', '0');
+#ini_set('display_errors', '0');
 
 define('CONTEXT_PATH', '/~j3-dibble/atwd/');
 
@@ -11,6 +11,12 @@ $router = new \Library\Routing\Router($container);
 
 $controller = $_GET['controller'];
 $action = $_GET['action'];
+$noCache = false;
 
-$router->Dispatch($controller, $action);
+if(isset($_GET['noCache']))
+{
+    $noCache = $_GET['noCache'];
+}
+
+$router->Dispatch($controller, $action, $noCache);
 ?>
