@@ -129,11 +129,16 @@ class CrimesController extends \Library\Controller\APIController
     public function Delete($year, $format, $areaName)
     {
         $areaToDelete = $this->_crimeService->GetArea(str_replace('_', ' ', $areaName));
-
+        
+        if($areaToDelete == null)
+        {
+            throw new \Exception(sprintf("Area [%s] does not exists.", $areaName));
+        }
+        
         $this->_crimeService->DeleteArea($areaToDelete);
 
         $region = $this->_crimeService->GetCrimesForRegion(null, $areaToDelete->region->name);
-
+        
         $country = $this->_locationService->GetCountryForRegion($region);
         $allCountries = $this->_locationService->GetAllCountries();
 

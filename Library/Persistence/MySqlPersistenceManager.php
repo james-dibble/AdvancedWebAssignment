@@ -72,7 +72,7 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
             $this->GetConnection()->beginTransaction();
 
             foreach ($this->_statementsToCommit as $statement)
-            {    
+            {                    
                 $this->GetConnection()->exec($statement);
             }
 
@@ -80,7 +80,7 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
             
             $this->_statementsToCommit = array();
         }
-        catch (Exception $e)
+        catch (\Exception $e)
         {
             $this->GetConnection()->rollBack();
             throw $e;
@@ -92,6 +92,8 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
         $mapper = $this->_mappers->GetMapper($search->TypeToSearch());
 
         $query = $this->GetConnection()->query($mapper->GetFindQuery($search) . ';');
+        
+        //echo $mapper->GetFindQuery($search) . ';' . PHP_EOL;
                 
         $query->setFetchMode(\PDO::FETCH_OBJ);
                 

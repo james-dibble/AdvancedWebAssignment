@@ -101,7 +101,7 @@ class AreaMapper implements \Library\Persistence\IMapper
         if($objectToSave != null)
         {
             $statisticsQuery = 
-                sprintf("DELETE FROM `crime_statistics` WHERE `Area_Id` = '%s';", $objectToSave->id);
+                sprintf("DELETE FROM `crime_statistics` WHERE `GeographicReference_Id` = '%s';", $objectToSave->id);
             
             $areaQuery =
                 sprintf("DELETE FROM `areas` WHERE `GeographicReference_Id` = '%s';", $objectToSave->id);

@@ -10,24 +10,24 @@ class RequestCache implements \Library\Caching\IRequestCache
     public function CacheResponse($requestPath, $bufferContents, \Library\Controller\IActionResult $result)
     {
         // Redirects shouldn't be cached just incase the redirected action changes.
-        if (get_class($result) == 'Library\Controller\RedirectToAction')
+        if ($result instanceof \Library\Controller\RedirectToAction)
         {
             return;
         }
 
         $requestCachePath = $this->_basePath . $this->EscapeRequestPath($requestPath);
 
-        if (get_class($result) == 'Library\Controller\ViewResult')
+        if ($result instanceof \Library\Controller\ViewResult)
         {
             $requestCachePath .= '.html';
         }
 
-        if (get_class($result) == 'Library\Controller\JsonResult')
+        if ($result instanceof \Library\Controller\JsonResult)
         {
             $requestCachePath .= '.json';
         }
 
-        if (get_class($result) == 'Library\Controller\XmlResult')
+        if ($result instanceof \Library\Controller\XmlResult)
         {
             $requestCachePath .= '.xml';
         }

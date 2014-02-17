@@ -53,7 +53,7 @@ class RegionMapper implements \Library\Persistence\IMapper
                         ON `a`.`Region_Id` = `r`.`GeographicReference_Id`";
             
             $query = 
-               sprintf("%s %s WHERE `a`.`Region_Id` = '%s'", $baseQuery, $joinArea, $searcher->GetKey('ForArea'));
+               sprintf("%s %s WHERE `a`.`GeographicReference_Id` = '%s'", $baseQuery, $joinArea, $searcher->GetKey('ForArea'));
                     
             return $query;
         }
