@@ -52,7 +52,9 @@ class Router
 
             $controller = $this->CreateController('errors');
 
-            $controller->ProcessRequest('index', $ex);
+            $actionResult = $controller->ProcessRequest('index', $ex);
+            
+            $actionResult->DoAction();
         }
     }
 

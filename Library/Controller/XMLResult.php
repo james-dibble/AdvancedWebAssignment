@@ -14,7 +14,7 @@ class XMLResult implements IActionResult
 
     public function DoAction() 
     {
-        header('Content-type: application/xml');
+        header('Content-type: text/xml');
         
         $asXml = \Library\Persistence\XMLSerialiser::Serialise($this->_model, false, $this->_schema);
         

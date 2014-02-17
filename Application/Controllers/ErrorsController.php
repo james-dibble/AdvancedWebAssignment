@@ -24,8 +24,6 @@ class ErrorsController extends \Library\Controller\Controller
             http_response_code(500);
             $error->code = 500;
         }
-                
-        die($ex->getMessage());
         
         $error->desc = $ex->getMessage();
         
