@@ -4,7 +4,7 @@ namespace Application\Controllers;
 class ErrorsController extends \Library\Controller\Controller
 {
     public function Index(\Exception $ex)
-    {
+    {        
         $errorResponse = new \Application\Models\Errors\Response();
         
         $error = new \Application\Models\Errors\Error();
@@ -24,6 +24,8 @@ class ErrorsController extends \Library\Controller\Controller
             http_response_code(500);
             $error->code = 500;
         }
+                
+        die($ex->getMessage());
         
         $error->desc = $ex->getMessage();
         

@@ -32,9 +32,11 @@ class RequestCache implements \Library\Caching\IRequestCache
             $requestCachePath .= '.xml';
         }
 
-        $cacheHandel = fopen($requestCachePath, 'x');
-        fwrite($cacheHandel, $bufferContents);
-        fclose($cacheHandel);
+        if (!file_exists($requestCachePath) && ($cacheHandle = fopen($requestCachePath, 'x+')) !== false)
+        {
+            fwrite($cacheHandle, $bufferContents);
+            fclose($cacheHandle);
+        }        
     }
 
     public function EmptyCache()

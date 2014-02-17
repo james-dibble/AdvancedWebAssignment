@@ -45,7 +45,7 @@ class Router
             }
         }
         catch (\Exception $ex)
-        {
+        {            
             // Something went wrong so clear the buffer so only our error
             // output is sent.
             ob_end_clean();

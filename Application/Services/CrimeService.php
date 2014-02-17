@@ -116,6 +116,11 @@ class CrimeService implements ICrimeService
 
     public function SaveArea(\Application\Models\Domain\Area $area, \Application\Models\Domain\Region $region)
     {
+        if($this->GetArea($area->name) != null)
+        {
+            throw new \Exception(sprintf("Area [%s] already exists", $area->name));
+        }
+        
         $area->region = $region;
 
         $this->_persistence->Add($area, array());
