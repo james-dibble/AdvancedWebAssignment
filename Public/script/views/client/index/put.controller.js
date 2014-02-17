@@ -44,7 +44,10 @@ function PutFormController($scope, $http, apiService)
         $http.get($scope.requestUri).success(function(data)
         {
             $scope.json = JSON.stringify(data, null, 4);
-        });
+        }).error(function(data)
+        {
+            $scope.json = data;
+        });;
     };
 
     $scope.getAreaStatistics = function()
