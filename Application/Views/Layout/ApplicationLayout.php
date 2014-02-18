@@ -8,6 +8,7 @@ abstract class ApplicationLayout extends \Application\Views\Layout\BasicBootstra
         parent::__construct();
         
         $this->AddScript('//ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular.min.js');
+        $this->AddScript(CONTEXT_PATH . 'script/angular.localstorage.js');
         $this->AddScript(CONTEXT_PATH . 'script/global.js');
     }
     

@@ -1,4 +1,4 @@
-function DeleteFormController($scope, $http, apiService)
+function DeleteFormController($scope, $http, apiService, cacheService)
 {
     $scope.region = null;
     $scope.area = null;
@@ -6,17 +6,7 @@ function DeleteFormController($scope, $http, apiService)
     $scope.requestUri = '';
     $scope.json = '';
 
-    $scope.regionsRequestUri = apiService.baseApiRequest() + '/locations/region/json';
-
-    $http.get($scope.regionsRequestUri).success(function(data)
-    {
-        $scope.regions = [];
-
-        $(data.response.location).each(function(index, elem)
-        {
-            $scope.regions.push(elem);
-        });
-    });
+    $scope.regions = cacheService.bindRegions($scope, 'regions');
 
     $scope.delete = function()
     {
@@ -30,9 +20,8 @@ function DeleteFormController($scope, $http, apiService)
         {
             $scope.json = JSON.stringify(data, null, 4);
 
-            var index = $scope.region.areas.indexOf($scope.area);
-            $scope.region.areas.splice(index, 1);
-                        
+            cacheService.updateCache();
+            
             $scope.region = null;
             $scope.area = null;
         }).error(function(data)

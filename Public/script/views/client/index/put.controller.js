@@ -1,4 +1,4 @@
-function PutFormController($scope, $http, apiService)
+function PutFormController($scope, $http, apiService, cacheService)
 {
     $scope.region = null;
     $scope.area = null;
@@ -7,17 +7,7 @@ function PutFormController($scope, $http, apiService)
     $scope.requestUri = '';
     $scope.json = '';
 
-    $scope.regionsRequestUri = apiService.baseApiRequest() + '/locations/region/json';
-
-    $http.get($scope.regionsRequestUri).success(function(data)
-    {
-        $scope.regions = [];
-
-        $(data.response.location).each(function(index, elem)
-        {
-            $scope.regions.push(elem);
-        });
-    });
+    $scope.regions = cacheService.bindRegions($scope, 'regions');
 
     $scope.put = function()
     {

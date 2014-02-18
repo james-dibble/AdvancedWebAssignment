@@ -1,4 +1,4 @@
-function PostFormController($scope, $http, apiService)
+function PostFormController($scope, $http, apiService, cacheService)
 {
     $scope.region = null;
     $scope.areaName = '';
@@ -8,17 +8,7 @@ function PostFormController($scope, $http, apiService)
     $scope.requestUri = '';
     $scope.json = '';
     
-    $scope.regionsRequestUri = apiService.baseApiRequest() + '/locations/region/json';
-
-    $http.get($scope.regionsRequestUri).success(function(data)
-    {
-        $scope.regions = [];
-
-        $(data.response.location).each(function(index, elem)
-        {
-            $scope.regions.push({name: elem.name});
-        });
-    });
+    $scope.regions = cacheService.bindRegions($scope, 'regions');
     
     $scope.crimeTypesRequestUri = apiService.baseApiRequest() + '/crimes/types/json';
 
