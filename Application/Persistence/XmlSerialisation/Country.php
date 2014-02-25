@@ -25,7 +25,7 @@ class Country implements \Library\Persistence\IXmlSchemaMember
 
     public function SchemaProperty()
     {
-        return 'cs:country';
+        return 'country';
     }
 }
 ?>

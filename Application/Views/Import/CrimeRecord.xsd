@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
-<xs:schema 
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    elementFormDefault="unqualified">
-  <xs:element name="crimesstatitics">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           attributeFormDefault="unqualified"
+           elementFormDefault="qualified"
+           targetNamespace="http://www.cems.uwe.ac.uk/~j3-dibble/atwd/crimes/">
+  <xs:element name="crimeStatitics">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="country" maxOccurs="unbounded" minOccurs="0">

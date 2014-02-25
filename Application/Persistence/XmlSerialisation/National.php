@@ -25,7 +25,7 @@ class National  implements \Library\Persistence\IXmlSchemaMember
 
     public function SchemaProperty()
     {
-        return 'cs:national';
+        return 'national';
     }
 }
 ?>

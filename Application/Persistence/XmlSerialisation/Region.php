@@ -25,7 +25,7 @@ class Region  implements \Library\Persistence\IXmlSchemaMember
 
     public function SchemaProperty()
     {
-        return 'cs:region';
+        return 'region';
     }
 }
 ?>
