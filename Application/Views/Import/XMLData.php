@@ -16,8 +16,6 @@ class XMLData implements \Library\Views\IView
         $tempDomDocument = new \DOMDocument;
         $tempDomDocument->loadXML($this->_model->saveXML());
         $validationResult = $tempDomDocument->schemaValidate('CrimeRecord.xsd');
-
-	echo '<div class="row">&nbsp;</div>';
 		
         if ($validationResult)
         {

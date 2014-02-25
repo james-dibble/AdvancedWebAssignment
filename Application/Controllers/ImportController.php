@@ -21,7 +21,14 @@ class ImportController extends \Library\Controller\Controller
 
     public function File()
     {
-        $inputContents = fopen($_FILES['csvFile']['tmp_name'], 'rt');
+        $inputContentsHandle = fopen($_FILES['inputCsvFile']['tmp_name'], 'rt');
+        
+        $inputContents = array();
+        
+        while (($line = fgets($inputContentsHandle)) !== false) 
+        {
+            array_push($inputContents, $line);
+        }
         
         $serializableStats = $this->CreateStatistics($inputContents);
 
@@ -30,6 +37,8 @@ class ImportController extends \Library\Controller\Controller
 
     public function Text($inputContents)
     {   
+        $inputContents = preg_split('/\r\n|[\r\n]/', $inputContents);
+        
         $serializableStats = $this->CreateStatistics($inputContents);
 
         return $this->ViewResult(new \Application\Views\Import\ImportedData($serializableStats));
@@ -48,8 +57,6 @@ class ImportController extends \Library\Controller\Controller
     private function CreateStatistics($inputContents)
     {
         $this->_crimeService->ClearCrimes();
-
-        $inputContents = preg_split('/\r\n|[\r\n]/', $inputContents);
 
         $stats = $this->_importService->ParseFile($inputContents);
 

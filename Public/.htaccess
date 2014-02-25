@@ -12,13 +12,13 @@ RewriteRule ^crimes/([0-9]{1}[-]{1}[0-9]{4})/([A-Za-z_]+)/([A-Za-z_]+)/(xml|json
 RewriteRule ^crimes/doc/index.html$ index.php?controller=documentation&action=index&noCache=1 [NC,L]
 RewriteRule ^crimes/types/(xml|json)$ index.php?controller=crimes&action=getcrimetypes&format=$1 [NC,L]
 RewriteRule ^locations/region/(xml|json)$ index.php?controller=locations&action=getregions&format=$1 [NC,L]
-RewriteRule ^import/file$ index.php?controller=import&action=file [NC,L]
+RewriteRule ^import/file$ index.php?controller=import&action=file&noCache=1 [NC,L]
 RewriteRule ^import/text$ index.php?controller=import&action=text&noCache=1 [NC,L]
 RewriteRule ^import/imported-data$ index.php?controller=import&action=importeddata [NC,L]
 RewriteRule ^import/error$ index.php?controller=import&action=erroruploading [NC,L]
 RewriteRule ^import$ index.php?controller=import&action=index [NC,L]
 RewriteRule ^api$ index.php?controller=client&action=index [NC,L]
-RewriteRule ^$ index.php?controller=home&action=index&noCache=1 [NC,L]
+RewriteRule ^$ index.php?controller=home&action=index [NC,L]
 RewriteRule ^(?:application|library)\b.* index.php/$0 [L]
 
 #Errors
