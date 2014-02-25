@@ -47,6 +47,114 @@
             I learnt a great deal about utilising design patterns in a functional programming language (PHP), and was able
             to expand my knowledge of creating RESTful data APIs that conform to a predefined structure.
         </p>
+        <div class="page-header">
+            <h1>URI Distinctions from Specification</h1>
+        </div>
+        <h3>
+            PUT
+        </h3>
+        <p>
+            As I made the decision not to store the totals anywhere and instead calculate them, the specification for the 
+            <code>PUT</code> request was inadequate.  I instead decided to follow a similar URI scheme to the <code>POST</code>
+            request where individual values for an existing area can be updated using its abbreviation.
+        </p>
+        <p>
+            The URI therefore becomes:
+        </p>
+        <pre>
+http://www.cems.uwe.ac.uk/~<yourusername>/atwd/crimes/6-2013/put/{region}/{area}/{crimeAbbreviation}:{value}/{json|xml}
+        </pre>
+        <p>
+            For multiple updated values the values are "-" delimited:
+        </p>
+        <pre>
+http://www.cems.uwe.ac.uk/~<yourusername>/atwd/crimes/6-2013/put/{region}/{area}/{crimeAbbreviation}:{value}-{crimeAbbreviation}:{value}/{json|xml}
+        </pre>
+        <p>
+            The list of abbreviations are as follows:
+        </p>
+        <table class="table table-striped table-bordered">
+            <tr>
+                <th>Crime Type</th>
+                <th>Abbreviation</th>
+            </tr>
+            <tr>
+                <td>BicycleTheft</td>
+                <td>bt</td>
+            </tr>
+            <tr>
+                <td>CriminalDamageAndArson</td>
+                <td>cdaa</td>
+            </tr>
+            <tr>
+                <td>DomesticBurglary</td>
+                <td>db</td>
+            </tr>
+            <tr>
+                <td>DrugOffenses</td>
+                <td>do</td>
+            </tr>
+            <tr>
+                <td>Fruad</td>
+                <td>frd</td>
+            </tr>
+            <tr>
+                <td>Homocide</td>
+                <td>hom</td>
+            </tr>
+            <tr>
+                <td>MiscCrimes</td>
+                <td>mc</td>
+            </tr>
+            <tr>
+                <td>MiscTheft</td>
+                <td>mt</td>
+            </tr>
+            <tr>
+                <td>NonDomesticBurglary</td>
+                <td>ndb</td>
+            </tr>
+            <tr>
+                <td>PossesionOfWeapons</td>
+                <td>pow</td>
+            </tr>
+            <tr>
+                <td>PublicOrderOffenses</td>
+                <td>poo</td>
+            </tr>
+            <tr>
+                <td>Robbery</td>
+                <td>rob</td>
+            </tr>
+            <tr>
+                <td>SexualOffenses</td>
+                <td>so</td>
+            </tr>
+            <tr>
+                <td>Shoplifting</td>
+                <td>shop</td>
+            </tr>
+            <tr>
+                <td>TheftFromPerson</td>
+                <td>tfp</td>
+            </tr>
+            <tr>
+                <td>TheftOffenses</td>
+                <td>th</td>
+            </tr>
+            <tr>
+                <td>VehicleOffenses</td>
+                <td>vo</td>
+            </tr>
+            <tr>
+                <td>ViolenceWithInjury</td>
+                <td>vwi</td>
+            </tr>
+            <tr>
+                <td>ViolenceWithoutInjury</td>
+                <td>vwoi</td>
+            </tr>
+        </table>
     </div>
 </div>
 <div class="row">
