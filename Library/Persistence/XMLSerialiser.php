@@ -15,7 +15,8 @@ class XMLSerialiser
         $reflectedObject = new \ReflectionObject($object);
 
         $serailisedObjectNode = XMLSerialiser::SerialiseChild($object, $reflectedObject->getShortName(), $rootElement, $arraysAsElements);
-
+        
+        
         $rootElement->appendChild($serailisedObjectNode);
 
         return $rootElement;
@@ -25,14 +26,14 @@ class XMLSerialiser
     {
         $childElement = null;
         
-        if($childObject instanceof \Library\Persistence\IXmlSchemaMember)
-        {
-            $childElement = $domDocument->createElementNS($childObject->SchemaPath(), $childObject->SchemaProperty());
-        }
-        else
-        {
+//        if($childObject instanceof \Library\Persistence\IXmlSchemaMember)
+//        {
+//            $childElement = $domDocument->createElementNS($childObject->SchemaPath(), $childObject->SchemaProperty());
+//        }
+//        else
+//        {
             $childElement = $domDocument->createElement(strtolower($childName));
-        }
+//        }
         
         $reflectedObject = new \ReflectionObject($childObject);
 

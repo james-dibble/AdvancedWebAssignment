@@ -2,7 +2,7 @@
 #ini_set('display_errors', '0');
 
 define('CONTEXT_PATH', '/~j3-dibble/atwd/', true);
-define('SCHEMA_PATH', 'http://www.cems.uwe.ac.uk/~j3-dibble/atwd/crimes/', true);
+define('SCHEMA_PATH', 'http://localhost/~j3-dibble/atwd/crimes/', true);
 
 include_once dirname(__FILE__) . '/../Application/AutoLoader.php';
 

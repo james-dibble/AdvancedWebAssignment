@@ -13,7 +13,9 @@ class XMLData implements \Library\Views\IView
 
     public function BuildView()
     {
-        $validationResult = $this->_model->schemaValidate(SCHEMA_PATH);
+        $tempDomDocument = new \DOMDocument;
+        $tempDomDocument->loadXML($this->_model->saveXML());
+        $validationResult = $tempDomDocument->schemaValidate('CrimeRecord.xsd');
 
 	echo '<div class="row">&nbsp;</div>';
 		

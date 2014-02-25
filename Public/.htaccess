@@ -2,7 +2,7 @@ ErrorDocument 404 /index.php?controller=errors&action=notfound
 RewriteEngine on
 RewriteBase /~j3-dibble/atwd/
 
-RewriteRule ^crimes/ CrimeRecord.xsd [NC,L]
+RewriteRule ^crimes/$ CrimeRecord.xsd [NC,L]
 RewriteRule ^crimes/([0-9]{1}[-]{1}[0-9]{4})/post/([A-Za-z_]+)/([A-Za-z_]+)/(.*)/(xml|json)$ index.php?controller=crimes&action=post&regionName=$2&newArea=$3&areaData=$4&format=$5&noCache=1 [NC,L]
 RewriteRule ^crimes/([0-9]{1}[-]{1}[0-9]{4})/put/([A-Za-z_]+)/([A-Za-z_]+)/(.*)/(xml|json)$ index.php?controller=crimes&action=put&regionName=$2&areaName=$3&changedStatistics=$4&format=$5&noCache=1 [NC,L]
 RewriteRule ^crimes/([0-9]{1}[-]{1}[0-9]{4})/delete/(.*)/(xml|json)$ index.php?controller=crimes&action=delete&year=$1&areaName=$2&format=$3&noCache=1 [NC,L]
@@ -18,7 +18,7 @@ RewriteRule ^import/imported-data$ index.php?controller=import&action=importedda
 RewriteRule ^import/error$ index.php?controller=import&action=erroruploading [NC,L]
 RewriteRule ^import$ index.php?controller=import&action=index [NC,L]
 RewriteRule ^api$ index.php?controller=client&action=index [NC,L]
-RewriteRule ^$ index.php?controller=home&action=index [NC,L]
+RewriteRule ^$ index.php?controller=home&action=index&noCache=1 [NC,L]
 RewriteRule ^(?:application|library)\b.* index.php/$0 [L]
 
 #Errors

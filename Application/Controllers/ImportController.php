@@ -29,17 +29,10 @@ class ImportController extends \Library\Controller\Controller
     }
 
     public function Text($inputContents)
-    {
-        try
-        {
-            $serializableStats = $this->CreateStatistics($inputContents);
+    {   
+        $serializableStats = $this->CreateStatistics($inputContents);
 
-            return $this->ViewResult(new \Application\Views\Import\ImportedData($serializableStats));
-        }
-        catch (\Exception $ex)
-        {
-            return $this->RedirectToAction('import/error');
-        }
+        return $this->ViewResult(new \Application\Views\Import\ImportedData($serializableStats));
     }
 
     public function ErrorUploading()
