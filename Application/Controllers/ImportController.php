@@ -4,6 +4,7 @@ namespace Application\Controllers;
 
 class ImportController extends \Library\Controller\Controller
 {
+
     private $_importService;
     private $_crimeService;
 
@@ -20,37 +21,23 @@ class ImportController extends \Library\Controller\Controller
 
     public function File()
     {
-        $fileDestination = '/tmp/' . $_FILES['inputCsvFile']['name'];
+        $inputContents = fopen($_FILES['csvFile']['tmp_name'], 'rt');
+        
+        $serializableStats = $this->CreateStatistics($inputContents);
 
-        move_uploaded_file($_FILES['inputCsvFile']['tmp_name'], $fileDestination);
-
-        if (file_exists($fileDestination))
-        {
-            die('The file was uploaded');
-        }
-
-        return $this->RedirectToAction('import');
+        return $this->ViewResult(new \Application\Views\Import\ImportedData($serializableStats));
     }
 
     public function Text($inputContents)
     {
         try
         {
-            $this->_crimeService->ClearCrimes();
-            
-            $inputContents = preg_split('/\r\n|[\r\n]/', $inputContents);
+            $serializableStats = $this->CreateStatistics($inputContents);
 
-            $stats = $this->_importService->ParseFile($inputContents);
-            
-            $this->_crimeService->SaveStatistics($stats);
-            
-            $serializableStats = new \Application\Persistence\XmlSerialisation\CrimesStatitics($stats);
-
-            return $this->XmlResult($serializableStats, true);
+            return $this->ViewResult(new \Application\Views\Import\ImportedData($serializableStats));
         }
         catch (\Exception $ex)
-        {            
-            die($ex->getmessage());
+        {
             return $this->RedirectToAction('import/error');
         }
     }
@@ -60,17 +47,27 @@ class ImportController extends \Library\Controller\Controller
         return $this->ViewResult(new \Application\Views\Import\ErrorUploading());
     }
 
-    public function ImportedData()
-    {
-        $statsAsXml = new \DOMDocument();
-        $statsAsXml->load('/tmp/import.xml');
-        
-        return $this->ViewResult(new \Application\Views\Import\ImportedData($statsAsXml));
-    }
-
     public function Save()
     {
         return $this->RedirectToAction('');
     }
+
+    private function CreateStatistics($inputContents)
+    {
+        $this->_crimeService->ClearCrimes();
+
+        $inputContents = preg_split('/\r\n|[\r\n]/', $inputContents);
+
+        $stats = $this->_importService->ParseFile($inputContents);
+
+        $this->_crimeService->SaveStatistics($stats);
+
+        $serializableStats = new \Application\Persistence\XmlSerialisation\CrimesStatitics($stats);
+
+        $xml = \Library\Persistence\XMLSerialiser::Serialise($serializableStats);
+        
+        return $xml;
+    }
+
 }
 ?>

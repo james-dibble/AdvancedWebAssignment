@@ -1,46 +1,53 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:element name="crimesstatitics">
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.cems.uwe.ac.uk/~j3-dibble/atwd/crimes/">
+  <xs:element name="crimestatitics">
     <xs:complexType>
       <xs:sequence>
-        <xs:element maxOccurs="unbounded" name="country">
+        <xs:element name="country" maxOccurs="unbounded" minOccurs="0">
           <xs:complexType>
             <xs:sequence>
-              <xs:element maxOccurs="unbounded" name="region">
+              <xs:element name="region" maxOccurs="unbounded" minOccurs="0">
                 <xs:complexType>
                   <xs:sequence>
-                    <xs:element maxOccurs="unbounded" name="area">
+                    <xs:element name="area" maxOccurs="unbounded" minOccurs="0">
                       <xs:complexType>
                         <xs:sequence>
-                          <xs:element maxOccurs="unbounded" name="statistic">
+                          <xs:element name="statistic" maxOccurs="unbounded" minOccurs="1">
                             <xs:complexType>
-                              <xs:attribute name="type" type="xs:string" use="required" />
-                              <xs:attribute name="total" type="xs:unsignedInt" use="required" />
+                              <xs:simpleContent>
+                                <xs:extension base="xs:string">
+                                  <xs:attribute type="xs:string" name="type" use="optional"/>
+                                  <xs:attribute type="xs:int" name="total" use="optional"/>
+                                </xs:extension>
+                              </xs:simpleContent>
                             </xs:complexType>
                           </xs:element>
                         </xs:sequence>
-                        <xs:attribute name="name" type="xs:string" use="required" />
+                        <xs:attribute type="xs:string" name="name" use="optional"/>
                       </xs:complexType>
                     </xs:element>
                   </xs:sequence>
-                  <xs:attribute name="name" type="xs:string" use="required" />
+                  <xs:attribute type="xs:string" name="name" use="optional"/>
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
-            <xs:attribute name="name" type="xs:string" use="required" />
+            <xs:attribute type="xs:string" name="name" use="optional"/>
           </xs:complexType>
         </xs:element>
-        <xs:element maxOccurs="unbounded" name="national">
+        <xs:element name="national" maxOccurs="unbounded" minOccurs="0">
           <xs:complexType>
             <xs:sequence>
-              <xs:element maxOccurs="unbounded" name="statistic">
+              <xs:element name="statistic" maxOccurs="unbounded" minOccurs="1">
                 <xs:complexType>
-                  <xs:attribute name="type" type="xs:string" use="required" />
-                  <xs:attribute name="total" type="xs:unsignedInt" use="required" />
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="type" use="optional"/>
+                      <xs:attribute type="xs:int" name="total" use="optional"/>
+                    </xs:extension>
+                  </xs:simpleContent>
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
-            <xs:attribute name="name" type="xs:string" use="required" />
+            <xs:attribute type="xs:string" name="name" use="optional"/>
           </xs:complexType>
         </xs:element>
       </xs:sequence>

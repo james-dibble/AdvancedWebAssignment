@@ -1,7 +1,7 @@
 <?php
 namespace Application\Persistence\XmlSerialisation;
 
-class CrimesStatitics 
+class CrimesStatitics  implements \Library\Persistence\IXmlSchemaMember
 {
     public $country;
     public $national;
@@ -20,6 +20,16 @@ class CrimesStatitics
         {
             array_push($this->national, new \Application\Persistence\XmlSerialisation\National($national));
         }
+    }
+    
+    public function SchemaPath()
+    {
+        return SCHEMA_PATH;
+    }
+
+    public function SchemaProperty()
+    {
+        return 'cs:crimestatistics';
     }
 }
 ?>

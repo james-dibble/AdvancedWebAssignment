@@ -1,7 +1,7 @@
 <?php
 namespace Application\Persistence\XmlSerialisation;
 
-class Country 
+class Country implements \Library\Persistence\IXmlSchemaMember
 {
     public $name;
     public $region;
@@ -16,6 +16,16 @@ class Country
         {
             array_push($this->region, new \Application\Persistence\XmlSerialisation\Region($region));
         }
+    }
+
+    public function SchemaPath()
+    {
+        return SCHEMA_PATH;
+    }
+
+    public function SchemaProperty()
+    {
+        return 'cs:country';
     }
 }
 ?>

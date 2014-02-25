@@ -16,11 +16,15 @@ function AutoLoader($classname)
 }
 
 function shutDownFunction()
-{
+{   
     $error = error_get_last();
 
     if ($error != null)
     {
+        // Something went wrong so clear the buffer so only our error
+        // output is sent.
+        ob_end_clean();
+        
         $errorController = new \Application\Controllers\ErrorsController();
 
         $actionResult = $errorController->Error(new \Exception($error['message']));

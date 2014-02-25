@@ -62,13 +62,13 @@
             The URI therefore becomes:
         </p>
         <pre>
-http://www.cems.uwe.ac.uk/~<yourusername>/atwd/crimes/6-2013/put/{region}/{area}/{crimeAbbreviation}:{value}/{json|xml}
+http://www.cems.uwe.ac.uk/~{username}/atwd/crimes/6-2013/put/{region}/{area}/{crimeAbbreviation}:{value}/{json|xml}
         </pre>
         <p>
             For multiple updated values the values are "-" delimited:
         </p>
         <pre>
-http://www.cems.uwe.ac.uk/~<yourusername>/atwd/crimes/6-2013/put/{region}/{area}/{crimeAbbreviation}:{value}-{crimeAbbreviation}:{value}/{json|xml}
+http://www.cems.uwe.ac.uk/~{username}/atwd/crimes/6-2013/put/{region}/{area}/{crimeAbbreviation}:{value}-{crimeAbbreviation}:{value}/{json|xml}
         </pre>
         <p>
             The list of abbreviations are as follows:

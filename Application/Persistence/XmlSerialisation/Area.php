@@ -1,7 +1,7 @@
 <?php
 namespace Application\Persistence\XmlSerialisation;
 
-class Area 
+class Area implements \Library\Persistence\IXmlSchemaMember
 {
     public $name;
     public $statistic;
@@ -16,6 +16,16 @@ class Area
         {
             array_push($this->statistic, new CrimeStatistic($crimeStatistic));
         }
+    }
+
+    public function SchemaPath()
+    {
+        return SCHEMA_PATH;
+    }
+
+    public function SchemaProperty()
+    {
+        return 'cs:area';
     }
 }
 ?>
