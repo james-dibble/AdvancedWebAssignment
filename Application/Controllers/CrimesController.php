@@ -99,6 +99,11 @@ class CrimesController extends \Library\Controller\APIController
     public function Put($regionName, $areaName, $changedStatistics, $format)
     {
         $area = $this->_crimeService->GetArea(str_replace('_', ' ', $areaName));
+        
+        if($area == null)
+        {
+            throw new \Exception(sprintf('Area [%s] does not exist to be updated', $areaName));
+        }
 
         $areaDataSplit = explode('-', $changedStatistics);
 

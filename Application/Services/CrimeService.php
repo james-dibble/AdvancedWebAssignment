@@ -116,9 +116,11 @@ class CrimeService implements ICrimeService
 
     public function SaveArea(\Application\Models\Domain\Area $area, \Application\Models\Domain\Region $region)
     {
-        if($this->GetArea($area->name) != null)
+        $existingArea = $this->GetArea($area->name);
+        
+        if($existingArea != null)
         {
-            throw new \Exception(sprintf("Area [%s] already exists", $area->name));
+            $this->DeleteArea($existingArea);
         }
         
         $area->region = $region;
@@ -126,17 +128,17 @@ class CrimeService implements ICrimeService
         $this->_persistence->Add($area, array());
         
         $this->_persistence->Commit();
-        
+                
         $savedArea = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
                             new \ReflectionClass('\Application\Models\Domain\Area'), array('ByName' => $area->name)));
         
         $statisticTypes = $this->GetAllCrimeTypes();
-        
+                
         foreach($statisticTypes as $type)
         {
             if(!$area->HasStatistic($type))
             {
-                $this->_persistence->Add(new \Application\Models\Domain\CrimeStatistic(0, $type, $area), array('area' => $savedArea));
+                $this->_persistence->Add(new \Application\Models\Domain\CrimeStatistic(0, $type, $savedArea), array('area' => $savedArea));
             }
         }
         
@@ -144,7 +146,7 @@ class CrimeService implements ICrimeService
         {
             $this->_persistence->Add($statistic, array('area' => $savedArea));
         }
-
+        
         $this->_persistence->Commit();
         
         $this->_cache->EmptyCache();
