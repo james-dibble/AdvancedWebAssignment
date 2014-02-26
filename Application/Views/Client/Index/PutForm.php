@@ -26,6 +26,9 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-lg-12" data-ng-show="areDataFailedToLoad">
+                        <div class="alert alert-danger">Loading Area Data Failed</div>
+                    </div>
                     <div data-ng-repeat="crimeStatistic in crimeStatistics">
                         <div class="col-lg-9 col-md-9">
                             <div class="form-group">

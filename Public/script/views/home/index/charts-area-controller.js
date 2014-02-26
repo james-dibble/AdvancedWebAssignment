@@ -1,11 +1,14 @@
-function ChartsAreaController($scope, $http, apiService)
+function ChartsAreaController($scope, $http, apiService, cacheService)
 {
     $scope.regionsLoading = true;
     $scope.loadingRegionsFailed = false;
-    $scope.regions = [];
     $scope.activeRegion = null;
     $scope.json = '';
     $scope.requestUri = apiService.baseApiRequest() + '/locations/region/json';
+    
+    cacheService.bindRegions($scope, 'regions', function(newValue){
+       $scope.regions = newValue; 
+    });
 
     $http.get($scope.requestUri).success(function(data)
     {
@@ -145,7 +148,7 @@ function ChartsAreaController($scope, $http, apiService)
             });
 
         })
-                .error(function()
+        .error(function()
         {
             $scope.loadingAreaDataFailed = true;
             $scope.areaDataLoading = false;

@@ -2,6 +2,7 @@ function PutFormController($scope, $http, apiService, cacheService)
 {
     $scope.region = null;
     $scope.area = null;
+    $scope.areDataFailedToLoad = false;
     $scope.crimeStatistics = [];
     $scope.requestUri = '';
     $scope.json = '';
@@ -43,6 +44,9 @@ function PutFormController($scope, $http, apiService, cacheService)
 
     $scope.getAreaStatistics = function()
     {
+        $scope.areDataFailedToLoad = false;
+        $scope.crimeStatistics = [];
+        
         var baseUri = apiService.baseApiRequest() + '/crimes/6-2013';
 
         var requestUri = [baseUri, $scope.region.name.replace(/ /g, '_'), $scope.area.name.replace(/ /g, '_'), 'json'].join('/');
@@ -52,6 +56,8 @@ function PutFormController($scope, $http, apiService, cacheService)
         $http.get(requestUri).success(function(data)
         {
             $scope.crimeStatistics = data.response.crimes.crimeStatistics;
+        }).error(function(){
+            $scope.areDataFailedToLoad = true;
         });
     };
     

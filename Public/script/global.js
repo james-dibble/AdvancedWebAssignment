@@ -17,17 +17,28 @@ atwd.service('cacheService', function($http, $store, apiService) {
         bindRegions: function(scope, varName, callback) {
             return $store.bind(scope, varName, [], callback);
         },
-        updateCache: function() {
+        bindRegionStatistics: function(scope, varName, callback){
+            return $store.bind(scope, varName, [], callback);
+        },
+        updateRegionCache: function() {
             var requestUri = apiService.baseApiRequest() + '/locations/region/json';
 
             $http.get(requestUri).success(function(data)
             {
                 $store.set('regions', data.response.location);
             });
+        },
+        updateRegionStatisticsCache: function(){
+            var requestUri = apiService.baseApiRequest() + '/crimes/6-2013/json';
+            
+            $http.get(requestUri).success(function(data)
+            {
+                $store.set('regionStatistics', data.response.crimes);
+            });
         }
     };
 
-    service.updateCache();
+    service.updateRegionCache();
 
     return service;
 });

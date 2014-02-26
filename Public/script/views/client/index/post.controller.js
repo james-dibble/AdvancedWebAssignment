@@ -53,7 +53,7 @@ function PostFormController($scope, $http, apiService, cacheService)
         {
             $scope.json = JSON.stringify(data, null, 4);
             
-            cacheService.updateCache();
+            cacheService.updateRegionCache();
             
             $scope.region = null;
             $scope.areaName = '';

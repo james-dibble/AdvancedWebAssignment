@@ -25,7 +25,7 @@ class Area implements \Library\Persistence\IXmlSchemaMember
 
     public function SchemaProperty()
     {
-        return 'area';
+        return 'cs:area';
     }
 }
 ?>

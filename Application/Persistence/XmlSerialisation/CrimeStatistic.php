@@ -19,7 +19,7 @@ class CrimeStatistic  implements \Library\Persistence\IXmlSchemaMember
 
     public function SchemaProperty()
     {
-        return 'statistic';
+        return 'cs:statistic';
     }
 }
 ?>

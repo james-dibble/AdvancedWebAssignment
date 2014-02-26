@@ -5,14 +5,6 @@
         </div>
         <div class="panel-body">
             <div class="row">
-                <div class="col-lg-12" data-ng-show="loadingRegions">
-                    <div class="alert alert-warning">Data loading</div>
-                </div>
-                <div class="col-lg-12" data-ng-show="loadingAreaDataFailed">
-                    <div class="alert alert-danger">Loading Region Data Failed</div>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-lg-5">
                     <div class="row">
                         <div class="col-lg-12">
@@ -59,7 +51,6 @@
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#regionBar" data-toggle="tab">Bar</a></li>
                                 <li><a href="#regionPie" data-toggle="tab">Pie</a></li>
-                                <li><a href="#regionJson" data-toggle="tab">JSON</a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane fade active in" id="regionBar">
@@ -87,23 +78,6 @@
                                         </div>
                                         <div class="col-lg-12" data-ng-hide="areaDataLoading">
                                             <div id="region-pie-chart" style="height: 400px; margin: 0 auto"></div>    
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="regionJson">
-                                    <div class="row">&nbsp;</div>
-                                    <div class="row">
-                                        <div class="col-lg-12" data-ng-show="areaDataLoading">
-                                            <div class="alert alert-warning">Data loading</div>
-                                        </div>
-                                        <div class="col-lg-12" data-ng-show="loadingAreaDataFailed">
-                                            <div class="alert alert-danger">Loading Area Data Failed</div>
-                                        </div>
-                                        <div class="col-lg-12" data-ng-hide="areaDataLoading">
-                                            <span class="label label-primary">Request URI</span><code>{{requestUri}}</code>
-                                            <br />
-                                            <br />
-                                            <pre>{{json}}</pre>  
                                         </div>
                                     </div>
                                 </div>
@@ -166,7 +140,6 @@
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#areaBar" data-toggle="tab">Bar</a></li>
                                 <li><a href="#areaPie" data-toggle="tab">Pie</a></li>
-                                <li><a href="#areaJson" data-toggle="tab">JSON</a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane fade active in" id="areaBar">
@@ -194,23 +167,6 @@
                                         </div>
                                         <div class="col-lg-12" data-ng-hide="areaDataLoading">
                                             <div id="area-pie-chart" style="height: 400px; margin: 0 auto"></div>    
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="areaJson">
-                                    <div class="row">&nbsp;</div>
-                                    <div class="row">
-                                        <div class="col-lg-12" data-ng-show="areaDataLoading">
-                                            <div class="alert alert-warning">Data loading</div>
-                                        </div>
-                                        <div class="col-lg-12" data-ng-show="loadingAreaDataFailed">
-                                            <div class="alert alert-danger">Loading Area Data Failed</div>
-                                        </div>
-                                        <div class="col-lg-12" data-ng-hide="areaDataLoading">
-                                            <span class="label label-primary">Request URI</span><code>{{requestUri}}</code>
-                                            <br />
-                                            <br />
-                                            <pre>{{json}}</pre>  
                                         </div>
                                     </div>
                                 </div>
