@@ -30,7 +30,7 @@ HTML;
         <!-- LE STYLE -->
         {$this->BuildStyleSheets()}
 </head>
-<body>
+<body data-spy="scroll" data-target="#scrollTarget" data-offeset="50">
 HTML;
     }
 
