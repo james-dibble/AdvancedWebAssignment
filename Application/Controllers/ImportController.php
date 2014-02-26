@@ -57,11 +57,11 @@ class ImportController extends \Library\Controller\Controller
     private function CreateStatistics($inputContents)
     {
         $this->_crimeService->ClearCrimes();
-
+        
         $stats = $this->_importService->ParseFile($inputContents);
-
+        
         $this->_crimeService->SaveStatistics($stats);
-
+        
         $serializableStats = new \Application\Persistence\XmlSerialisation\CrimesStatitics($stats);
 
         $xml = \Library\Persistence\XMLSerialiser::Serialise($serializableStats);

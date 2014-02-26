@@ -25,6 +25,11 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
 
     public function Add($objectToAdd, array $referenceObjects)
     {
+        if($objectToAdd == null)
+        {
+            throw new \Exception('Object being added is null');
+        }
+        
         $mapper = $this->_mappers->GetMapper(new \ReflectionClass($objectToAdd));
 
         foreach($mapper->GetAddQueries($objectToAdd, $referenceObjects) as $query)
@@ -35,6 +40,11 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
 
     public function Change($objectToChange, array $referenceObjects)
     {
+        if($objectToChange == null)
+        {
+            throw new \Exception('Object being changed is null');
+        }
+        
         $mapper = $this->_mappers->GetMapper(new \ReflectionClass($objectToChange));
 
         foreach($mapper->GetChangeQueries($objectToChange, $referenceObjects) as $query)

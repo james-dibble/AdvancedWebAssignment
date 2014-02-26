@@ -81,8 +81,9 @@ class CrimeFileParsingService implements ICrimeFileParsingService
             if (CrimeFileParsingService::IsNationalRow($row))
             {
                 $national = $this->ParseArea($row);
-
+                
                 array_push($statistics->nationals, $national);
+                
                 continue;
             }
 
@@ -93,7 +94,6 @@ class CrimeFileParsingService implements ICrimeFileParsingService
                 array_push($currentRegion->areas, $area);
             }
         }
-
         return $statistics;
     }
 
@@ -104,7 +104,7 @@ class CrimeFileParsingService implements ICrimeFileParsingService
             return null;
         }
 
-        if (!preg_match('/^([1A-Za-z,\\-" ]+)((([,]+)(([\\d]{1,3})|([\\.]{2})|(["]{1}[\\d]{1,3}[,]{1}[\\d]{3}["]{1})))+)$/', $row))
+        if (!preg_match('/^([1A-Za-z,\\-" ]+)((([,]+)(([\\d]{1,3})|([\\.]{2})|(["]{1}[\\d]{1,3}[,]{1}[\\d]{3}["]{1})))+)(\r\n|[\r\n])*$/', $row))
         {
             return null;
         }
