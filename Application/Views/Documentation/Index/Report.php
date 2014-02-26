@@ -52,9 +52,12 @@
                     <h3>Learning Outcomes</h3>
                     <p>
                         I learnt a great deal about utilising design patterns in a functional programming language (PHP), and was able
-                        to expand my knowledge of creating RESTful data APIs that conform to a predefined structure.
+                        to expand my knowledge of creating RESTful data APIs that conform to a predefined URI structure.  Another important
+                        skill I enhanced was dealing with unfit requirements, specifically the PUT request, by going back to the client
+                        (in this case the module leader) and request information about it and suggesting appropriate alternatives.
                     </p>
                 </div>
+                <p><strong>Words</strong> <span class="badge">426</span></p>
             </div>
         </div>
         <div class="row" id="uri">

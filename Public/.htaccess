@@ -9,7 +9,7 @@ RewriteRule ^crimes/([0-9]{1}[-]{1}[0-9]{4})/delete/(.*)/(xml|json)$ index.php?c
 RewriteRule ^crimes/([0-9]{1}[-]{1}[0-9]{4})/(xml|json)$ index.php?controller=crimes&action=get&year=$1&format=$2 [NC,L]
 RewriteRule ^crimes/([0-9]{1}[-]{1}[0-9]{4})/([A-Za-z_]+)/(xml|json)$ index.php?controller=crimes&action=getforregion&year=$1&region=$2&format=$3 [NC,L]
 RewriteRule ^crimes/([0-9]{1}[-]{1}[0-9]{4})/([A-Za-z_]+)/([A-Za-z_]+)/(xml|json)$ index.php?controller=crimes&action=getforarea&year=$1&areaName=$3&format=$4 [NC,L]
-RewriteRule ^crimes/doc/index.html$ index.php?controller=documentation&action=index&noCache=1 [NC,L]
+RewriteRule ^crimes/doc/index.html$ index.php?controller=documentation&action=index [NC,L]
 RewriteRule ^crimes/doc/source/(.*)$ index.php?controller=documentation&action=source&path=$1&noCache=1 [NC,L]
 RewriteRule ^crimes/types/(xml|json)$ index.php?controller=crimes&action=getcrimetypes&format=$1 [NC,L]
 RewriteRule ^locations/region/(xml|json)$ index.php?controller=locations&action=getregions&format=$1 [NC,L]
@@ -19,7 +19,7 @@ RewriteRule ^import/imported-data[/]*$ index.php?controller=import&action=import
 RewriteRule ^import/error[/]*$ index.php?controller=import&action=erroruploading [NC,L]
 RewriteRule ^import[/]*$ index.php?controller=import&action=index [NC,L]
 RewriteRule ^api[/]*$ index.php?controller=client&action=index [NC,L]
-RewriteRule ^$ index.php?controller=home&action=index&noCache=1 [NC,L]
+RewriteRule ^$ index.php?controller=home&action=index [NC,L]
 RewriteRule ^(?:application|library)\b.* index.php/$0 [L]
 
 #Errors
