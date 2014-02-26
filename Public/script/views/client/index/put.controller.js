@@ -3,11 +3,12 @@ function PutFormController($scope, $http, apiService, cacheService)
     $scope.region = null;
     $scope.area = null;
     $scope.crimeStatistics = [];
-    $scope.regions = [];
     $scope.requestUri = '';
     $scope.json = '';
 
-    $scope.regions = cacheService.bindRegions($scope, 'regions');
+    cacheService.bindRegions($scope, 'regions', function(newValue){
+        $scope.regions = newValue;
+    });
 
     $scope.put = function()
     {

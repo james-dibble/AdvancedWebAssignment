@@ -5,6 +5,8 @@ angular.module('localStorage',[])
 	 */
 	var storage = (typeof window.localStorage === 'undefined') ? undefined : window.localStorage,
 		supported = !(typeof storage == 'undefined' || typeof window.JSON == 'undefined');
+                
+        var bindings = [];
 
 	var privateMethods = {
 		/** 
@@ -29,10 +31,20 @@ angular.module('localStorage',[])
 					val = parseFloat(val);
 				}
 			} catch(e){
-				val = res;
+				return res;
 			}
 			return val;
-		}
+		},
+                        
+                onKeyValueChange: function(storageEvent){
+                    $.Enumerable.From(bindings).Where(function(binding){
+                        return binding.key === storageEvent.key;
+                    }).ForEach(function(binding){
+                       if(binding.onKeyValueChange !== 'undefined'){
+                           binding.onKeyValueChange(privateMethods.parseValue(storageEvent.newValue));
+                       }
+                    });
+                }
 	};
 	var publicMethods = {
 		/**
@@ -52,6 +64,7 @@ angular.module('localStorage',[])
 			}
 			var saver = JSON.stringify(value);
 			storage.setItem(key, saver);
+                        privateMethods.onKeyValueChange({key: key, newValue: value});
 			return privateMethods.parseValue(saver);
 		},
 		/**
@@ -94,7 +107,7 @@ angular.module('localStorage',[])
 	         * @param def - the default value (OPTIONAL)
 	         * @returns {*} - returns whatever the stored value is
 	         */
-	        bind: function ($scope, key, def) {
+	        bind: function ($scope, key, def, onKeyValueChange) {
 	            def = def || '';
 	            if (!publicMethods.get(key)) {
 	                publicMethods.set(key, def);
@@ -103,8 +116,14 @@ angular.module('localStorage',[])
 	            $scope.$watch(key, function (val) {
 	                publicMethods.set(key, val);
 	            }, true);
+                                 
+                    bindings.push({ scope: $scope, key: key, def: def, onKeyValueChange: onKeyValueChange });
+                    
 	            return publicMethods.get(key);
 	        }
 	};
+        
+        window.addEventListener('storage', privateMethods.onKeyValueChange, false);
+        
 	return publicMethods;
 });

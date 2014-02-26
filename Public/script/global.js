@@ -14,8 +14,8 @@ atwd.factory('apiService', function() {
 
 atwd.service('cacheService', function($http, $store, apiService) {
     var service = {
-        bindRegions: function($scope, varName) {
-            return $store.bind($scope, varName, []);
+        bindRegions: function(scope, varName, callback) {
+            return $store.bind(scope, varName, [], callback);
         },
         updateCache: function() {
             var requestUri = apiService.baseApiRequest() + '/locations/region/json';

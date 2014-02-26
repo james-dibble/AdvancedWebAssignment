@@ -224,6 +224,15 @@ http://www.cems.uwe.ac.uk/~{username}/atwd/crimes/6-2013/put/{region}/{area}/{cr
                     </ul>
                 </td>
             </tr>
+            <tr>
+                <td><span class="label label-primary">Angular Local Storage</span></td>
+                <td><a href="https://github.com/agrublev/angularLocalStorage" target="_blank"><code>https://github.com/agrublev/angularLocalStorage</code></a></td>
+                <td>
+                    <ul>
+                        <li>Two way bindable HTML5 Local Storage wrapper.</li>
+                    </ul>
+                </td>
+            </tr>
         </table>
         </p>
     </div>
