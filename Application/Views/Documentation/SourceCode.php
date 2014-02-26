@@ -23,8 +23,10 @@ class SourceCode extends \Application\Views\Layout\ApplicationLayout implements 
         $source = show_source(dirname(__FILE__) . '/../../../' . $this->_filePathToOutput, true);
         $source = str_replace('<code>', '', str_replace('<br />', '</li><li>', $source));
         
+        $backToSourceLink = CONTEXT_PATH . 'crimes/doc/index.html#code';
+        
         echo <<<HTML
-        <h2>$this->_filePathToOutput</h2>
+        <h2>$this->_filePathToOutput<br /> <a href="$backToSourceLink">Back To Source</a></h2>
                 <pre>
                 <ol>
                 <li>
