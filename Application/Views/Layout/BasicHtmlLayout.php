@@ -23,7 +23,8 @@ abstract class BasicHtmlLayout extends \Library\Views\View
 <head>
         <title>$this->_title</title>
         <!-- LE META -->
-        <meta name="Description" content="$this->_description">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="Description" content="$this->_description" />
 HTML;
         include 'MetaTags.php';
         echo <<<HTML

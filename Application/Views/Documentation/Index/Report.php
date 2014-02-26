@@ -306,7 +306,7 @@ http://www.cems.uwe.ac.uk/~{username}/atwd/crimes/6-2013/put/{region}/{area}/{cr
             </div>
         </div>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-3 visible-lg">
         <nav data-spy="affix" data-offset-top="60" data-offset-bottom="200" role="complementary" id="scrollTarget">
             <ul class="nav nav-pills nav-stacked" style="width: 300px">
                 <li><a href="#report">Report</a></li>
