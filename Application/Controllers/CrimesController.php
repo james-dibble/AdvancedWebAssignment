@@ -4,7 +4,6 @@ namespace Application\Controllers;
 
 class CrimesController extends \Library\Controller\APIController
 {
-
     private $_crimeService;
     private $_locationService;
 

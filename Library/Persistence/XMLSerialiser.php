@@ -1,14 +1,19 @@
 <?php
 
 namespace Library\Persistence;
-
+/**
+ * An object to DOMObject converter class.
+ */
 class XMLSerialiser
 {
-
     public static function Serialise($object, $arraysAsElements = false)
     {
+        // We should have captured any errors from previous seralisations by
+        // now so setup this rediculous way of capturing errors from XML
+        // serialisation an validation.
         libxml_clear_errors();
         libxml_use_internal_errors(true);
+        
         $rootElement = new \DOMDocument("1.0", "utf-8");
         $rootElement->formatOutput = true;
 
@@ -31,6 +36,7 @@ class XMLSerialiser
     {
         $childElement = null;
         
+        // This object is part of a schema so pop it into the documents namespace.
         if($childObject instanceof \Library\Persistence\IXmlSchemaMember)
         {
             $childElement = $domDocument->createElementNS($childObject->SchemaPath(), $childObject->SchemaProperty());
@@ -67,6 +73,8 @@ class XMLSerialiser
 
                 foreach ($property->getValue($childObject) as $arrayContent)
                 {
+                    // If the serialiser was set to use the type of object as the elements name otherwise use the name of
+                    // the property the array was on.
                     if ($arraysAsElements)
                     {
                         $reflectedArrayObject = new \ReflectionObject($arrayContent);
@@ -97,5 +105,4 @@ class XMLSerialiser
     }
 
 }
-
 ?>

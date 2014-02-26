@@ -7,6 +7,9 @@ class RequestCache implements \Library\Caching\IRequestCache
 
     private $_basePath = "../cache/";
 
+    /**
+     * Save a response to the cache.
+     */
     public function CacheResponse($requestPath, $bufferContents, \Library\Controller\IActionResult $result)
     {
         // Redirects shouldn't be cached just incase the redirected action changes.
@@ -39,6 +42,9 @@ class RequestCache implements \Library\Caching\IRequestCache
         }        
     }
 
+    /**
+     * Delete all data responses.
+     */
     public function EmptyCache()
     {        
         $dataCacheFiles = glob($this->_basePath . '*.{xml,json}', GLOB_BRACE);

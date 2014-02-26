@@ -54,6 +54,7 @@ class CrimeFileParsingService implements ICrimeFileParsingService
             {
                 $currentCountry->name = CrimeFileParsingService::SplitRow($row)[CrimeFileParsingService::locationId];
 
+                // Wales is weird, so we make Wales a region too
                 if (count($currentCountry->regions) == 0)
                 {
                     $currentRegion->name = $currentCountry->name;
@@ -80,6 +81,8 @@ class CrimeFileParsingService implements ICrimeFileParsingService
 
             if (CrimeFileParsingService::IsNationalRow($row))
             {
+                // A national is nearly an area, so much so we can use the same function
+                // to extract its statistics
                 $national = $this->ParseArea($row);
                 
                 array_push($statistics->nationals, $national);

@@ -2,6 +2,9 @@
 
 namespace Library\Persistence;
 
+/**
+ * A PDO wrapper for implementing the Datamapper pattern.
+ */
 class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManager
 {
     private $_statementsToCommit;
@@ -75,6 +78,7 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
     
     public function Commit()
     {
+        // Transactionaly execute any add change or delete commands
         try
         {
             $this->GetConnection()->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
@@ -136,6 +140,7 @@ class MySqlPersistenceManager implements \Library\Persistence\IPersistenceManage
         return $mappedObjects;
     }
 
+    // Lazy load a connection.
     private function GetConnection()
     {
         if ($this->_connection == null)

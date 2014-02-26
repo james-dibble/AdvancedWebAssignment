@@ -1,6 +1,10 @@
 <?php
 namespace Library\Composition;
 
+/**
+ * A poor mans IOC container to promote loose coupling between interfaces
+ * and concrete objects.
+ */
 class Container implements IContainer
 {
     private $_mappingDictionary;
@@ -9,8 +13,7 @@ class Container implements IContainer
     {
         $this->_mappingDictionary = array();
     }
-
-
+    
     public function Resolve($binding)
     {
         if(!array_key_exists($binding, $this->_mappingDictionary))

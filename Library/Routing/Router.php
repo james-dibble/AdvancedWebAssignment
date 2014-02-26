@@ -22,6 +22,8 @@ class Router
             // if something goes wrong
             ob_start();
 
+            // If this request has previously been sent, pull the cached version and
+            // return it.
             if ($this->_cache->IsCached($_SERVER['REQUEST_URI']))
             {
                 $controller = $this->CreateController('cache');
@@ -80,16 +82,18 @@ class Router
     {
         $constructorArguments = array();
 
-        $controller = new \ReflectionClass($controllerName);
+        $controllerClass = new \ReflectionClass($controllerName);
 
+        // If the controller has a default constructor we're done here.
         if (!method_exists($controllerName, '__construct'))
         {
             return $constructorArguments;
         }
 
-        $constructor = $controller->getConstructor();
+        $constructor = $controllerClass->getConstructor();
         $args = $constructor->getParameters();
 
+        // Setup controller dependencies
         foreach ($args as $arg)
         {
             $resolved = $this->_container->Resolve($arg->getClass()->name);

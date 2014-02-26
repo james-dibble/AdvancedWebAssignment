@@ -1,6 +1,10 @@
 <?php
 namespace Library\Persistence;
 
+/**
+ * A dictionary that links persistable domain model classes to the
+ * datamapper that manages its persistence queries.
+ */
 class MapperDictionary implements \Library\Persistence\IMapperDictionary
 {
     private $_mappers;

@@ -2,6 +2,9 @@
 
 namespace Library\Controller;
 
+/**
+ * A base class for a response builder.
+ */
 abstract class Controller
 {
     public function ProcessRequest($action, $arguments = null)
@@ -59,7 +62,7 @@ abstract class Controller
         if(!method_exists($this, $actionName))
         {
             $controllerName = $this->GetControllerName();
-            throw new \Library\Models\Errors\NotFoundException("Action [$actionName] does not exists on controller [$controllerName].");
+            throw new \Library\Models\Errors\NotFoundException("Action [$actionName] does not exist on controller [$controllerName].");
         }
         
         $method = new \ReflectionMethod($this, $actionName);

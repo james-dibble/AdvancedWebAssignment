@@ -57,60 +57,12 @@ class CrimeService implements ICrimeService
     {        
         foreach ($crimeStatistics->nationals as $national)
         {
-            $this->_persistence->Add($national, array());
-
-            $this->_persistence->Commit();
-            
-            $savedNational = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
-                    new \ReflectionClass('\Application\Models\Domain\National'), array('ByName' => $national->name)));
-
-            foreach ($national->crimeStatistics as $crimeStatistic)
-            {
-                $this->_persistence->Add($crimeStatistic, array('area' => $savedNational));
-            }
-
-            $this->_persistence->Commit();
+            $this->SaveNewNational($national);
         }
         
         foreach ($crimeStatistics->countires as $country)
         {
-            $this->_persistence->Add($country, array());
-
-            $this->_persistence->Commit();
-
-            $savedCountry = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
-                    new \ReflectionClass('\Application\Models\Domain\Country'), array('ByName' => $country->name)));
-
-            foreach ($country->regions as $region)
-            {
-                $region->country = $savedCountry;
-
-                $this->_persistence->Add($region, array());
-
-                $this->_persistence->Commit();
-
-                $savedRegion = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
-                        new \ReflectionClass('\Application\Models\Domain\Region'), array('ByName' => $region->name)));
-
-                foreach ($region->areas as $area)
-                {
-                    $area->region = $savedRegion;
-
-                    $this->_persistence->Add($area, array());
-
-                    $this->_persistence->Commit();
-
-                    $savedArea = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
-                            new \ReflectionClass('\Application\Models\Domain\Area'), array('ByName' => $area->name)));
-
-                    foreach ($area->crimeStatistics as $crimeStatistic)
-                    {
-                        $this->_persistence->Add($crimeStatistic, array('area' => $savedArea));
-                    }
-
-                    $this->_persistence->Commit();
-                }
-            }
+            $this->SaveNewCountry($country);
         }
     }
 
@@ -118,6 +70,8 @@ class CrimeService implements ICrimeService
     {
         $existingArea = $this->GetArea($area->name);
         
+        // Areas should be persisted idempotently, so remove any existsing area
+        // with the same name and overwrite it.
         if($existingArea != null)
         {
             $this->DeleteArea($existingArea);
@@ -133,7 +87,8 @@ class CrimeService implements ICrimeService
                             new \ReflectionClass('\Application\Models\Domain\Area'), array('ByName' => $area->name)));
         
         $statisticTypes = $this->GetAllCrimeTypes();
-                
+            
+        // Add any missing statistics to the area so it has a 0 value.
         foreach($statisticTypes as $type)
         {
             if(!$area->HasStatistic($type))
@@ -205,6 +160,74 @@ class CrimeService implements ICrimeService
         $this->_persistence->Commit();
                 
         $this->_cache->EmptyCache();
+    }
+    
+    private function SaveNewArea($area, $region)
+    {
+        $area->region = $region;
+
+        $this->_persistence->Add($area, array());
+
+        $this->_persistence->Commit();
+
+        $savedArea = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
+                new \ReflectionClass('\Application\Models\Domain\Area'), array('ByName' => $area->name)));
+
+        foreach ($area->crimeStatistics as $crimeStatistic)
+        {
+            $this->_persistence->Add($crimeStatistic, array('area' => $savedArea));
+        }
+
+        $this->_persistence->Commit();
+    }
+    
+    private function SaveNewRegion($region, $country)
+    {
+        $region->country = $country;
+
+        $this->_persistence->Add($region, array());
+
+        $this->_persistence->Commit();
+
+        $savedRegion = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
+                new \ReflectionClass('\Application\Models\Domain\Region'), array('ByName' => $region->name)));
+
+        foreach ($region->areas as $area)
+        {
+            $this->SaveNewArea($area, $savedRegion);
+        }
+    }
+    
+    private function SaveNewCountry($country)
+    {
+        $this->_persistence->Add($country, array());
+
+        $this->_persistence->Commit();
+
+        $savedCountry = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
+                new \ReflectionClass('\Application\Models\Domain\Country'), array('ByName' => $country->name)));
+
+        foreach ($country->regions as $region)
+        {
+            $this->SaveNewRegion($region, $savedCountry);
+        }
+    }
+    
+    private function SaveNewNational($national)
+    {
+        $this->_persistence->Add($national, array());
+
+        $this->_persistence->Commit();
+
+        $savedNational = $this->_persistence->Get(new \Library\Persistence\PersistenceSearcher(
+                new \ReflectionClass('\Application\Models\Domain\National'), array('ByName' => $national->name)));
+
+        foreach ($national->crimeStatistics as $crimeStatistic)
+        {
+            $this->_persistence->Add($crimeStatistic, array('area' => $savedNational));
+        }
+
+        $this->_persistence->Commit();
     }
 }
 ?>
