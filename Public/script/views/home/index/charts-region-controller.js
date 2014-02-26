@@ -1,6 +1,7 @@
 function ChartsRegionController($scope, $http, apiService)
 {
     $scope.regions = [];
+    $scope.nationals = [];
     $scope.loadingRegions = true;
     $scope.loadingRegionsFailed = false;
     $scope.json = '';
@@ -14,6 +15,7 @@ function ChartsRegionController($scope, $http, apiService)
         $scope.json = JSON.stringify(data, null, 4);
         
         $scope.regions = data.response.crimes.region;
+        $scope.nationals = data.response.crimes.national;
         
         $('#region-bar-chart').highcharts({
                 chart: {
@@ -21,12 +23,14 @@ function ChartsRegionController($scope, $http, apiService)
                     margin: [50, 50, 100, 80]
                 },
                 title: {
-                    text: 'Regional Crime Totals'
+                    text: 'Crime Statistics for England and Wales'
                 },
                 xAxis: {
                     categories: $.Enumerable.From($scope.regions).Select(function(region) {
                         return region.id;
-                    }).ToArray(),
+                    }).Concat($.Enumerable.From($scope.nationals).Select(function(national) {
+                        return national.id;
+                    })).ToArray(),
                     labels: {
                         rotation: -45,
                         align: 'right'
@@ -48,7 +52,9 @@ function ChartsRegionController($scope, $http, apiService)
                         name: 'TotalCrimes',
                         data: $.Enumerable.From($scope.regions).Select(function(region) {
                             return region.total;
-                        }).ToArray(),
+                        }).Concat($.Enumerable.From($scope.nationals).Select(function(national) {
+                            return national.total;
+                        })).ToArray(),
                         dataLabels: {
                             enabled: true,
                             rotation: -90,
@@ -62,11 +68,15 @@ function ChartsRegionController($scope, $http, apiService)
 
             var regionsTotal = $.Enumerable.From($scope.regions).Select(function(region) {
                             return region.total;
-                        }).Sum();
+                        }).Concat($.Enumerable.From($scope.nationals).Select(function(national) {
+                            return national.total;
+                        })).Sum();
                         
             var pieData = $.Enumerable.From($scope.regions).Select(function(region) {
                             return [region.id, region.total / regionsTotal];
-                        }).ToArray();
+                        }).Concat($.Enumerable.From($scope.nationals).Select(function(national) {
+                            return [national.id, national.total / regionsTotal];
+                        })).ToArray();
 
             $('#region-pie-chart').highcharts({
                 chart: {
@@ -75,7 +85,7 @@ function ChartsRegionController($scope, $http, apiService)
                     plotShadow: false
                 },
                 title: {
-                    text: 'Regional Crimes'
+                    text: 'Crime Statistics for England and Wales'
                 },
                 tooltip: {
                     pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -94,7 +104,7 @@ function ChartsRegionController($scope, $http, apiService)
                 },
                 series: [{
                         type: 'pie',
-                        name: 'Regional Crimes',
+                        name: 'Crime Statistics for England and Wales',
                         data: pieData
                     }]
             });

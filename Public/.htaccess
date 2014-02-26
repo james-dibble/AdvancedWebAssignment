@@ -18,7 +18,7 @@ RewriteRule ^import/imported-data[/]*$ index.php?controller=import&action=import
 RewriteRule ^import/error[/]*$ index.php?controller=import&action=erroruploading [NC,L]
 RewriteRule ^import[/]*$ index.php?controller=import&action=index [NC,L]
 RewriteRule ^api[/]*$ index.php?controller=client&action=index [NC,L]
-RewriteRule ^$ index.php?controller=home&action=index [NC,L]
+RewriteRule ^$ index.php?controller=home&action=index&noCache=1 [NC,L]
 RewriteRule ^(?:application|library)\b.* index.php/$0 [L]
 
 #Errors

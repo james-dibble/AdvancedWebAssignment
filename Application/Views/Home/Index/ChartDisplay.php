@@ -39,6 +39,16 @@
                                     <td>{{region.total}}</td>
                                 </tr>
                             </table>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>National</th>
+                                    <th>Total</th>
+                                </tr>
+                                <tr data-ng-repeat="national in nationals">
+                                    <td>{{national.id}}</td>
+                                    <td>{{national.total}}</td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
