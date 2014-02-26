@@ -10,6 +10,7 @@ RewriteRule ^crimes/([0-9]{1}[-]{1}[0-9]{4})/(xml|json)$ index.php?controller=cr
 RewriteRule ^crimes/([0-9]{1}[-]{1}[0-9]{4})/([A-Za-z_]+)/(xml|json)$ index.php?controller=crimes&action=getforregion&year=$1&region=$2&format=$3 [NC,L]
 RewriteRule ^crimes/([0-9]{1}[-]{1}[0-9]{4})/([A-Za-z_]+)/([A-Za-z_]+)/(xml|json)$ index.php?controller=crimes&action=getforarea&year=$1&areaName=$3&format=$4 [NC,L]
 RewriteRule ^crimes/doc/index.html$ index.php?controller=documentation&action=index&noCache=1 [NC,L]
+RewriteRule ^crimes/doc/source/(.*)$ index.php?controller=documentation&action=source&path=$1&noCache=1 [NC,L]
 RewriteRule ^crimes/types/(xml|json)$ index.php?controller=crimes&action=getcrimetypes&format=$1 [NC,L]
 RewriteRule ^locations/region/(xml|json)$ index.php?controller=locations&action=getregions&format=$1 [NC,L]
 RewriteRule ^import/file[/]*$ index.php?controller=import&action=file&noCache=1 [NC,L]

@@ -13,8 +13,8 @@ class Index extends \Application\Views\Layout\ApplicationLayout implements \Libr
 
         $this->AddScript(CONTEXT_PATH . 'script/jquery.linq.min.js');
         $this->AddScript(CONTEXT_PATH . 'script/highcharts/highcharts.js');
-        $this->AddScript(CONTEXT_PATH . 'script/views/home/index/charts-region-controller.js');
-        $this->AddScript(CONTEXT_PATH . 'script/views/home/index/charts-area-controller.js');
+        $this->AddScript(CONTEXT_PATH . 'script/views/home/index/index.region.controller.js');
+        $this->AddScript(CONTEXT_PATH . 'script/views/home/index/index.area.controller.js');
     }
 
     public function BuildView()

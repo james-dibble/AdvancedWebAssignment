@@ -241,8 +241,48 @@ http://www.cems.uwe.ac.uk/~{username}/atwd/crimes/6-2013/put/{region}/{area}/{cr
     <div class="col-lg-12">
         <h2>Code</h2>
         <p>
-            Code repository hosted upon <a href="https://github.com/james-dibble/AdvancedWebAssignment">GitHub</a>.
+            Code history hosted upon <a href="https://github.com/james-dibble/AdvancedWebAssignment">GitHub</a>.
         </p>
-        <div id="repoBrowser"></div>
+        <?php  
+        $relativePath = '/../../../../';
+        
+        displayFolderContents(dirname(__FILE__) . $relativePath, $relativePath);
+        
+        function displayFolderContents($dir, $relativePath)
+        {            
+            $actualDirName = explode($relativePath, $dir)[1];
+            
+            echo "<strong>$actualDirName</strong>";
+            echo '<ul class="unstyled">';
+            
+            $cdir = scandir($dir);
+            
+            foreach ($cdir as $key => $value)
+            {
+                if (!in_array($value, array(".", "..")))
+                {
+                    if (!is_dir($dir . DIRECTORY_SEPARATOR . $value))
+                    {
+                        $linkPath = CONTEXT_PATH . 'crimes/doc/source' . $actualDirName . '/' . $value;
+                        
+                        echo "<li><a href=\"$linkPath\">$value</a></li>";
+                    }
+                }
+            }
+            
+            foreach ($cdir as $key => $value)
+            {
+                if (!in_array($value, array(".", "..")))
+                {
+                    if (is_dir($dir . DIRECTORY_SEPARATOR . $value))
+                    {
+                        displayFolderContents($dir . DIRECTORY_SEPARATOR . $value, $relativePath);
+                    }
+                }
+            }
+            
+            echo '</ul>';
+        }
+        ?>
     </div>
 </div>

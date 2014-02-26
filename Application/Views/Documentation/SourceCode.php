@@ -1,26 +1,41 @@
 <?php
+
 namespace Application\Views\Documentation;
 
-class Index extends \Application\Views\Layout\ApplicationLayout implements \Library\Views\IView
+class SourceCode extends \Application\Views\Layout\ApplicationLayout implements \Library\Views\IView
 {
+
     private $_filePathToOutput;
-    
+
     public function __construct($filePathToOutput)
     {
         parent::__construct();
         $this->SetTitle('Advanced Topics in Web Development - James Dibble 10009689');
         $this->SetDescription('Advanced Topics in Web Development - James Dibble 10009689');
-        
+
         $this->_filePathToOutput = $filePathToOutput;
     }
-    
+
     public function BuildView()
     {
         $this->BuildHeader();
-
-        echo '<pre>' . show_source($this->_filePathToOutput) . '</pre>';
+        
+        $source = show_source(dirname(__FILE__) . '/../../../' . $this->_filePathToOutput, true);
+        $source = str_replace('<code>', '', str_replace('<br />', '</li><li>', $source));
+        
+        echo <<<HTML
+        <h2>$this->_filePathToOutput</h2>
+                <pre>
+                <ol>
+                <li>
+                $source
+                </ol>
+                </pre>
+HTML;
 
         $this->BuildFooter();
-    }    
+    }
+
 }
+
 ?>

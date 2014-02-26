@@ -104,6 +104,7 @@ class CrimeFileParsingService implements ICrimeFileParsingService
             return null;
         }
 
+        // Match a statistics row.
         if (!preg_match('/^([1A-Za-z,\\-" ]+)((([,]+)(([\\d]{1,3})|([\\.]{2})|(["]{1}[\\d]{1,3}[,]{1}[\\d]{3}["]{1})))+)(\r\n|[\r\n])*$/', $row))
         {
             return null;
